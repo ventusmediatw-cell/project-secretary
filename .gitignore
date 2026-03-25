@@ -1,9 +1,22 @@
+# Secrets
 .env
 *.db
 *.sqlite
+*.key
+*.pem
+.credentials/
+credentials*
+service-account-key.json
+
+# OS
 .DS_Store
 node_modules/
 __pycache__/
 *.pyc
-.credentials/
-service-account-key.json
+
+# Prevent personal workspace data from leaking in
+workspace/inbox/*
+workspace/projects/*
+workspace/summaries/*
+workspace/handoff/*
+!workspace/inbox/2026-03-24.md
