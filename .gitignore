@@ -1,0 +1,9 @@
+.env
+*.db
+*.sqlite
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.credentials/
+service-account-key.json
