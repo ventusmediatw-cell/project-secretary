@@ -33,6 +33,7 @@ Established Skills (auto-loaded in Claude Code / Cowork):
 | **subagent-guide** | `.claude/skills/subagent-guide/SKILL.md` | Sub Agent usage guide | Load when launching Sub Agent |
 | **project-setup** | `.claude/skills/project-setup/SKILL.md` | Project launch six-step flow (background → architecture → research → Debate → decision → execution) with branching logic | Load when starting new project |
 | **tool-scout** | `.claude/skills/tool-scout/SKILL.md` | Tool scout (MCP Registry / Plugin / GitHub search + security assessment) | Load when exploring tools |
+| **knowledge-base** | `.claude/skills/knowledge-base/SKILL.md` | Personal knowledge base pipeline (URL → fetch → summarize → archive) with project knowledge bridging | Load when processing URLs or managing knowledge |
 | **debate-protocol** | `workspace/refs/debate-agents/debate-protocol.md` | Debate protocol (multi-round dialogue, word limits, secretary moderation, storage format) | Load during Step 4 Debate |
 
 ## Cross-Platform Paths

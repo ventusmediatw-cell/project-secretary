@@ -38,6 +38,7 @@ User folder/
 │       ├── project-setup/SKILL.md ← Project launch flow
 │       ├── tool-scout/SKILL.md  ← Tool scout
 │       ├── subagent-guide/SKILL.md ← Sub Agent guide
+│       ├── knowledge-base/SKILL.md ← Knowledge base pipeline
 │       ├── chrome-sop/SKILL.md  ← [Optional] Chrome SOP
 │       ├── gcp-ops/SKILL.md     ← [Optional] GCP SOP
 │       └── github-ops/SKILL.md  ← [Optional] GitHub SOP

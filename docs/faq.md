@@ -192,7 +192,7 @@ See project-setup Skill's branching logic.
 
 ## Q10: Is this system suitable for teams?
 
-**A:** Current v0.2 **not suitable for multi-person**, but **partial support**:
+**A:** Current version is **not suitable for multi-person**, but has **partial support**:
 
 | Scenario | Support | Description |
 |---|---|---|
@@ -209,6 +209,37 @@ See project-setup Skill's branching logic.
 **If multi-person work**:
 - Wait for v1.0 team version (not planned, PR welcome)
 - Or modify secretary Skill yourself to add collaboration mode
+
+---
+
+## Q11: How do I build a personal knowledge base?
+
+**A:** Use the knowledge-base Skill:
+
+1. **Save articles**: Share a URL in conversation → secretary fetches, summarizes, archives
+2. **YouTube videos**: Same flow, extracts transcript if available
+3. **Batch processing**: Drop URLs in `workspace/knowledge-base/inbox/fetch-queue.md`
+
+**Where things go**:
+
+| Content Type | Storage Path |
+|---|---|
+| Articles | `workspace/knowledge-base/articles/YYYY-MM-DD-slug.md` |
+| Videos | `workspace/knowledge-base/videos/YYYY-MM-DD-slug.md` |
+
+**Project bridging** (the key differentiator):
+- Each saved article gets tagged with related projects
+- Secretary writes actionable digests to `projects/{name}/refs/kb-digest.md`
+- Project agents read these on-demand for background knowledge
+
+**Example workflow**:
+```
+You: "Save this: https://example.com/ai-marketing-guide"
+Secretary: "Saved! Related to project Marketing-Strategy.
+            Added digest to Marketing-Strategy/refs/kb-digest.md:
+            - Key insight: [actionable summary]
+            - Action item: [what to do next]"
+```
 
 ---
 

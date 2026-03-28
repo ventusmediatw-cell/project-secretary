@@ -322,6 +322,150 @@ Build cleanup rhythm (see Problem 2 solution):
 
 ---
 
+## Knowledge and Review
+
+### Problem 11: Review only does memory sync, skips experience extraction
+
+**Symptoms**:
+- Session end, secretary writes journal + updates INDEX
+- But a painful debugging process (tried A → failed → tried B → worked) is never recorded
+- Two weeks later, hit the exact same problem again
+
+**Root cause**:
+- Wrap-up only does "C: Memory Sync" (write journal, update INDEX)
+- Skips "A: Experience Extraction" (pitfall records, knowledge corrections)
+- Secretary treats Review as a checklist of file updates, not knowledge capture
+
+**Solution**:
+Use the full 12-item checklist in the review Skill. Sections A (experience extraction) and B (system updates) are the core value — not just C (memory sync).
+
+**Best practice**:
+```
+After each session, ask yourself:
+"If a brand new Agent starts tomorrow, reading only
+CLAUDE.md + INDEX.md + Skills, can it recreate
+everything learned today?"
+If not, something was missed.
+```
+
+---
+
+### Problem 12: Knowledge base articles pile up, never used
+
+**Symptoms**:
+- Saved 50 articles to knowledge-base/
+- Never reference them when working on projects
+- "I know I saved something about this... but where?"
+
+**Root cause**:
+- No bridge between knowledge base and project context
+- Articles are archived but not connected to where they're actionable
+
+**Solution**:
+Use the knowledge-base Skill's "Project Knowledge Bridge" (kb-digest):
+1. When archiving, tag related projects in Metadata
+2. Secretary writes actionable digest to `projects/{name}/refs/kb-digest.md`
+3. Digest focuses on "what does this mean for THIS project" — not repeating the article
+
+**Best practice**:
+```
+□ Every article: ask "which project benefits from this?"
+□ kb-digest entry ≤ 5 lines (action items + link to source)
+□ memory.md only gets one reference line, not full digests
+□ Project agent reads kb-digest on-demand, not every startup
+```
+
+---
+
+### Problem 13: Accidentally deleted important files
+
+**Symptoms**:
+- Secretary or sub agent deleted/overwrote a workspace file
+- Or user accidentally cleared a folder
+- "Can we get it back?"
+
+**Root cause**:
+- No version control or backup habit
+- Cowork sandbox may have lock file issues blocking git
+
+**Solution**:
+1. **Use git** in your workspace folder:
+   ```
+   git init
+   git add .
+   git commit -m "initial backup"
+   ```
+2. **Regular commits** — review Skill's git auto-save does this at each wrap-up
+3. **Lock file workaround** (Cowork): `mv .git/index.lock .git/index.lock.tmp 2>/dev/null` before commit
+4. **Recovery**: `git checkout -- path/to/file` to restore
+
+**Best practice**:
+```
+□ Initialize git in workspace on Day 1
+□ Add .gitignore (exclude secrets, large files)
+□ Review Skill auto-commits at each wrap-up
+□ Know the restore command: git checkout -- <file>
+```
+
+---
+
+### Problem 14: Tool search only tried one keyword, missed results
+
+**Symptoms**:
+- Asked secretary to find a tool for X
+- Secretary searched MCP Registry with one query, found nothing
+- User later found the perfect tool existed under a different name
+
+**Root cause**:
+- Only searched with one keyword/phrase
+- Didn't try synonyms, abbreviations, or related terms
+
+**Solution**:
+See tool-scout Skill. For each search channel (MCP Registry, Plugin store, GitHub):
+1. Try **2-3 synonym groups** per channel
+2. Note total results count for each query
+3. If first query returns 0, try broader terms
+
+**Best practice**:
+```
+□ "project management" → also try "task", "kanban", "sprint"
+□ "analytics" → also try "dashboard", "metrics", "reporting"
+□ Record search queries and result counts in research notes
+□ Don't conclude "nothing exists" after a single query
+```
+
+---
+
+### Problem 15: Token waste from over-eager output
+
+**Symptoms**:
+- Asked for an outline, got a full 2000-word draft
+- Asked a simple question, got a 500-word essay
+- Session runs out of tokens halfway through
+
+**Root cause**:
+- No output length guardrails
+- Secretary expands scope beyond what was asked
+- Multi-step workflows jump ahead (outline → script → full report in one go)
+
+**Solution**:
+Follow the Output Control Rules in secretary Skill:
+1. Default responses under 300 words
+2. Never auto-expand scope (outline ≠ full draft)
+3. Confirm before large outputs (>500 words)
+4. One step at a time for multi-step workflows
+5. Minimize unnecessary file reads/writes
+
+**Best practice**:
+```
+□ "Give me an outline" → deliver outline only, ask before expanding
+□ "Research X" → deliver summary, offer detail on request
+□ Before any output >500 words: "This will be detailed — want me to go ahead?"
+□ Track approximate token usage mentally across a session
+```
+
+---
+
 ## Contribute Your Pitfalls
 
 Found new problems? Welcome to:
@@ -341,5 +485,8 @@ Found new problems? Welcome to:
 | **Clear handoff** | Each session end say "wrap up," auto-generate handoff |
 | **Cross-platform sync** | Use git + markdown, don't depend on SaaS |
 | **Clear instructions** | Agent / Sub Agent prompts detailed like manual |
+| **Extract, don't just record** | Review is for capturing lessons, not just logging events |
+| **Bridge knowledge to action** | Saved articles must connect to projects via kb-digest |
+| **Control output size** | Default brief; confirm before large outputs; one step at a time |
 
 Follow these, your secretary system becomes rock-solid.

@@ -82,8 +82,9 @@ Secretary: "Did Review and organized everything"
 ├── .claude/
 │   └── skills/                        ← All Skills
 │       ├── secretary/SKILL.md         ← Core rules
-│       ├── review/SKILL.md            ← Wrap-up flow
+│       ├── review/SKILL.md            ← Wrap-up flow (12-item checklist)
 │       ├── project-setup/SKILL.md     ← Project launch
+│       ├── knowledge-base/SKILL.md    ← URL → summarize → archive
 │       └── ...（other Skills）
 └── workspace/
     ├── INDEX.md                        ← Main index (most important)
@@ -106,6 +107,7 @@ Secretary: "Did Review and organized everything"
 | Find old thought | "Check what I said about..." |
 | Generate weekly report | "Generate weekly report" (secretary asks if there's anything new) |
 | Return to secretary mode | "Return to secretary mode" |
+| Save a link to knowledge base | "Save this: [URL]" |
 | Check memory status | "Secretary, what do you remember?" |
 
 ---
