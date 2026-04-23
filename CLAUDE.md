@@ -25,7 +25,7 @@ Established Skills (auto-loaded in Claude Code / Cowork):
 | Skill | Path | Description | Trigger |
 |---|---|---|---|
 | **secretary** | `.claude/skills/secretary/SKILL.md` | Secretary core rules (modes, memory architecture, organization rhythm, INDEX distribution) | Auto-load |
-| **review** | `.claude/skills/review/SKILL.md` | Wrap-up Review two-stage flow + 12-item checklist | Trigger when user says "wrap up" |
+| **review** | `.claude/skills/review/SKILL.md` | Wrap-up Review two-stage flow + 13-item checklist (A: experience extraction, B: system updates, C: memory sync) | Trigger when user says "wrap up" |
 | **handoff** | `.claude/skills/handoff/SKILL.md` | Handoff protocol (handoff report format, cross-platform handoff/ queue) | Auto-load |
 | **chrome-sop** | `.claude/skills/chrome-sop/SKILL.md` | Chrome browser tool SOP | Load when using Chrome |
 | **gcp-ops** | `.claude/skills/gcp-ops/SKILL.md` | GCP VM operations SOP | Load when using GCP |
@@ -34,6 +34,9 @@ Established Skills (auto-loaded in Claude Code / Cowork):
 | **project-setup** | `.claude/skills/project-setup/SKILL.md` | Project launch six-step flow (background → architecture → research → Debate → decision → execution) with branching logic | Load when starting new project |
 | **tool-scout** | `.claude/skills/tool-scout/SKILL.md` | Tool scout (MCP Registry / Plugin / GitHub search + security assessment) | Load when exploring tools |
 | **knowledge-base** | `.claude/skills/knowledge-base/SKILL.md` | Personal knowledge base pipeline (URL → fetch → summarize → archive) with project knowledge bridging | Load when processing URLs or managing knowledge |
+| **github-recon** | `.claude/skills/github-recon/SKILL.md` | GitHub repo security recon (red/yellow/green rating + red flag list, read-only zero execution) | Auto-trigger when user pastes github.com URL |
+| **gemini-deep-research** | `.claude/skills/gemini-deep-research/SKILL.md` | Gemini Deep Research SOP (decision tree, platform routing, research Brief template, quality control) | Load when background research with Gemini is needed |
+| **growth-coach** | `.claude/skills/growth-coach/SKILL.md` | Personal growth coach (independent second role, daily reflection, question bank, weekly consultation) | Load when user says "start growth coach" |
 | **debate-protocol** | `workspace/refs/debate-agents/debate-protocol.md` | Debate protocol (multi-round dialogue, word limits, secretary moderation, storage format) | Load during Step 4 Debate |
 
 ## Cross-Platform Paths

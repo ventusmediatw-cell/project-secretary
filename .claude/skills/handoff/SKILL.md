@@ -1,11 +1,62 @@
 ---
 name: handoff
-description: "Handoff Protocol: write handoff report at end of session (secretary mode → inbox/, project mode → projects/daily/), cross-platform handoff to handoff/pending/. Handoff report format template, timestamp mandatory rules, memory sync checklist. Needed at end of every session."
+description: "Handoff Protocol: write handoff record at end of session. Includes quick/formal triage, cross-platform handoff/pending/ queue, Git Commit Handoff. Required at end of every session."
 ---
 
 # Handoff Protocol
 
 At the end of each Agent session, **must leave a handoff record**. This applies even to brief sessions.
+
+## Wrap-up Flow (trigger when user says "wrap up")
+
+User says "wrap up" = run wrap-up Review, **not** code review / simplify.
+
+### Step 1: Multi-Project Review
+
+Review all projects touched in this session (including incidental changes in secretary mode), and for **each** one:
+
+1. Write/append project daily log `workspace/projects/{name}/daily/YYYY-MM-DD.md` (**new session inserts at top of file**, after daily header, before previous section — latest on top)
+2. Update project `INDEX.md` (two steps):
+   - **2a Write**: Add this session's outputs, update progress description
+   - **2b Compare existing to-dos**: Scan all `[ ]` items in INDEX — did this session's work complete, obsolete, or change the premise of any item? If yes → update status and note reason (e.g., `[x] ... → covered by paper trader (fdbd6cf)`, `Obsolete: premise changed, see daily 04-14`)
+3. If there are important decisions or research conclusions → write to `memory.md`
+
+### Step 2: Secretary Review Checklist
+
+Read `.claude/skills/review/SKILL.md` and execute the full 13-item checklist (A Experience → B System Updates → C Memory Sync).
+
+### Step 3: Write Handoff + Git Archive
+
+Use the triage logic below to choose handoff method, then handle git by platform (Code: direct commit / Cowork: write git-commit handoff).
+
+### Step 4: Wrap-up Confirmation
+
+Tell the user: "Wrap-up complete! ✅ [completion summary] / 📝 Pending: [incomplete items] / 💡 [new findings] / 💾 Archived"
+
+---
+
+## Handoff Triage
+
+### Quick Handoff
+
+**Condition: the receiving end can act immediately after reading INDEX.md, no extra context needed.**
+
+Typical cases: git push, run tests, install packages, change a specific path with a clear directive. The action itself is the complete instruction.
+
+How:
+- **Don't write a `handoff/pending/` file, no template needed**
+- Note one line in inbox journal for reference (e.g., `- Quick handoff to Code: push workspace changes`)
+- User can relay orally or copy-paste
+
+### Formal Handoff
+
+**Condition: task requires understanding background, involves design decisions, or contains multiple steps.**
+
+How:
+- Write to `workspace/handoff/pending/`
+- Format: see `templates.md` in same folder
+
+> When in doubt, ask: "If I only gave the receiver this one sentence, would they get it wrong?" Yes → formal handoff.
 
 ## Handoff Write Locations
 
@@ -13,7 +64,12 @@ At the end of each Agent session, **must leave a handoff record**. This applies 
 |---|---|
 | Secretary mode | `workspace/inbox/YYYY-MM-DD.md` |
 | Project mode | `workspace/projects/{name}/daily/YYYY-MM-DD.md` |
-| Cross-platform tasks | `workspace/handoff/pending/` (see format below) |
+| Cross-platform tasks (formal) | `workspace/handoff/pending/` (see `templates.md`) |
+| Cross-platform tasks (quick) | Note one line in inbox, user relays orally |
+
+## ⚠️ Timestamp is Mandatory
+
+Before writing handoff report, run `date` to get current time. Both title and body must include `HH:MM ~ HH:MM (Timezone)`. **Don't use vague terms like "evening" or "afternoon."**
 
 ## Handoff Report Format
 
@@ -41,10 +97,6 @@ At the end of each Agent session, **must leave a handoff record**. This applies 
 - [ ] Did I update project INDEX.md (if in project mode work)?
 - [ ] Any new important decisions or knowledge corrections?
 ```
-
-## ⚠️ Timestamp is Mandatory
-
-Before writing handoff report, run `date` to get current time. Both title and body must include `HH:MM ~ HH:MM (Timezone)`. **Don't use vague terms like "evening" or "afternoon."**
 
 ## Cross-Platform Handoff (handoff/)
 
@@ -96,8 +148,18 @@ Where to write results, whether to notify the originator
 
 ## done/ Cleanup
 
-`handoff/done/` is just a receipt; real content is in project journal. Files in done/ older than 7 days can be manually or automatically cleaned.
+`handoff/done/` is just a receipt; real content is in project journal. Files in done/ older than 7 days can be automatically cleaned by daily-secretary-review schedule or cleaned manually.
 
 ## Multiple Agents Same Day
 
-If multiple Agents write handoffs on the same day, **append to same journal file** (separate with `##` heading + time period), don't overwrite previous content.
+If multiple Agents write handoffs on the same day, **insert at top of same journal file** (after daily header), separated with `##` heading + time period. Latest session always on top.
+
+## Git Commit Handoff (Cowork → Code)
+
+Cowork has lock restrictions on mounts; git operations will fail. **Cowork does not attempt git commit/push** — instead write a handoff for Claude Code to handle.
+
+At wrap-up, if there are file changes to commit, write a handoff to `handoff/pending/`. Format: see "Git Commit Handoff" section in `templates.md`. Filename: `YYYY-MM-DD-git-commit.md`.
+
+### Merge Rule
+
+Multiple Cowork sessions on the same day **merge into one git handoff file** (append changed files to same file), to avoid Code running multiple commits.

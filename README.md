@@ -1,4 +1,4 @@
-# AI Personal Secretary — Template v0.5
+# AI Personal Secretary — Template v0.7
 
 > An AI personal secretary system template built on Claude Code / Cowork.
 > Fork it, tweak a few parameters, and you're good to go.
@@ -37,7 +37,9 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 | **knowledge-base** | Personal knowledge pipeline: paste a URL → auto-fetch → summarize → archive. Supports articles and YouTube. Includes synthesis layer (cross-article compiled knowledge), tiered search (L1→L2→L3), and periodic health checks. Bridges knowledge to projects via `kb-digest` | Share a **URL** in conversation, or say **"save this"** |
 | **github-recon** | Security reconnaissance for GitHub repos: 5-step SOP producing red/yellow/green light reports. Read-only, zero execution — builds risk picture before you clone/install | Auto-triggers when you paste a **github.com URL** |
 | **tool-scout** | Discover tools via MCP Registry, Plugin store, and GitHub. Includes security assessment checklist | Say **"find a tool for X"** or **"is there a plugin for X"** |
+| **gemini-deep-research** | Gemini Deep Research SOP: decision tree (when to use Deep Research vs regular Gemini vs Opus), platform routing, API quota consolidation, research Brief template, quality control | Say **"have Gemini research X"** |
 | **debate-protocol** | Multi-round structured debate for high-stakes decisions. Advocate vs Challenger with word limits, secretary moderates | Triggered during **project-setup Step 4**, or say **"let's debate X"** |
+| **growth-coach** | Personal growth coach — independent second role for daily reflection. Scans daily achievements, guides reflection dialogue, weekly secretary×coach consultation | Say **"start growth coach"** or **"bedtime reflection"** |
 
 ### Tool SOPs (optional, remove if unused)
 
@@ -66,6 +68,8 @@ your-project/
 │       ├── knowledge-base/SKILL.md    ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md        ← Tool discovery + security
 │       ├── github-recon/SKILL.md      ← GitHub repo security recon
+│       ├── gemini-deep-research/SKILL.md ← Gemini Deep Research SOP
+│       ├── growth-coach/SKILL.md      ← Personal growth coach
 │       ├── chrome-sop/SKILL.md        ← [Optional] Chrome SOP
 │       ├── gcp-ops/SKILL.md           ← [Optional] GCP SOP
 │       ├── github-ops/SKILL.md        ← [Optional] GitHub SOP
@@ -96,6 +100,11 @@ your-project/
 │   └── refs/
 │       ├── debate-agents/             ← Debate protocol + personas
 │       └── security-checklist.md      ← Tool security checklist
+├── extras/
+│   └── claude-code/                   ← Claude Code-specific tooling
+│       ├── README.md
+│       ├── scripts/                   ← Hook scripts (impact check, startup link check)
+│       └── settings.json.example      ← Example hook configuration
 ├── docs/
 │   ├── concept-guide.md               ← Start here: what & why (5 min read)
 │   ├── quickstart.md                  ← Quick start guide
@@ -173,6 +182,31 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 5. Look up `docs/lessons-learned.md` when you hit issues (15 pitfalls)
 
 ## Version History
+
+### v0.7 (2026-04-23)
+
+**Added**:
+- **gemini-deep-research Skill**: Decision tree (Deep Research vs regular Gemini vs Opus), platform routing (Cowork → handoff, Claude Code → direct), API quota consolidation (≤3 batches), research Brief template, quality control
+- **growth-coach Skill**: Independent second role for personal growth — daily reflection dialogue with question bank, observation notes, weekly secretary×coach consultation, Phase 2 goal tracking preview
+- **extras/claude-code/**: Claude Code-specific tooling directory with hook scripts (impact_check.sh, startup_link_check.sh) and example settings.json
+- **PreCompact hook integration** in review Skill: 5-item compact-before checklist (INDEX freshness, inbox exists, stale handoffs, synthesis-correction, project INDEX)
+- **secretary/refs/index-mgmt-sop.md**: INDEX management SOP (slim-down principles, daily health check, archive protocol)
+
+**Upgraded**:
+- **secretary Skill**: Added Idea Layer (pre-project stage with upgrade flow), startup handoff scan, INDEX/memory management pointer to refs/, 4 new universal guidelines (Python for math, Cowork no git, subagent-guide pre-read, >5min pre-announce)
+- **review Skill**: 12→13-item checklist (A5 Synthesis Correction detection), Synthesis Correction annotation format, git section rewritten (Cowork uses handoff instead of lock file workaround)
+- **knowledge-base Skill**: Major rewrite — added Book Ingestion SOP (5-step pipeline for epub/PDF), Piketty footnote (Batches API 300k output), model routing reference, expanded health check (synthesis + milestone reviews)
+- **subagent-guide Skill**: Added Main/Sub Collaboration Strategy, Cost-Aware Division table, 4 Key Timing Points, Conflict Resolution Principles, expanded Lessons (3→7)
+- **chrome-sop Skill**: Complete rewrite (44→168 lines) — 7 SOP sections + 5 Lessons covering CloudFront bypass, same-origin batch fetch, privacy filter, coordinate verification
+- **gcp-ops Skill**: Added Multi-Project management, Cowork File Transfer section, extra pitfall
+- **project-setup Skill**: Sanitized examples, preserved full six-step flow
+- **CLAUDE.md**: Skills index expanded to 14 entries (added github-recon, gemini-deep-research, growth-coach), review description updated to 13-item
+
+**Infrastructure**:
+- Added `extras/claude-code/` directory with hook scripts and documentation
+- v0.5-snapshot tag for rollback safety
+
+*Note: includes V0.6 content (concept-guide, FAQ Q14-Q16, README navigation) that was completed but not pushed previously.*
 
 ### v0.5 (2026-04-10)
 
@@ -312,7 +346,9 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 | **knowledge-base** | 個人知識管線：貼 URL → 自動抓取 → 摘要 → 存檔。支援文章和 YouTube。含 Synthesis 層（跨文章編譯知識）、分層搜尋（L1→L2→L3）、定期健康檢查。透過 `kb-digest` 橋接知識到專案 | 分享 **URL** 或說 **「存一下這個」** |
 | **github-recon** | GitHub Repo 資安偵察：5 步 SOP 產出紅/黃/綠燈報告。純讀取零執行，在 clone/install 前先建立風險圖 | 貼 **github.com URL** 自動觸發 |
 | **tool-scout** | 透過 MCP Registry、Plugin 商店、GitHub 探索工具。含資安評估清單 | 說 **「幫我找 X 的工具」** |
+| **gemini-deep-research** | Gemini Deep Research SOP：決策樹（Deep Research vs 普通 Gemini vs Opus）、平台分流、API 配額整合、研究 Brief 模板、品質控管 | 說 **「請 Gemini 研究 X」** |
 | **debate-protocol** | 高風險決策的多輪結構化辯論。Advocate vs Challenger，秘書主持 | **開案 Step 4** 觸發，或說 **「來辯論 X」** |
+| **growth-coach** | 個人成長教練——獨立於秘書的第二角色，每日反思。掃描當日成果、引導反思對話、每週秘書×教練會診 | 說 **「啟動成長教練」**或**「睡前反思」** |
 
 ### 工具 SOP（可選，不用的可以刪）
 
@@ -341,6 +377,8 @@ your-project/
 │       ├── knowledge-base/SKILL.md    ← 知識庫管線
 │       ├── tool-scout/SKILL.md        ← 工具探索 + 資安
 │       ├── github-recon/SKILL.md      ← GitHub repo 資安偵察
+│       ├── gemini-deep-research/SKILL.md ← Gemini Deep Research SOP
+│       ├── growth-coach/SKILL.md      ← 個人成長教練
 │       ├── chrome-sop/SKILL.md        ← [可選] Chrome SOP
 │       ├── gcp-ops/SKILL.md           ← [可選] GCP SOP
 │       ├── github-ops/SKILL.md        ← [可選] GitHub SOP
@@ -371,6 +409,11 @@ your-project/
 │   └── refs/
 │       ├── debate-agents/             ← Debate 協議 + 人設
 │       └── security-checklist.md      ← 工具資安清單
+├── extras/
+│   └── claude-code/                   ← Claude Code 專屬工具
+│       ├── README.md
+│       ├── scripts/                   ← Hook 腳本（impact check、啟動連結檢查）
+│       └── settings.json.example      ← Hook 設定範例
 ├── docs/
 │   ├── concept-guide.md               ← 從這裡開始：這是什麼、為什麼需要（5 分鐘）
 │   ├── quickstart.md                  ← 快速開始指南
@@ -448,6 +491,31 @@ your-project/
 5. 遇到問題查 `docs/lessons-learned.md`（15 個踩坑紀錄）
 
 ## 版本歷史
+
+### v0.7（2026-04-23）
+
+**新增**：
+- **gemini-deep-research Skill**：決策樹（Deep Research vs 普通 Gemini vs Opus）、平台分流（Cowork → handoff、Claude Code → 直接執行）、API 配額整合（≤3 批次）、研究 Brief 模板、品質控管
+- **growth-coach Skill**：獨立第二角色，個人成長教練——每日反思對話 + 問題庫、觀察筆記、每週秘書×教練會診、Phase 2 目標追蹤預覽
+- **extras/claude-code/**：Claude Code 專屬工具目錄，含 hook 腳本（impact_check.sh、startup_link_check.sh）和 settings.json 範例
+- **PreCompact hook 整合**（review Skill）：5 項壓縮前檢查清單（INDEX 時效、inbox 當日檔、逾期 handoff、synthesis-correction、專案 INDEX）
+- **secretary/refs/index-mgmt-sop.md**：INDEX 管理 SOP（瘦身原則、每日健康檢查、歸檔協議）
+
+**升級**：
+- **secretary Skill**：新增 Idea Layer（專案前期階段 + 升級流程）、啟動掃 handoff、INDEX/記憶管理指向 refs/、4 條新通用守則（Python 算數字、Cowork 不做 git、啟動 subagent 前讀指南、>5 分鐘預告）
+- **review Skill**：12→13 條檢查清單（A5 Synthesis Correction 偵測）、新增 Synthesis Correction 標注格式、Git 段落重寫（Cowork 改用 handoff 取代 lock file workaround）
+- **knowledge-base Skill**：大幅改寫——新增 Book Ingestion SOP（5 步 epub/PDF 管線）、Piketty 結論註腳（Batches API 300k output）、模型分流參考、擴充健康檢查（synthesis + 里程碑 Review）
+- **subagent-guide Skill**：新增主/副協作策略、成本感知分工表、4 大關鍵時機、衝突解決原則、Lessons 擴充（3→7 條）
+- **chrome-sop Skill**：全面重寫（44→168 行）——7 個 SOP 段落 + 5 條 Lessons，涵蓋 CloudFront 繞過、同源批量抓取、隱私過濾、座標驗證
+- **gcp-ops Skill**：新增多 Project 管理、Cowork 檔案傳輸、額外踩坑
+- **project-setup Skill**：範例脫敏，六步流程完整保留
+- **CLAUDE.md**：Skills 索引擴充至 14 項（新增 github-recon、gemini-deep-research、growth-coach），review 描述更新為 13 條
+
+**基礎設施**：
+- 新增 `extras/claude-code/` 目錄含 hook 腳本和文檔
+- v0.5-snapshot tag 用於回退保險
+
+*註：包含 V0.6 內容（concept-guide、FAQ Q14-Q16、README 導航），當時完成但忘了推。*
 
 ### v0.5（2026-04-10）
 

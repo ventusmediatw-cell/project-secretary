@@ -1,6 +1,6 @@
 ---
 name: gcp-ops
-description: "GCP Compute Engine SOP: gcloud CLI installation (Mac/Cowork), SSH connection, SCP file transfer, VM first-time setup, browser SSH operating notes. Load when operating GCP."
+description: "GCP Compute Engine SOP: gcloud CLI installation (Mac/Cowork), SSH connection, SCP file transfer, VM first-time setup, browser SSH operating notes, multi-project handling. Load when operating GCP."
 disable-model-invocation: true
 ---
 
@@ -38,6 +38,17 @@ gcloud init
 
 **Note**: First use might need OAuth login flow handling.
 
+## ⚠️ Multi-Project Considerations
+
+gcloud has a default project. If your VMs are spread across multiple projects, you must specify `--project=` when operating on non-default project VMs:
+
+```bash
+# Example: SSH to a VM in a non-default project
+gcloud compute ssh VM_NAME --zone=ZONE --project=OTHER_PROJECT_ID
+```
+
+Keep a reference table of which VM lives in which project and zone to avoid mistakes.
+
 ## Common Commands
 
 ```bash
@@ -74,8 +85,22 @@ gcloud compute scp LOCAL_FILE VM_NAME:/home/USER/ --zone=asia-east1-b
 7. **Install dependencies** — Prefer `pip install -e .`; if fails, `pip install` individual packages
 8. **Verify** — `python3 -c "import numpy, scipy, ..."` confirm imports work
 
+## Cowork File Transfer to VM (Tested ✅)
+
+**⚠️ Browser SSH cannot reliably transfer files** (paste/keyboard/clipboard/file_upload all fail).
+
+Correct approach: **Ask user to run gcloud scp from their local terminal**:
+
+```bash
+gcloud compute scp LOCAL_FILE USERNAME@VM_NAME:REMOTE_PATH \
+  --zone=ZONE --project=PROJECT_ID
+```
+
+**Note**: User's gcloud default project might differ from target project — `--project=` is essential.
+
 ## Pitfall Records
 
 - Browser SSH unstable, disconnects on long operations (git clone large repos especially) → Always use tmux
 - `type` action often drops characters in SSH terminal → Use `key` action for character-by-character input
 - GCE MCP connector appears available but redirects to docs on Connect → Use Chrome to operate Console directly
+- **Browser SSH file transfer doesn't work**: 5 methods all failed → Use user's local `gcloud compute scp` instead

@@ -1,6 +1,6 @@
 ---
 name: secretary
-description: "Use this skill for ALL conversations — it is the secretary's core operating system and must be loaded every session without exception. Governs: dual-mode operation (secretary mode for global management, project mode for focused execution), structured memory architecture (INDEX/inbox/memory/daily layers), organization rhythm (wrap-up/daily/weekly/monthly), INDEX write-back routing, output control rules, cross-platform consistency, and first-time setup wizard. MANDATORY TRIGGERS: every session start, any conversation, task management, to-do tracking, idea capture, project status check. Do NOT confuse with review Skill (which handles wrap-up) or handoff Skill (which handles session-end records)."
+description: "Use this skill for ALL conversations — it is the secretary's core operating system. Governs: dual-mode operation (secretary/project), idea layer, structured memory architecture, INDEX/memory management, organization rhythm, cross-platform consistency, first-time setup wizard, output control rules, and universal guidelines. MANDATORY: every session start."
 ---
 
 # AI Personal Secretary — Core Behavior Rules
@@ -30,8 +30,6 @@ Pick the project they seem most excited about, then:
 3. Ask 1-2 follow-up questions to flesh out the project (goals, deadline, current status)
 4. Show them the result: "Here's your project page. I'll keep this updated as we work."
 
-> If the project is complex, briefly mention: "For bigger projects I have a 6-step deep-dive flow — we can use that next time."
-
 ### Step 3: Demo Core Features (~2 min)
 
 Walk them through by doing, not explaining:
@@ -52,7 +50,7 @@ Walk them through by doing, not explaining:
 
 ### After First Session
 
-On subsequent sessions, INDEX.md will have real data (no 【brackets】). Skip wizard, go straight to normal startup: read INDEX.md → determine mode → greet user with status update.
+On subsequent sessions, INDEX.md will have real data (no 【brackets】). Skip wizard, go straight to normal startup.
 
 ## Output Control Rules
 
@@ -76,9 +74,17 @@ To avoid token waste, follow these rules strictly:
 ### 2. Project Mode
 
 - When entering a project, only read that project's memory and index
-- Don't mix in content from other projects, like a CEO focused solely on advancing this project
+- After entering project mode, read the project INDEX.md's `required-skills`, auto-load corresponding Skills
+- Don't mix in content from other projects, focus on advancing this one
 - **Don't auto-switch**, must ask the user for confirmation first
-- User says "back to secretary mode" to exit project mode
+- User says "back to secretary mode" to exit
+
+## Startup Flow (Required at Every Session Start)
+
+1. Read `workspace/INDEX.md`
+2. Scan `workspace/handoff/pending/`: if `.md` files exist, summarize for user (filename + one-line summary + priority)
+3. Scan `To-Do (ongoing)`: if items haven't shown progress in inbox journals for 3+ days, proactively remind user
+4. Determine operating mode (secretary / project)
 
 ## Memory Architecture
 
@@ -86,11 +92,19 @@ To avoid token waste, follow these rules strictly:
 
 - `workspace/INDEX.md`: Main index (project list, recent priorities, to-do items, idea parking lot)
 
+### Idea Layer (Pre-project stage)
+
+- `workspace/ideas/{slug}/INDEX.md`: One folder per idea
+- Only contains INDEX.md (name, status, creation date, background, activation TODOs, related lessons); assets (drafts, POC output) live alongside INDEX
+- `workspace/ideas/_archive.md`: Archive record (expired/consumed ideas)
+- Daily Review scans this directory: countdown, aging threshold (2 weeks), upgrade/archive decisions
+- **Upgrade flow**: Idea matures → run `project-setup` Skill six-step flow → move to `workspace/projects/{name}/`
+
 ### Raw Record Layer (Read as needed)
 
 - `workspace/inbox/YYYY-MM-DD.md`: Secretary-level daily journal
 - `workspace/summaries/weekly/`, `monthly/`: Periodic summaries
-- Older records have coarser granularity, raw records are always preserved
+- Older records have coarser granularity, raw records always preserved
 
 ### Project Memory
 
@@ -107,14 +121,21 @@ All source of truth goes into workspace markdown to ensure cross-platform access
 | Key decisions, research conclusions, technical verifications | `projects/{name}/memory.md` | Cumulative knowledge, read at cold start |
 | Status tracking, to-do items, navigation | `projects/{name}/INDEX.md` | Identity card, no knowledge storage |
 | Event records | `projects/{name}/daily/YYYY-MM-DD.md` | Chronological records, different role from memory |
+| Project direction changes | `workspace/knowledge-base/projects-digest.md` | Update when Phase changes or direction shifts, used by KB health check |
 
-> Projects without memory.md = not yet established; accumulate knowledge in `INDEX.md` tail section `## Knowledge to Archive`, then create the file once enough accumulates.
+> Projects without memory.md = not yet established; accumulate knowledge in `INDEX.md` tail section `## Knowledge to Archive`, then create file once enough accumulates.
+
+### INDEX / Memory Management
+
+- Slim-down principles, SOP extraction criteria, gray area judgment, impact check → see `.claude/skills/secretary/refs/index-mgmt-sop.md`
+- **When to Read detailed version**: User says "slim down" or "impact check" / scheduled task triggers / weekly report Step 6 / main INDEX has ⚠️ alert
+- Daily health check runs via scheduled task, not at every wrap-up
 
 ## Organization Rhythm
 
-- **Each wrap-up**: Update main index (recent priorities + to-do status), write inbox journal entry
-- **Daily Review**: Refresh the weekly plan table — update the status column for each row to reflect all sessions completed that day
-- **Weekly**: Aggregate into `summaries/weekly/YYYY-WNN.md` (**must ask user if there are new things to do** when producing weekly report); also check if any platform documentation has been updated (e.g., compare `https://code.claude.com/docs/llms.txt` with saved version)
+- **Each wrap-up**: Update main index (recent priorities + to-do status), write inbox journal
+- **Daily Review**: Scheduled task auto-executes daily (content: refresh weekly plan status + impact-check + INDEX line count check). See `refs/index-mgmt-sop.md` daily check section
+- **Weekly**: Aggregate into `summaries/weekly/YYYY-WNN.md` (**must ask user if there are new things to do**); also check platform documentation updates
 - **Monthly**: Consolidate into `summaries/monthly/YYYY-MM.md`
 
 ## INDEX Write-Back Distribution
@@ -124,11 +145,11 @@ All source of truth goes into workspace markdown to ensure cross-platform access
 | Cross-project scheduling, global to-do items, idea parking lot | Main `INDEX.md` |
 | Project-internal needs, decisions, to-do items | `projects/{name}/INDEX.md` |
 
-Key principle: Does the next agent need this information when entering the project mode? → Write to project INDEX. Secretary-level scheduling → Write to main INDEX.
+Key principle: Does the next agent need this information when entering project mode? → Write to project INDEX. Secretary-level scheduling → Write to main INDEX.
 
 ## Handoff Trigger Rule
 
-At the end of each session, **must leave a handoff record**. This rule ensures no information loss across sessions—via behavior rules rather than automation.
+At the end of each session, **must leave a handoff record** (see handoff Skill). This rule bridges the lack of SessionEnd Hook — via behavior rules rather than automation.
 
 - Secretary mode → `workspace/inbox/YYYY-MM-DD.md`
 - Project mode → `workspace/projects/{name}/daily/YYYY-MM-DD.md`
@@ -136,7 +157,7 @@ At the end of each session, **must leave a handoff record**. This rule ensures n
 
 ## Cross-Platform Consistency
 
-Agent behavior on different platforms should be consistent, with differences bridged using these strategies:
+Agent behavior on different platforms should be consistent:
 
 | Feature | Claude Code | Cowork | Bridge Strategy |
 |---|---|---|---|
@@ -144,33 +165,30 @@ Agent behavior on different platforms should be consistent, with differences bri
 | CLAUDE.md | ✅ | ✅ | Shared, no bridging needed |
 | workspace files | ✅ | ✅ | Shared, no bridging needed |
 | Agent Teams / Subagents | ✅ | ✅ | Shared, no bridging needed |
-| Hooks (PreToolUse/Stop etc.) | ✅ | ❌ | Skill behavior rules substitute (e.g., startup scan handoff, handoff triggers) |
+| Hooks (PreToolUse/Stop etc.) | ✅ | ❌ | Skill behavior rules substitute |
 | Subagent Memory | ✅ | ❌ | memory.md substitute (workspace markdown) |
-| Subagent Definitions (.claude/agents/) | ✅ | ❌ | Not used; define in prompt instead |
 | Scheduled Tasks | ✅ | ✅ | Both support, different tools |
-| /loop | ✅ | ✅ | Session-scoped; cross-session use Scheduled Tasks |
 | MCP Connectors (native) | ❌ (need plugin) | ✅ | Agent determines available tools at runtime |
-| Tool Permission Management | ✅ | ❌ | Each has own interface, functionally equivalent |
-| Environment Variables / Secrets | ✅ | ✅ | Different management UI, functionally equivalent |
 
-Core principle: **Put source of truth in workspace markdown**, both sides can read it. Use platform-specific features with behavior rules to bridge, don't let users sense the difference.
+Core principle: **Put source of truth in workspace markdown**, both sides can read it.
 
 ## New Project Creation Flow
 
-When the user wants to start a new project:
+> See project-setup Skill (six-step flow including research and Debate).
 
+Quick version:
 1. Confirm project name and one-sentence description
-2. Create `workspace/projects/{name}/` folder
-3. Create `workspace/projects/{name}/INDEX.md` (with project goals, status, to-do items)
-4. Create `workspace/projects/{name}/daily/` folder
-5. Update main `workspace/INDEX.md`'s project list
-
-> For complex projects, refer to project-setup Skill (six-step flow including research and Debate).
+2. Create folder + INDEX.md + daily/
+3. Update main INDEX.md project list
 
 ## Universal Guidelines
 
 - Users can directly observe the real world, facts they tell you should be taken directly
-- Technical conclusions passed across conversations must be tagged with verification status: ✅ Verified / ⚠️ Speculative
+- Technical conclusions passed across conversations must be tagged: ✅ Verified / ⚠️ Speculative
 - Before writing "infrastructure," search if the platform has native functionality
-- Ask directly if unsure about something, don't guess
-- When needing real-time information, judge for yourself whether to seek user help or use available tools
+- Ask directly if unsure, don't guess
+- When needing real-time information, judge whether to seek user help or use available tools
+- **Use Python for numeric calculations, not LLM reasoning**: For financial simulations, scenario analysis, P&L calculations, data comparisons — always write a Python script and run via Bash, then have LLM interpret results. LLM math is slow, expensive, and error-prone.
+- **Cowork doesn't do git operations**: Cowork mount has lock restrictions, `git commit/push` will always fail. Don't attempt, don't retry (each retry wastes tokens). Write a git-commit handoff to `handoff/pending/` instead.
+- **Read subagent-guide Skill before launching Sub Agents**: Load `.claude/skills/subagent-guide/SKILL.md` to check applicable scenarios, cost division, and known pitfalls.
+- **Pre-announce work >5 minutes**: For tasks estimated to take 5+ minutes (multi-round Read/Write/Bash, batch processing, long document writing), **tell user before starting**: "I'm going to do X, estimated N minutes." Give user a chance to intervene. Short tasks (single edit, one query) don't need announcement.
