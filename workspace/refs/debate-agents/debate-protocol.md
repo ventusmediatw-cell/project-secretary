@@ -138,7 +138,7 @@ Irreconcilable positions, mark ✗.
 ## Storage Architecture
 
 ```
-workspace/projects/{project}/debates/{YYYY-MM-DD}-{topic}/
+projects/{project}/debates/{YYYY-MM-DD}-{topic}/
 ├── transcript.md     ← Complete dialogue record (by round)
 ├── summary.md        ← Secretary summary (consensus + disagreement + ❓ items)
 └── metadata.md       ← Timestamps, participants, decision results (update later)
@@ -216,7 +216,7 @@ workspace/projects/{project}/debates/{YYYY-MM-DD}-{topic}/
 - This protocol written in markdown, both Cowork and Claude Code can read
 - Persona files (advocate.persona.md, challenger.persona.md) also markdown
 - **Not reliant on** .claude/agents/ (Cowork doesn't support)
-- Source of truth: Files under workspace/refs/debate-agents/
+- Source of truth: Files under refs/debate-agents/
 
 ---
 
@@ -230,4 +230,4 @@ workspace/projects/{project}/debates/{YYYY-MM-DD}-{topic}/
 - [ ] Skip remaining rounds on quick consensus
 - [ ] transcript.md records by round completely
 - [ ] summary.md consolidates consensus, disagreement, ❓ questions
-- [ ] Files stored in workspace/projects/{project}/debates/{date}-{topic}/
+- [ ] Files stored in projects/{project}/debates/{date}-{topic}/

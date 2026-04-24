@@ -16,7 +16,7 @@ Uses `/tmp/claude-startup-check-last-run` to record today's date. Runs only once
 ## What It Does
 
 1. **SOP self-check**: Verifies `.claude/skills/secretary/refs/index-mgmt-sop.md` exists
-2. **Collect boot files**: CLAUDE.md, workspace/INDEX.md, SOP file, all projects/*/memory.md
+2. **Collect boot files**: CLAUDE.md, INDEX.md, SOP file, all projects/*/memory.md
 3. **Run `impact_check.sh`**: Scans all boot file links for breakage
 
 ## Output Behavior

@@ -108,7 +108,7 @@ Secretary announces at opening: "Max 3 topics, 2-3 rounds each, I'll stop if exc
 **Solution**:
 debate-protocol already specifies storage:
 ```
-workspace/projects/{name}/debates/{YYYY-MM-DD}-{topic}/
+projects/{name}/debates/{YYYY-MM-DD}-{topic}/
 ├── transcript.md   ← Complete dialogue
 └── summary.md      ← ✓ Consensus, ✗ Disagreement, ❓ Pending
 ```
@@ -204,9 +204,9 @@ See github-ops Skill's "PAT Usage Rules":
 This system treats workspace markdown as source of truth. Ensure sync:
 1. **Always write handoff** at session end (secretary auto-does)
 2. **Handoff written where**:
-   - Cowork → `workspace/inbox/YYYY-MM-DD.md`
-   - Claude Code project mode → `workspace/projects/{name}/daily/YYYY-MM-DD.md`
-3. **Cross-platform tasks** → `workspace/handoff/pending/`
+   - Cowork → `inbox/YYYY-MM-DD.md`
+   - Claude Code project mode → `projects/{name}/daily/YYYY-MM-DD.md`
+3. **Cross-platform tasks** → `handoff/pending/`
 
 **Best practice**:
 ```
@@ -242,7 +242,7 @@ See subagent-guide Skill's "Usage Notes":
 
 3. **Clear paths and parameters**:
    ```
-   "Scan workspace/projects/foo/refs/ all .md files,
+   "Scan projects/foo/refs/ all .md files,
     find paragraphs with 'decision', organize chronologically"
    ```
 

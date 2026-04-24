@@ -27,14 +27,14 @@ fi
 # Collect boot files
 BOOT_FILES=(
   "$ROOT/CLAUDE.md"
-  "$ROOT/workspace/INDEX.md"
+  "$ROOT/INDEX.md"
   "$SOP_FILE"
 )
 
 # Dynamically add all projects/*/memory.md (max depth 3)
 while IFS= read -r f; do
   BOOT_FILES+=("$f")
-done < <(find "$ROOT/workspace/projects" -maxdepth 3 -name "memory.md" 2>/dev/null)
+done < <(find "$ROOT/projects" -maxdepth 3 -name "memory.md" 2>/dev/null)
 
 # Run core check
 RESULT=$("$SCRIPT_DIR/impact_check.sh" "${BOOT_FILES[@]}" 2>&1)

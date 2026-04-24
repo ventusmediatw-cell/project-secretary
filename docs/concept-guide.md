@@ -66,22 +66,21 @@ Now your amnesiac colleague can wake up, read their pocket card, scan the table 
 ## How It Maps to Real Files
 
 ```
-your-folder/
+workspace/
 ├── CLAUDE.md                    ← The pocket card (boot file)
 ├── .claude/skills/              ← The skills manual
 │   ├── secretary/SKILL.md       ← How to be your secretary
 │   ├── review/SKILL.md          ← How to do wrap-up reviews
 │   └── ...
-└── workspace/
-    ├── INDEX.md                 ← The table of contents
-    ├── inbox/                   ← The journal (daily logs)
-    ├── projects/
-    │   └── {name}/
-    │       ├── INDEX.md         ← Project-level table of contents
-    │       ├── memory.md        ← The knowledge notebook
-    │       └── daily/           ← Project-specific journal
-    ├── knowledge-base/          ← Articles, videos, compiled insights
-    └── summaries/               ← Weekly / monthly compression
+├── INDEX.md                     ← The table of contents
+├── inbox/                       ← The journal (daily logs)
+├── projects/
+│   └── {name}/
+│       ├── INDEX.md             ← Project-level table of contents
+│       ├── memory.md            ← The knowledge notebook
+│       └── daily/               ← Project-specific journal
+├── knowledge-base/              ← Articles, videos, compiled insights
+└── summaries/                   ← Weekly / monthly compression
 ```
 
 Everything is plain Markdown. You can read it. The AI can read it. Any AI model can read it. This is intentional — it means you're never locked into one platform.
@@ -153,7 +152,7 @@ Yes. The memory files are plain Markdown. Any model that can read files can use 
 Ready to try it?
 
 1. **Read [`quickstart.md`](quickstart.md)** — 5 minutes to set up
-2. **Read [`BEGINNER-TIPS.md`](../workspace/BEGINNER-TIPS.md)** — practical usage tips
+2. **Read [`BEGINNER-TIPS.md`](BEGINNER-TIPS.md)** — practical usage tips
 3. **Check [`faq.md`](faq.md)** — detailed answers to common questions
 
 ---
@@ -229,22 +228,21 @@ Ready to try it?
 ## 對應到真實檔案
 
 ```
-你的資料夾/
+workspace/
 ├── CLAUDE.md                    ← 口袋小卡（開機檔）
 ├── .claude/skills/              ← 技能手冊
 │   ├── secretary/SKILL.md       ← 怎麼當你的秘書
 │   ├── review/SKILL.md          ← 怎麼做收尾 Review
 │   └── ...
-└── workspace/
-    ├── INDEX.md                 ← 目錄（主索引）
-    ├── inbox/                   ← 日記（每日紀錄）
-    ├── projects/
-    │   └── {name}/
-    │       ├── INDEX.md         ← 專案級目錄
-    │       ├── memory.md        ← 知識筆記本
-    │       └── daily/           ← 專案日記
-    ├── knowledge-base/          ← 文章、影片、編譯洞察
-    └── summaries/               ← 每週/每月壓縮
+├── INDEX.md                     ← 目錄（主索引）
+├── inbox/                       ← 日記（每日紀錄）
+├── projects/
+│   └── {name}/
+│       ├── INDEX.md             ← 專案級目錄
+│       ├── memory.md            ← 知識筆記本
+│       └── daily/               ← 專案日記
+├── knowledge-base/              ← 文章、影片、編譯洞察
+└── summaries/                   ← 每週/每月壓縮
 ```
 
 全部都是純 Markdown。你看得懂，AI 看得懂，任何 AI 模型都看得懂。這是刻意的——代表你永遠不會被鎖在某一個平台。
@@ -316,5 +314,5 @@ AI 可以修改它工作目錄裡的檔案。最佳實踐：(1) 備份到 GitHub
 準備好了？
 
 1. **讀 [`quickstart.md`](quickstart.md)**——5 分鐘完成設定
-2. **讀 [`BEGINNER-TIPS.md`](../workspace/BEGINNER-TIPS.md)**——實用操作技巧
+2. **讀 [`BEGINNER-TIPS.md`](BEGINNER-TIPS.md)**——實用操作技巧
 3. **看 [`faq.md`](faq.md)**——常見問題詳細解答

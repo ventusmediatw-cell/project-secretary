@@ -60,14 +60,14 @@ This file maintains the "ID card" of all your projects, to-do items, and recent 
 
 ## Navigation
 
-- 📁 Project directory: `workspace/projects/`
-- 📔 Journal archive: `workspace/inbox/`
-- 📚 Weekly summaries: `workspace/summaries/weekly/`
-- 📊 Monthly summaries: `workspace/summaries/monthly/`
-- 🛠️ Reference materials: `workspace/refs/`
+- 📁 Project directory: `projects/`
+- 📔 Journal archive: `inbox/`
+- 📚 Weekly summaries: `summaries/weekly/`
+- 📊 Monthly summaries: `summaries/monthly/`
+- 🛠️ Reference materials: `refs/`
 
 ---
 
 ## Beginner Notes
 
-First time? Read `workspace/BEGINNER-TIPS.md` for usage tips. Any questions, ask secretary anytime.
+First time? Read `BEGINNER-TIPS.md` for usage tips. Any questions, ask secretary anytime.

@@ -9,8 +9,8 @@ Welcome to the AI Secretary system! This guide gets you set up in 5 minutes.
 ## Step One: Copy Template to Your Environment
 
 1. Fork or clone this repo to your computer (Claude Code) or mount in Cowork
-2. Create `workspace/` folder (if it doesn't exist)
-3. Confirm `CLAUDE.md` in root directory
+2. Mount (or point Claude Code to) the `workspace/` folder — it contains everything
+3. Confirm `CLAUDE.md` is inside `workspace/`
 
 ---
 
@@ -44,7 +44,7 @@ Secretary will ask you some questions:
 2. **What's your main work?** → Example: "Software development and startups"
 3. **What are you working on now?** → Example: "Project A, Project B, Task C"
 4. **Confirm project list** → Secretary organizes into table, you confirm
-5. **Done!** → `workspace/INDEX.md` auto-created
+5. **Done!** → `INDEX.md` auto-created
 
 ---
 
@@ -79,7 +79,7 @@ Secretary: "Did Review and organized everything"
 ## Key Files Overview
 
 ```
-【Your folder】/
+workspace/
 ├── CLAUDE.md                          ← System configuration (must read)
 ├── .claude/
 │   └── skills/                        ← All Skills
@@ -89,19 +89,18 @@ Secretary: "Did Review and organized everything"
 │       ├── knowledge-base/SKILL.md    ← URL → summarize → synthesis → archive
 │       ├── github-recon/SKILL.md      ← Paste GitHub URL → security check
 │       └── ...（other Skills）
-└── workspace/
-    ├── INDEX.md                        ← Main index (most important)
-    ├── BEGINNER-TIPS.md               ← Tips for beginners
-    ├── inbox/                          ← Daily journals (auto-created)
-    ├── projects/                       ← Project directory (auto-created)
-    ├── summaries/                      ← Weekly/monthly summaries (auto-created)
-    ├── knowledge-base/                 ← Personal knowledge base
-    │   ├── articles/                   ← Saved articles
-    │   ├── videos/                     ← Saved videos
-    │   ├── synthesis/                  ← Cross-article compiled pages (V0.5)
-    │   └── health-check/              ← KB health reports
-    └── refs/                           ← Reference materials
-        └── debate-agents/             ← Debate protocol and personas
+├── INDEX.md                            ← Main index (most important)
+├── BEGINNER-TIPS.md                   ← Tips for beginners
+├── inbox/                              ← Daily journals (auto-created)
+├── projects/                           ← Project directory (auto-created)
+├── summaries/                          ← Weekly/monthly summaries (auto-created)
+├── knowledge-base/                     ← Personal knowledge base
+│   ├── articles/                       ← Saved articles
+│   ├── videos/                         ← Saved videos
+│   ├── synthesis/                      ← Cross-article compiled pages (V0.5)
+│   └── health-check/                  ← KB health reports
+└── refs/                               ← Reference materials
+    └── debate-agents/                 ← Debate protocol and personas
 ```
 
 ---
@@ -142,7 +141,7 @@ Edit secretary Skill's "Memory Architecture" section.
 ### INDEX.md Shows Empty
 **Problem**: Secretary says it can't find INDEX.md
 **Solution**:
-1. Confirm `workspace/INDEX.md` exists
+1. Confirm `INDEX.md` exists in this folder
 2. If not, run first-time setup wizard
 3. Secretary auto-creates it
 
@@ -155,7 +154,7 @@ Edit secretary Skill's "Memory Architecture" section.
 ### Memory Lost
 **Problem**: Secretary says "what did you say last time?"
 **Solution**:
-1. Confirm `workspace/` files not deleted
+1. Confirm files in this folder are not deleted
 2. Use `git log` check if accidentally modified
 3. Restore from backup (if available)
 
@@ -163,7 +162,7 @@ Edit secretary Skill's "Memory Architecture" section.
 
 ## Next Steps
 
-- 📖 Read `workspace/BEGINNER-TIPS.md` for usage tips
+- 📖 Read `BEGINNER-TIPS.md` for usage tips
 - 📚 Read `docs/faq.md` for common questions
 - 🎯 Start your first project!
 

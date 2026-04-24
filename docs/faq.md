@@ -51,7 +51,7 @@
 | Thing | Location | Description |
 |---|---|---|
 | **Skill (New)** | `.claude/skills/*/SKILL.md` | Has frontmatter (name, description), can auto-trigger |
-| **SYSTEM.md (Old)** | `workspace/SYSTEM.md` | Plain text, no automation, manual read |
+| **SYSTEM.md (Old)** | `SYSTEM.md` | Plain text, no automation, manual read |
 
 **Migration status**:
 - ✅ Secretary core rules → secretary Skill
@@ -108,11 +108,11 @@ See project-setup Skill's branching logic.
 
 ## Q6: How does cross-platform handoff work?
 
-**A:** Use `workspace/handoff/` folder:
+**A:** Use `handoff/` folder:
 
 1. **Originator** (Claude Code) writes handoff file to `handoff/pending/`
    ```
-   workspace/handoff/pending/2026-03-25-1430-urgent-task.md
+   handoff/pending/2026-03-25-1430-urgent-task.md
    ```
 
 2. **Receiver** (Cowork) opens session and scans `handoff/pending/`
@@ -135,8 +135,8 @@ See project-setup Skill's branching logic.
 
 1. **INDEX.md lists only "active"** (keep to 3-5)
 2. **In progress** → Started, monthly activity
-3. **Paused** → Started, not progressing → Move to `workspace/projects/archived/`
-4. **Completed** → Done → Move to `workspace/projects/done/`
+3. **Paused** → Started, not progressing → Move to `projects/archived/`
+4. **Completed** → Done → Move to `projects/done/`
 
 **Organization rhythm**:
 - **Weekly**: Check INDEX.md, confirm "activity"
@@ -218,15 +218,15 @@ See project-setup Skill's branching logic.
 
 1. **Save articles**: Share a URL in conversation → secretary fetches, summarizes, archives
 2. **YouTube videos**: Same flow, extracts transcript if available
-3. **Batch processing**: Drop URLs in `workspace/knowledge-base/inbox/fetch-queue.md`
+3. **Batch processing**: Drop URLs in `knowledge-base/inbox/fetch-queue.md`
 
 **Where things go**:
 
 | Content Type | Storage Path |
 |---|---|
-| Articles | `workspace/knowledge-base/articles/YYYY-MM-DD-slug.md` |
-| Videos | `workspace/knowledge-base/videos/YYYY-MM-DD-slug.md` |
-| Synthesis pages | `workspace/knowledge-base/synthesis/{topic}.md` |
+| Articles | `knowledge-base/articles/YYYY-MM-DD-slug.md` |
+| Videos | `knowledge-base/videos/YYYY-MM-DD-slug.md` |
+| Synthesis pages | `knowledge-base/synthesis/{topic}.md` |
 
 **Project bridging** (the key differentiator):
 - Each saved article gets tagged with related projects
@@ -342,7 +342,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 Check:
 1. **Feature questions** → Relevant Skill file's detailed explanation
-2. **Usage tips** → `workspace/BEGINNER-TIPS.md`
+2. **Usage tips** → `BEGINNER-TIPS.md`
 3. **Troubleshooting** → `docs/quickstart.md`'s troubleshooting section
 
 Talk to secretary directly, it'll help!

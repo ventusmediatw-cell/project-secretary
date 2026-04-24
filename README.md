@@ -1,4 +1,4 @@
-# AI Personal Secretary — Template v0.7
+# AI Personal Secretary — Template v0.8
 
 > An AI personal secretary system template built on Claude Code / Cowork.
 > Fork it, tweak a few parameters, and you're good to go.
@@ -54,11 +54,19 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 
 ## Quick Start
 
-### 1. Copy the File Structure
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/your-username/project-secretary.git
+```
+
+### 2. Mount workspace/
+
+In Claude Code or Cowork, **mount the `workspace/` folder**. This is the folder you'll work in — it contains everything the AI needs:
 
 ```
-your-project/
-├── CLAUDE.md                          ← Global entry point (must be in root)
+workspace/                             ← Mount this folder
+├── CLAUDE.md                          ← Entry point (AI reads this first)
 ├── .claude/
 │   └── skills/
 │       ├── secretary/SKILL.md         ← Core secretary behavior
@@ -74,76 +82,62 @@ your-project/
 │       ├── gcp-ops/SKILL.md           ← [Optional] GCP SOP
 │       ├── github-ops/SKILL.md        ← [Optional] GitHub SOP
 │       └── subagent-guide/SKILL.md    ← [Optional] Sub Agent guide
-├── workspace/
-│   ├── INDEX.md                       ← Main index (project list, to-dos)
-│   ├── BEGINNER-TIPS.md               ← Beginner tips
-│   ├── inbox/                         ← Daily journals (auto-created)
-│   ├── handoff/
-│   │   ├── pending/                   ← Cross-platform pending handoffs
-│   │   └── done/                      ← Processed archive
-│   ├── projects/
-│   │   └── {name}/
-│   │       ├── INDEX.md               ← Project index
-│   │       ├── memory.md              ← Accumulated knowledge
-│   │       ├── daily/                 ← Project daily reports
-│   │       ├── refs/                  ← Research materials + kb-digest
-│   │       └── debates/               ← Debate transcripts
-│   ├── knowledge-base/
-│   │   ├── articles/                  ← Saved articles
-│   │   ├── videos/                    ← Saved videos
-│   │   ├── synthesis/                 ← Cross-article compiled knowledge
-│   │   ├── health-check/             ← Periodic health check reports
-│   │   └── inbox/fetch-queue.md       ← Batch processing queue
-│   ├── summaries/
-│   │   ├── weekly/                    ← Weekly reports
-│   │   └── monthly/                   ← Monthly reports
-│   └── refs/
-│       ├── debate-agents/             ← Debate protocol + personas
-│       └── security-checklist.md      ← Tool security checklist
-├── extras/
-│   └── claude-code/                   ← Claude Code-specific tooling
-│       ├── README.md
-│       ├── scripts/                   ← Hook scripts (impact check, startup link check)
-│       └── settings.json.example      ← Example hook configuration
-├── docs/
-│   ├── concept-guide.md               ← Start here: what & why (5 min read)
-│   ├── quickstart.md                  ← Quick start guide
-│   ├── faq.md                         ← FAQ
-│   └── lessons-learned.md             ← 15 pitfalls + best practices
-└── README.md                          ← This file
+├── INDEX.md                           ← Main index (project list, to-dos)
+├── BEGINNER-TIPS.md                   ← Beginner tips
+├── inbox/                             ← Daily journals (auto-created)
+├── handoff/
+│   ├── pending/                       ← Cross-platform pending handoffs
+│   └── done/                          ← Processed archive
+├── projects/
+│   └── {name}/
+│       ├── INDEX.md                   ← Project index
+│       ├── memory.md                  ← Accumulated knowledge
+│       ├── daily/                     ← Project daily reports
+│       ├── refs/                      ← Research materials + kb-digest
+│       └── debates/                   ← Debate transcripts
+├── knowledge-base/
+│   ├── articles/                      ← Saved articles
+│   ├── videos/                        ← Saved videos
+│   ├── synthesis/                     ← Cross-article compiled knowledge
+│   ├── health-check/                  ← Periodic health check reports
+│   └── inbox/fetch-queue.md           ← Batch processing queue
+├── summaries/
+│   ├── weekly/                        ← Weekly reports
+│   └── monthly/                       ← Monthly reports
+└── refs/
+    ├── debate-agents/                 ← Debate protocol + personas
+    └── security-checklist.md          ← Tool security checklist
 ```
 
-### 2. Customize CLAUDE.md
+> Root-level `docs/`, `extras/`, and `README.md` are for reading on GitHub — they don't affect the running system.
 
-Open `CLAUDE.md` and modify:
+### 3. Customize CLAUDE.md
+
+Open `workspace/CLAUDE.md` and modify:
 
 - **Identity**: Change "AI personal secretary" to your desired role
 - **Model default**: Adjust based on your plan (Max / Pro / other)
 - **Cross-platform paths**: Set to your actual paths
 - **Skills index**: Remove tool SOP Skills you don't need
 
-### 3. Customize secretary Skill
+### 4. Customize secretary Skill
 
-Open `.claude/skills/secretary/SKILL.md` and modify:
+Open `workspace/.claude/skills/secretary/SKILL.md` and modify:
 
 - **Operating modes**: Adjust secretary mode / project mode behavior
 - **Memory architecture**: Adjust folder structure (if yours differs)
 - **Cleanup rhythm**: Set your preferred Review frequency
 - **Tool preferences**: Add your tool choice decisions
 
-### 4. Set Up INDEX.md
-
-Add your project list and to-do items to `workspace/INDEX.md`. Refer to the template examples or see `docs/quickstart.md`.
-
 ### 5. Launch
 
-Open your root directory in Claude Code or Cowork. The Agent will auto-read CLAUDE.md → load secretary Skill → detect first use → run setup wizard → enter secretary mode.
+Open the `workspace/` folder in Claude Code or Cowork. The Agent will auto-read CLAUDE.md → load secretary Skill → detect first use → run setup wizard → enter secretary mode.
 
 ## Core Design Principles
 
 ### CLAUDE.md is the Single Entry Point
 
-All platform Agents start from CLAUDE.md. Claude Code / Cowork auto-read it; other platforms read manually. CLAUDE.md lives in the root directory, Skills in `.claude/skills/` at the same level.
+All platform Agents start from CLAUDE.md. Claude Code / Cowork auto-read it; other platforms read manually. CLAUDE.md lives at the root of the mounted `workspace/` folder, Skills in `.claude/skills/` at the same level.
 
 ### Skills Replace Manual Reading
 
@@ -171,17 +165,28 @@ When you save an article to the knowledge base, the secretary automatically writ
 
 ### Decision Support: Debate Mechanism
 
-High-stakes business decisions can trigger a Debate — inviting an Advocate and Challenger for multi-round exchanges. The secretary moderates, recording consensus / disagreements / pending items. See `workspace/refs/debate-agents/debate-protocol.md`.
+High-stakes business decisions can trigger a Debate — inviting an Advocate and Challenger for multi-round exchanges. The secretary moderates, recording consensus / disagreements / pending items. See `refs/debate-agents/debate-protocol.md`.
 
 ## Getting Started
 
 1. **New here?** Read `docs/concept-guide.md` first (5-minute overview of what this is and why)
 2. Read `docs/quickstart.md` (5-minute setup)
-3. Read `workspace/BEGINNER-TIPS.md` (usage tips)
+3. Read `workspace/BEGINNER-TIPS.md` (usage tips — also available as `docs/BEGINNER-TIPS.md`)
 4. Check `docs/faq.md` (common questions)
 5. Look up `docs/lessons-learned.md` when you hit issues (15 pitfalls)
 
 ## Version History
+
+### v0.8 (2026-04-24)
+
+**Restructure**: workspace/ is now the folder users mount directly.
+
+- `CLAUDE.md`, `.claude/skills/`, `INDEX.md` — all moved inside `workspace/`
+- Root directory keeps only `README.md`, `docs/`, `extras/`, `LICENSE` (read-only reference)
+- Removed `client-package` template — `workspace/` IS the template now
+- Updated all path references: removed `workspace/` prefix in Skills and CLAUDE.md
+- Rewrote Quick Start, SETUP-GUIDE, concept-guide, quickstart, faq for new flow
+- Fixed Chinese version label (v0.5 → v0.8)
 
 ### v0.7 (2026-04-23)
 
@@ -309,7 +314,7 @@ Questions, suggestions, or pitfalls to share?
 
 # 繁體中文
 
-# AI 個人秘書 — 模板 v0.5
+# AI 個人秘書 — 模板 v0.8
 
 > 一套基於 Claude Code / Cowork 的 AI 個人秘書系統模板。
 > Fork 後改幾個參數就能跑。
@@ -363,11 +368,19 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 
 ## 快速開始
 
-### 1. 複製檔案結構
+### 1. Clone Repo
+
+```bash
+git clone https://github.com/your-username/project-secretary.git
+```
+
+### 2. 掛載 workspace/
+
+在 Claude Code 或 Cowork 中，**掛載 `workspace/` 資料夾**。這就是你的工作資料夾，AI 需要的一切都在裡面：
 
 ```
-your-project/
-├── CLAUDE.md                          ← 全域入口（必須在根目錄）
+workspace/                             ← 掛載這個資料夾
+├── CLAUDE.md                          ← 入口（AI 第一個讀這個）
 ├── .claude/
 │   └── skills/
 │       ├── secretary/SKILL.md         ← 秘書核心行為
@@ -383,76 +396,62 @@ your-project/
 │       ├── gcp-ops/SKILL.md           ← [可選] GCP SOP
 │       ├── github-ops/SKILL.md        ← [可選] GitHub SOP
 │       └── subagent-guide/SKILL.md    ← [可選] Sub Agent 指南
-├── workspace/
-│   ├── INDEX.md                       ← 主索引（專案清單、待辦）
-│   ├── BEGINNER-TIPS.md               ← 新手提示
-│   ├── inbox/                         ← 每日日記（自動建立）
-│   ├── handoff/
-│   │   ├── pending/                   ← 跨平台待辦交接
-│   │   └── done/                      ← 已處理歸檔
-│   ├── projects/
-│   │   └── {name}/
-│   │       ├── INDEX.md               ← 專案索引
-│   │       ├── memory.md              ← 累積知識
-│   │       ├── daily/                 ← 專案日報
-│   │       ├── refs/                  ← 研究資料 + kb-digest
-│   │       └── debates/               ← Debate 紀錄
-│   ├── knowledge-base/
-│   │   ├── articles/                  ← 存檔文章
-│   │   ├── videos/                    ← 存檔影片
-│   │   ├── synthesis/                 ← 跨文章編譯知識
-│   │   ├── health-check/             ← 定期健康檢查報告
-│   │   └── inbox/fetch-queue.md       ← 批次處理佇列
-│   ├── summaries/
-│   │   ├── weekly/                    ← 週報
-│   │   └── monthly/                   ← 月報
-│   └── refs/
-│       ├── debate-agents/             ← Debate 協議 + 人設
-│       └── security-checklist.md      ← 工具資安清單
-├── extras/
-│   └── claude-code/                   ← Claude Code 專屬工具
-│       ├── README.md
-│       ├── scripts/                   ← Hook 腳本（impact check、啟動連結檢查）
-│       └── settings.json.example      ← Hook 設定範例
-├── docs/
-│   ├── concept-guide.md               ← 從這裡開始：這是什麼、為什麼需要（5 分鐘）
-│   ├── quickstart.md                  ← 快速開始指南
-│   ├── faq.md                         ← FAQ
-│   └── lessons-learned.md             ← 15 個踩坑 + 最佳實踐
-└── README.md                          ← 本檔
+├── INDEX.md                           ← 主索引（專案清單、待辦）
+├── BEGINNER-TIPS.md                   ← 新手提示
+├── inbox/                             ← 每日日記（自動建立）
+├── handoff/
+│   ├── pending/                       ← 跨平台待辦交接
+│   └── done/                          ← 已處理歸檔
+├── projects/
+│   └── {name}/
+│       ├── INDEX.md                   ← 專案索引
+│       ├── memory.md                  ← 累積知識
+│       ├── daily/                     ← 專案日報
+│       ├── refs/                      ← 研究資料 + kb-digest
+│       └── debates/                   ← Debate 紀錄
+├── knowledge-base/
+│   ├── articles/                      ← 存檔文章
+│   ├── videos/                        ← 存檔影片
+│   ├── synthesis/                     ← 跨文章編譯知識
+│   ├── health-check/                  ← 定期健康檢查報告
+│   └── inbox/fetch-queue.md           ← 批次處理佇列
+├── summaries/
+│   ├── weekly/                        ← 週報
+│   └── monthly/                       ← 月報
+└── refs/
+    ├── debate-agents/                 ← Debate 協議 + 人設
+    └── security-checklist.md          ← 工具資安清單
 ```
 
-### 2. 自訂 CLAUDE.md
+> 根目錄的 `docs/`、`extras/`、`README.md` 是 GitHub 上的閱讀文件，不影響系統運作。
 
-開啟 `CLAUDE.md`，修改：
+### 3. 自訂 CLAUDE.md
+
+開啟 `workspace/CLAUDE.md`，修改：
 
 - **身份描述**：把「AI 個人秘書」改成你想要的角色
 - **模型預設**：根據你的方案調整（Max / Pro / 其他）
 - **跨平台路徑**：改成你的實際路徑
 - **Skills 索引**：刪掉你不需要的工具 SOP Skill
 
-### 3. 自訂 secretary Skill
+### 4. 自訂 secretary Skill
 
-開啟 `.claude/skills/secretary/SKILL.md`，修改：
+開啟 `workspace/.claude/skills/secretary/SKILL.md`，修改：
 
 - **運作模式**：調整秘書模式 / 專案模式的行為描述
 - **記憶架構**：調整資料夾結構（如果你的不一樣）
 - **整理節奏**：改成你想要的 Review 頻率
 - **工具偏好**：加入你的工具選擇決策
 
-### 4. 建立 INDEX.md
-
-在 `workspace/INDEX.md` 加入你的專案清單和待辦事項。格式參考範本中的範例，或看 `docs/quickstart.md`。
-
 ### 5. 啟動
 
-在 Claude Code 或 Cowork 中開啟你的根目錄，Agent 會自動讀取 CLAUDE.md → 載入 secretary Skill → 偵測首次使用 → 執行設定精靈 → 進入秘書模式。
+在 Claude Code 或 Cowork 中開啟 `workspace/` 資料夾，Agent 會自動讀取 CLAUDE.md → 載入 secretary Skill → 偵測首次使用 → 執行設定精靈 → 進入秘書模式。
 
 ## 核心設計原則
 
 ### CLAUDE.md 是唯一入口
 
-所有平台的 Agent 都從 CLAUDE.md 開始。Claude Code / Cowork 自動讀取；其他平台手動讀取。CLAUDE.md 放在根目錄，Skills 也放在根目錄的 `.claude/skills/`。
+所有平台的 Agent 都從 CLAUDE.md 開始。Claude Code / Cowork 自動讀取；其他平台手動讀取。CLAUDE.md 放在掛載的 `workspace/` 資料夾根目錄，Skills 在同一層的 `.claude/skills/`。
 
 ### Skills 取代手動讀取
 
@@ -480,17 +479,28 @@ your-project/
 
 ### 決策支援：Debate 機制
 
-高重要性的商業決策可以啟動 Debate，邀請 Advocate 和 Challenger 進行多輪交鋒。秘書主持、記錄共識 / 分歧 / 待決項。詳見 `workspace/refs/debate-agents/debate-protocol.md`。
+高重要性的商業決策可以啟動 Debate，邀請 Advocate 和 Challenger 進行多輪交鋒。秘書主持、記錄共識 / 分歧 / 待決項。詳見 `refs/debate-agents/debate-protocol.md`。
 
 ## 新手入門
 
 1. **第一次來？** 先讀 `docs/concept-guide.md`（5 分鐘了解這是什麼、為什麼需要）
 2. 讀 `docs/quickstart.md`（5 分鐘完成設定）
-3. 讀 `workspace/BEGINNER-TIPS.md`（使用技巧）
+3. 讀 `workspace/BEGINNER-TIPS.md`（使用技巧，也在 `docs/BEGINNER-TIPS.md`）
 4. 看 `docs/faq.md`（常見問題）
 5. 遇到問題查 `docs/lessons-learned.md`（15 個踩坑紀錄）
 
 ## 版本歷史
+
+### v0.8（2026-04-24）
+
+**結構重組**：workspace/ 現在就是使用者直接掛載的資料夾。
+
+- `CLAUDE.md`、`.claude/skills/`、`INDEX.md` 全部搬進 `workspace/`
+- 根目錄只保留 `README.md`、`docs/`、`extras/`、`LICENSE`（純閱讀）
+- 移除 `client-package` 模板——`workspace/` 本身就是模板
+- 更新所有路徑引用：Skills 和 CLAUDE.md 中移除 `workspace/` 前綴
+- 重寫 Quick Start、SETUP-GUIDE、concept-guide、quickstart、faq
+- 修正中文版版本標號（v0.5 → v0.8）
 
 ### v0.7（2026-04-23）
 
