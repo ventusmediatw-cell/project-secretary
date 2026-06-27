@@ -1,9 +1,11 @@
 ---
-name: gemini-deep-research
-description: "Gemini Deep Research SOP: decision tree (when to use Deep Research vs regular Gemini vs Opus), API specs, research Brief template, platform routing (Cowork → handoff / Claude Code → direct run), quality control."
+name: deep-research
+description: "Deep Research SOP (provider-agnostic): decision tree (when to use Deep Research vs a regular LLM worker vs Opus), API specs, research Brief template, platform routing (Cowork → handoff / Claude Code → direct run), quality control."
 ---
 
-# Gemini Deep Research — SOP
+# Deep Research — SOP (provider-agnostic)
+
+> This SOP works with any Deep Research provider (e.g. Gemini Deep Research, OpenAI/Perplexity, or a self-built fan-out pipeline). The decision tree and routing below are unchanged; swap in whichever provider your account supports. Examples use a generic "DR provider" and a "regular LLM worker".
 
 ## Decision Tree for Research Needs
 
@@ -11,19 +13,19 @@ When receiving a research request, evaluate in this order:
 
 ```
 Does it need "search the web + synthesize multiple sources"?
-├─ Yes → Gemini Deep Research (this Skill)
+├─ Yes → Deep Research (this Skill, via your DR provider)
 └─ No → Does it need "bulk text processing / format conversion / batch summarization"?
-         ├─ Yes → gemini-worker agent (regular Gemini API)
+         ├─ Yes → regular LLM worker (a cheaper model via API)
          └─ No → Does it need "judgment, decision, strategy design, cross-article synthesis"?
                   ├─ Yes → Opus
                   └─ No → Simple question, answer directly
 ```
 
-**Core division principle**: Gemini = search research (grunt work) → Opus = judgment decisions (brain work) → Claude Code = write code. Don't use Opus for bulk searching, don't use Gemini for work requiring judgment.
+**Core division principle**: DR provider / cheap worker = search research (grunt work) → Opus = judgment decisions (brain work) → Claude Code = write code. Don't use Opus for bulk searching, don't use a search worker for work requiring judgment.
 
-### Deep Research vs Regular Gemini
+### Deep Research vs Regular LLM Worker
 
-| Feature | Deep Research | Regular Gemini (gemini-worker) |
+| Feature | Deep Research | Regular LLM Worker |
 |---|---|---|
 | Web search | ✅ Automatic multi-source search | ❌ Training knowledge only |
 | Output quality | Academic-grade, with cited sources | General answers |
@@ -48,7 +50,7 @@ Deep Research needs 1-5 minutes of polling. Cowork has two constraints:
 |---|---|---|
 | **Cowork** | Write handoff → Claude Code or Antigravity picks up | Secretary only writes the research Brief, doesn't execute API |
 | **Claude Code** | Run Python script directly via Bash | Stable network, can poll |
-| **Antigravity (Gemini)** | Paste research question directly in Gemini chat | Simplest, Deep Research is Gemini's native feature |
+| **Provider's native UI** | Paste research question directly in the provider's chat UI | Simplest, when the provider offers DR as a native feature |
 
 > **Exception**: User explicitly says "research it now" on Cowork → execute immediately. But warn: may fail due to network restrictions.
 
@@ -56,11 +58,11 @@ Deep Research needs 1-5 minutes of polling. Cowork has two constraints:
 
 ## API Quota & Question Consolidation Rules
 
-### Current: 3 API Keys
+### Example: multiple API keys
 
-Currently **3** Gemini API Keys available. Deep Research consumes significant quota per call, therefore:
+If you have **N** provider API keys available, Deep Research consumes significant quota per call, therefore:
 
-**⚠️ Research questions must be consolidated into ≤ 3 batches, not one-by-one.**
+**⚠️ Research questions must be consolidated into ≤ N batches (one per available key), not one-by-one.**
 
 ### Consolidation Strategy
 
@@ -88,7 +90,7 @@ Writing the research Brief is the secretary's core output on Cowork. A good Brie
 
 1. **Be specific**: Don't write "how does stock trading work," write "what are the exact contract specs, margin requirements, and fee structures for the instruments we're evaluating"
 2. **Logical grouping**: Group by topic, each group has "why we're asking" linking to the project
-3. **Include known info**: Prevent Gemini from re-researching known facts
+3. **Include known info**: Prevent the provider from re-researching known facts
 4. **Specify deliverable format**: Including archive path, Markdown structure, whether source URLs needed
 5. **Clarify review responsibility**: Who reviews, reviews what, how to flag issues
 6. **Consolidate to ≤ 3 batches**: Match API Key count, group questions before sending
@@ -110,11 +112,10 @@ Writing the research Brief is the secretary's core output on Cowork. A good Brie
 
 ### API Key Management
 
-- Config file: `gemini-keys.json`
-- Currently **3** Keys
+- Config file: `dr-keys.json` (provider API keys)
 - Rotation: On 429/403/quota exceeded → immediately switch to next key, don't wait for cooldown
-- All exhausted → report `[GEMINI_QUOTA_EXCEEDED]`, wait for user decision
-- **Parallel strategy**: 3 research batches assigned to 3 Keys simultaneously
+- All exhausted → report `[DR_QUOTA_EXCEEDED]`, wait for user decision
+- **Parallel strategy**: assign each research batch to its own key, launch simultaneously
 
 ### Error Handling
 
@@ -123,7 +124,7 @@ Writing the research Brief is the secretary's core output on Cowork. A good Brie
 | 429 / 403 | Switch to next API Key |
 | Polling timeout (10 minutes) | Report failure, possibly topic too complex or API unstable |
 | Network disconnect | **Don't retry** (avoid wasting tokens), record failure reason, retry next session or switch platform |
-| SDK not supported | Interactions API only works via REST, don't use SDK |
+| SDK not supported | Some providers' DR endpoint is REST-only; check before using an SDK |
 
 ### Batch Research Best Practices
 
@@ -150,7 +151,7 @@ Found issues → fix Brief or prompt immediately, **don't wait for Milestone Rev
 
 ### Review Annotation Format
 
-Places in Gemini output needing correction, use:
+Places in DR output needing correction, use:
 
 ```markdown
 > [Code note]: {correction or supplementary info}
@@ -177,9 +178,9 @@ Places in Gemini output needing correction, use:
 
 | Skill | Relationship |
 |---|---|
-| **knowledge-base** | KB ingest flow triggers Deep Research ("please have Gemini research XXX"). This Skill defines SOP, KB Skill defines post-ingest archive and digest flow |
-| **handoff** | Research Briefs produced on Cowork are delivered to Claude Code / Antigravity via handoff mechanism |
-| **gemini-worker agent** | Regular Gemini API calls go through gemini-worker, Deep Research goes through this Skill's REST API |
+| **knowledge-base** | KB ingest flow triggers Deep Research ("please research XXX"). This Skill defines SOP, KB Skill defines post-ingest archive and digest flow |
+| **handoff** | Research Briefs produced on Cowork are delivered to Claude Code / another platform via handoff mechanism |
+| **regular LLM worker** | Bulk/cheap API calls go through a regular worker model, Deep Research goes through this Skill's DR provider |
 | **subagent-guide** | Claude Code can use subagent for Deep Research, but note sub agents may reject credential-containing API operations — recommend main agent runs directly |
 
 ---
@@ -191,5 +192,5 @@ Places in Gemini output needing correction, use:
 3. **Using SDK for Deep Research** → SDK's `client.interactions` doesn't exist. REST only.
 4. **Using `name` field when polling** → Must use `id` field. `name` returns 404.
 5. **Not waiting for first batch before bulk research** → Quality issues get amplified. Run 1 batch, review, then bulk.
-6. **Opus doing bulk searches** → Wastes tokens. Search research is Gemini's job.
+6. **Opus doing bulk searches** → Wastes tokens. Search research is the DR provider's job.
 7. **Immediate retry after disconnect** → Wastes tokens. Record failure, retry next session or switch platform.

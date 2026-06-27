@@ -34,15 +34,14 @@ workspace/                          ← User mounts this folder
 ├── .claude/
 │   └── skills/
 │       ├── secretary/SKILL.md      ← Secretary core behavior
-│       ├── review/SKILL.md         ← Wrap-up Review (13-item checklist)
+│       ├── wrap-up/SKILL.md        ← Wrap-up Review (13-item checklist)
 │       ├── handoff/SKILL.md        ← Handoff protocol
 │       ├── project-setup/SKILL.md  ← Project launch flow
 │       ├── knowledge-base/SKILL.md ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md     ← Tool discovery + security
 │       ├── github-recon/SKILL.md   ← GitHub repo security recon
-│       ├── gemini-deep-research/SKILL.md ← Gemini Deep Research SOP
+│       ├── deep-research/SKILL.md   ← Deep Research SOP
 │       ├── growth-coach/SKILL.md   ← Personal growth coach
-│       ├── chrome-sop/SKILL.md     ← [Optional] Chrome SOP
 │       ├── gcp-ops/SKILL.md        ← [Optional] GCP SOP
 │       ├── github-ops/SKILL.md     ← [Optional] GitHub SOP
 │       └── subagent-guide/SKILL.md ← [Optional] Sub Agent guide
@@ -98,9 +97,9 @@ Antigravity doesn't auto-read CLAUDE.md, needs manual trigger.
 1. Confirm Antigravity can access the `workspace/` folder (same structure as above)
 2. Tell user, every new conversation, first message:
 
-   **"Please read CLAUDE.md then start secretary mode"**
+   **"Please read CLAUDE.md then start as my secretary"**
 
-3. AI will follow CLAUDE.md flow (first setup or normal secretary mode)
+3. AI will follow CLAUDE.md flow (first-time setup or normal secretary operation)
 
 ---
 
@@ -133,8 +132,8 @@ Every time you open Cowork, AI secretary auto-reads your previous data, you chat
 | You Say | Secretary Does |
 |---|---|
 | (Direct chat) | Records, answers, gives suggestions |
-| "Enter project mode XXX" | Focus on that project, discuss only that project |
-| "Return to secretary mode" | Return to global view |
+| "Focus on project XXX" | Focus on that project, discuss only that project |
+| "Back to the global view" | Stop focusing on a specific project |
 | "Wrap up" | Organize what you did today, update records |
 | "Help me start new project" | Create new project tracking |
 

@@ -70,7 +70,7 @@ workspace/
 ├── CLAUDE.md                    ← The pocket card (boot file)
 ├── .claude/skills/              ← The skills manual
 │   ├── secretary/SKILL.md       ← How to be your secretary
-│   ├── review/SKILL.md          ← How to do wrap-up reviews
+│   ├── wrap-up/SKILL.md        ← How to do wrap-up reviews
 │   └── ...
 ├── INDEX.md                     ← The table of contents
 ├── inbox/                       ← The journal (daily logs)
@@ -118,6 +118,56 @@ Without process, files become a graveyard. With process, they become institution
 
 ---
 
+## How to Organize a Skill (So It Doesn't Bloat)
+
+Earlier we said Skills are instruction cards — recurring workflows packaged as cards. But cards have a failure mode: you keep stuffing details into the same card until it grows from a sticky note into a manual. Every time the AI loads that Skill, it swallows the whole manual into context — nine-tenths of which it doesn't need this time. That defeats the whole point of the system (load only what's relevant).
+
+The fix isn't to write less — it's to **layer**. A Skill is not "a file." It's "a folder."
+
+### Three-Layer Structure
+
+```
+.claude/skills/{skill-name}/
+├── SKILL.md          ← Entry point (navigation + core principles, keep under 500 lines)
+├── references/       ← Lessons, long checklists, cases, pitfall logs
+│   ├── changelog.md
+│   └── cases.md
+└── templates/        ← Copy-and-edit boilerplate (report formats, document skeletons)
+    └── report.md
+```
+
+Each layer has one job:
+
+- **`SKILL.md` (entry point)**: The first file loaded, and the only one guaranteed to load every time. It holds just two things — (1) **trigger judgment and navigation** (what to do in which situation, which detail lives in which reference) and (2) **core principles and decision trees** (this Skill's spirit, its must-follow hard rules). Treat it as a map, not an encyclopedia. Keep it under 500 lines; going over is the signal that something should move down.
+- **`references/` (the lessons)**: Full long checklists, design-evolution records, cases and pitfalls, rarely-used edge-case flows. The AI reads these only when it actually needs them, not on every startup. Move the "third exception in step seven" out of SKILL.md to here, leaving the entry point with one line: "edge cases — see `references/cases.md`."
+- **`templates/` (the boilerplate)**: Concrete files you copy and edit — report formats, document skeletons, message templates. Unlike references, which *teach you how*, templates are *finished half-products you take and use directly*.
+
+### Two Tests: What Stays in the Entry, What Moves Down
+
+To decide whether a line belongs in SKILL.md or in references, ask two questions:
+
+**Test 1: Soft rule vs. hard rule (soft → hard).**
+What happens if this rule is violated? If violating it causes a failure, a pitfall, the very reason this Skill exists (a hard rule), it stays in the entry. If it's merely "this is usually the better way," "background context," or "why we historically decided this" (a soft rule / narrative), it moves to references. The entry must be greppable and scannable at a glance for "what you must not do"; background stories shouldn't crowd it out.
+
+**Test 2: Inline vs. isolated (inline → isolate).**
+Does this Skill's workflow run "directly in the main conversation" or "dispatched to a subagent / subflow"? If a passage is only used inside an isolated subflow (a subagent has its own independent context and does NOT inherit what the main conversation loaded), then it must either be written **inline into that dispatch call** or **preloaded by the called file's own frontmatter** — you cannot leave it in SKILL.md and expect the subagent to read it. Decide "who executes this passage" to decide where it lives and how it loads.
+
+### A Counter-Example: A Skill That Should Have Been Split but Wasn't
+
+The `knowledge-base` Skill in this repo is a live teaching case. Its `SKILL.md` runs close to 400 lines, cramming five sub-pipelines, the synthesis layer, the health check, the book-ingestion flow, the pitfall table, and model routing all into one file — so every time the AI processes a single URL, it loads the whole manual including "five-step book ingestion," even when all it's doing this time is saving one article.
+
+An even clearer signal: this SKILL.md has already written, three separate times, "format — see `templates.md` in this folder" and "details — see `refs/model-routing.md`" — it *knows* it should be layered, the pointers are all aimed correctly, but those files don't even exist yet. This is the textbook progression of bloat: the author senses "this should move out" while writing, never actually does it, and the entry keeps getting fatter.
+
+By the structure above, it should be split into:
+
+- **SKILL.md** keeps: trigger conditions, the step skeleton of the main `process_url` flow, one line each for the five sub-pipelines plus a pointer to the reference, and the must-follow hard rules (tags must never be empty, strict L1→L2→L3 layering, never read all original text at once).
+- **references/**: the five-step book ingestion, the full synthesis-layer spec, the health-check checklist, the pitfall table, model routing (actually cashing in those three pointers that were already written).
+- **templates/**: the `kb-digest.md` format, the synthesis-page format, the health-check report format (which is exactly what those three pointers point to).
+
+After the split, the entry might drop from 400 lines to 120; saving one article day-to-day loads only those 120 lines, and you read the matching reference only when you do a book ingestion. Not one feature is lost, but both context cost and readability improve.
+
+> Note: this "entry + references + templates" folder convention matches Anthropic's public skill-creator and the `anthropics/skills` spec; if you want to systematically check whether a whole batch of your Skills should be split, there are existing external skillset-audit methods to follow. But the core test is simple — **the entry is a map, not an encyclopedia, and 500 lines is the alarm clock telling you to stop and layer.**
+
 ## What You Get
 
 Once set up, you have an AI secretary that:
@@ -125,11 +175,13 @@ Once set up, you have an AI secretary that:
 - **Wakes up knowing who it is** — reads CLAUDE.md, loads your preferences and rules
 - **Knows what's happening** — scans INDEX.md for project status, priorities, and to-dos
 - **Picks up where it left off** — reads handoff files from the last session
-- **Manages multiple projects** — secretary mode for the big picture, project mode for deep focus
+- **Manages multiple projects** — the secretary holds the big picture, and focuses on a project when you need deep work
 - **Gets smarter over time** — review checklist catches mistakes, knowledge base compounds, lessons accumulate
 - **Works with any AI model** — swap Claude for GPT for Gemini, the memory stays
 
 ---
+
+Beyond *what to remember*, the system also defines *how the AI should behave while working* — four behavioral principles (think and search before acting; narrow scope, deep execution; surgical changes; verifiable, where "confident" is not "evidenced") that the AI loads at every session start. They live in `CLAUDE.md`; see the "Four Principles" section there.
 
 ## Quick Answers
 
@@ -232,7 +284,7 @@ workspace/
 ├── CLAUDE.md                    ← 口袋小卡（開機檔）
 ├── .claude/skills/              ← 技能手冊
 │   ├── secretary/SKILL.md       ← 怎麼當你的秘書
-│   ├── review/SKILL.md          ← 怎麼做收尾 Review
+│   ├── wrap-up/SKILL.md        ← 怎麼做收尾 Review
 │   └── ...
 ├── INDEX.md                     ← 目錄（主索引）
 ├── inbox/                       ← 日記（每日紀錄）
@@ -280,6 +332,56 @@ workspace/
 
 ---
 
+## Skill 該怎麼組織（讓它不會膨脹）
+
+前面說 Skills 是技能手冊，把重複工作流做成卡片。但卡片寫久了會出問題：你不斷往同一張卡片塞細節，它從一張便利貼長成一本說明書。AI 每次載入這支 Skill，就把整本說明書吞進 context——其中九成是它這次根本用不到的。這違背了整套系統的初衷（只載入相關部分）。
+
+解法不是少寫，而是**分層**。一支 Skill 不是「一個檔案」，是「一個資料夾」。
+
+### 三層結構
+
+```
+.claude/skills/{skill-name}/
+├── SKILL.md          ← 入口（導航 + 核心原則，控制在 500 行內）
+├── references/       ← 教材、長 checklist、案例、踩坑紀錄
+│   ├── changelog.md
+│   └── cases.md
+└── templates/        ← 抄了就改的範本（報告格式、文件骨架）
+    └── report.md
+```
+
+每一層各司其職：
+
+- **`SKILL.md`（入口）**：第一個被載入的檔案，也是唯一保證每次都載入的。它只放兩種東西——(1) **觸發判斷與導航**（什麼情況做什麼、哪些細節去讀哪個 reference）、(2) **核心原則與決策樹**（這支 Skill 的精神、必守硬規則）。把它當成一張地圖，不是百科全書。控制在 500 行內；超過就是訊號：有東西該往下搬。
+- **`references/`（教材）**：完整的長 checklist、設計演化紀錄、案例與踩坑、罕用的邊角流程。AI 只在真的需要時才去讀，不是每次啟動都載。把 SKILL.md 裡那種「步驟七的第三種例外情況」搬到這裡，入口只留一句「邊角情況見 `references/cases.md`」。
+- **`templates/`（範本）**：拿來抄了改的具體檔案——報告格式、文件骨架、訊息模板。跟「教你怎麼做」的 references 不同，templates 是「直接拿去用的成品半成品」。
+
+### 兩個判準：什麼放入口、什麼往下搬
+
+決定一行字該留在 SKILL.md 還是搬進 references，問兩題：
+
+**判準一：軟規則 vs 硬規則（soft → hard）。**
+這條規則違反了會怎樣？如果違反就出錯、就踩坑、就是這支 Skill 存在的理由（硬規則），它留在入口。如果它只是「通常這樣做比較好」「背景脈絡」「歷史上我們為什麼這樣決定」（軟規則 / 敘事），搬進 references。入口要 grep 得到、一眼掃得到「不准做什麼」；背景故事不該佔據它。
+
+**判準二：行內 vs 隔離（inline → isolate）。**
+這支 Skill 的工作流程是「主對話直接做」還是「丟給子代理 / 子流程跑」？如果某段內容只在被隔離的子流程裡用到（子代理有自己獨立的 context、不會繼承主對話載入的東西），那它要嘛**行內寫進那段呼叫**、要嘛被呼叫的檔案自己**用 frontmatter 預載**——不能只放在 SKILL.md 就指望子代理讀得到。判斷「這段內容的執行者是誰」，決定它放哪、怎麼被載入。
+
+### 反面示範：一支該拆而沒拆的 Skill
+
+repo 裡的 `knowledge-base` Skill 就是活教材。它的 `SKILL.md` 接近 400 行，把五條子管線、合成層、健康檢查、大書入庫流程、踩坑表、模型路由全塞在同一個檔案——每次處理一個 URL，AI 都得載入整個含「大書入庫五步驟」的說明書，即使這次只是存一篇文章。
+
+更明顯的訊號：這支 SKILL.md 自己已經三次寫下「格式見同資料夾的 `templates.md`」「細節見 `refs/model-routing.md`」——它**知道**該分層，pointer 都指好了，但那些檔案根本還沒建出來。這就是膨脹的典型病程：作者一邊寫一邊感覺到「這段該搬出去」，卻沒真的動手，於是入口越長越胖。
+
+按上面的結構，它該被拆成：
+
+- **SKILL.md** 留：觸發條件、主流程 `process_url` 的步驟骨架、五條子管線各自一句話 + 指向 reference 的 pointer、必守硬規則（標籤不可留空、L1→L2→L3 嚴格分層、禁止一次讀完所有原文）。
+- **references/**：大書入庫五步驟、合成層完整規格、健康檢查清單、踩坑表、模型路由（把那三個已經寫好的 pointer 真的兌現）。
+- **templates/**：`kb-digest.md` 格式、合成頁格式、健康檢查報告格式（目前三處 pointer 指的就是它）。
+
+拆完，入口可能從 400 行掉到 120 行；日常存一篇文章只載那 120 行，要做大書入庫時才去讀對應 reference。功能一行沒少，但 context 成本和可讀性都改善了。
+
+> 補充：這套「入口 + references + templates」的資料夾慣例，跟 Anthropic 公開的 skill-creator 與 `anthropics/skills` spec 一致；要更系統地檢查自己一整批 Skill 是否該拆，也有現成的外部 skillset-audit 方法可循。但核心判準很單純——**入口是地圖不是百科，500 行是你該停下來分層的鬧鐘。**
+
 ## 你會得到什麼
 
 設定好之後，你有一個 AI 秘書：
@@ -287,11 +389,13 @@ workspace/
 - **醒來就知道自己是誰**——讀 CLAUDE.md，載入你的偏好和規則
 - **知道正在發生什麼**——掃 INDEX.md 看專案狀態、優先事項、待辦
 - **接上上次的進度**——讀上個 session 的交接檔案
-- **管理多個專案**——秘書模式看全局、專案模式深入專注
+- **管理多個專案**——秘書掌握全局，需要深入某專案時就聚焦該專案
 - **隨時間變聰明**——Review 清單抓錯、知識庫累積、踩坑經驗疊加
 - **用任何 AI 模型**——換 Claude 換 GPT 換 Gemini，記憶不動
 
 ---
+
+除了*要記住什麼*，這套系統也定義了*AI 做事時該怎麼判斷取捨*——四條行為原則（動手前先想、先查；窄範圍、深執行；外科手術式改動；可驗證，「有信心」不等於「有證據」），AI 每次 session 開機都會載入。它們放在 `CLAUDE.md`，見該檔的「四原則」段。
 
 ## 快問快答
 

@@ -13,7 +13,7 @@ User says "wrap up" = run wrap-up Review, **not** code review / simplify.
 
 ### Step 1: Multi-Project Review
 
-Review all projects touched in this session (including incidental changes in secretary mode), and for **each** one:
+Review all projects touched in this session (including incidental changes made while not focused on a specific project), and for **each** one:
 
 1. Write/append project daily log `projects/{name}/daily/YYYY-MM-DD.md` (**new session inserts at top of file**, after daily header, before previous section — latest on top)
 2. Update project `INDEX.md` (two steps):
@@ -23,7 +23,7 @@ Review all projects touched in this session (including incidental changes in sec
 
 ### Step 2: Secretary Review Checklist
 
-Read `.claude/skills/review/SKILL.md` and execute the full 13-item checklist (A Experience → B System Updates → C Memory Sync).
+Read `.claude/skills/wrap-up/SKILL.md` and execute the full 13-item checklist (A Experience → B System Updates → C Memory Sync).
 
 ### Step 3: Write Handoff + Git Archive
 
@@ -60,10 +60,10 @@ How:
 
 ## Handoff Write Locations
 
-| Operating Mode | Write Location |
+| Focus | Write Location |
 |---|---|
-| Secretary mode | `inbox/YYYY-MM-DD.md` |
-| Project mode | `projects/{name}/daily/YYYY-MM-DD.md` |
+| Not focused on a project | `inbox/YYYY-MM-DD.md` |
+| Focused on a project | `projects/{name}/daily/YYYY-MM-DD.md` |
 | Cross-platform tasks (formal) | `handoff/pending/` (see `templates.md`) |
 | Cross-platform tasks (quick) | Note one line in inbox, user relays orally |
 
@@ -78,7 +78,7 @@ Before writing handoff report, run `date` to get current time. Both title and bo
 
 > **Executor**: Agent Name
 > **Time**: HH:MM ~ HH:MM (Timezone)
-> **Operating Mode**: Secretary mode / Project mode (Project name)
+> **Focus**: global view / project {name}
 
 ### ✅ Completed Items
 - [x] Item 1: Brief description of completion
@@ -94,7 +94,7 @@ Before writing handoff report, run `date` to get current time. Both title and bo
 
 ### Memory Sync Checklist
 - [ ] Did I update main INDEX.md's to-do items/recent priorities?
-- [ ] Did I update project INDEX.md (if in project mode work)?
+- [ ] Did I update project INDEX.md (if the work was focused on a project)?
 - [ ] Any new important decisions or knowledge corrections?
 ```
 
@@ -148,7 +148,7 @@ Where to write results, whether to notify the originator
 
 ## done/ Cleanup
 
-`handoff/done/` is just a receipt; real content is in project journal. Files in done/ older than 7 days can be automatically cleaned by daily-secretary-review schedule or cleaned manually.
+`handoff/done/` is just a receipt; real content is in project journal. Files in done/ older than 7 days can be cleaned during a daily/weekly review, or manually.
 
 ## Multiple Agents Same Day
 

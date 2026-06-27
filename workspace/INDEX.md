@@ -5,7 +5,7 @@
 
 ## Usage Guide
 
-This file maintains the "ID card" of all your projects, to-do items, and recent priorities. Secretary reads it every session to decide secretary mode or project mode.
+This file maintains the "ID card" of all your projects, to-do items, and recent priorities. Secretary reads it every session so the secretary can focus on the right project when the conversation calls for it.
 
 **What goes here**:
 - 🎯 Active projects list (project names and status only, not detailed content)

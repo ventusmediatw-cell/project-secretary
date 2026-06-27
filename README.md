@@ -1,4 +1,4 @@
-# AI Personal Secretary — Template v0.8
+# AI Personal Secretary — Template v1.0
 
 > An AI personal secretary system template built on Claude Code / Cowork.
 > Fork it, tweak a few parameters, and you're good to go.
@@ -9,7 +9,7 @@
 
 A system architecture that turns an AI Agent into your personal secretary, featuring:
 
-- **Dual-mode operation**: Secretary mode (global management) + Project mode (focused execution)
+- **Single secretary mode** (can focus on a project): you're always the secretary — when a conversation involves an existing project, focus on it directly without asking to switch
 - **Cross-platform consistency**: Works on Cowork, Claude Code, and Antigravity
 - **Structured memory**: INDEX index layer + inbox journal layer + memory knowledge layer + project layer — older records get coarser-grained
 - **Automated handoff**: No dropped balls when Agents switch shifts
@@ -25,8 +25,8 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 
 | Skill | What It Does | How to Trigger |
 |---|---|---|
-| **secretary** | Dual-mode operation, memory architecture, organization rhythm, INDEX routing, output control | Auto-loaded every session |
-| **review** | Two-stage wrap-up: project manager closes out → secretary reviews with 13-item checklist (experience extraction + system updates + memory sync + synthesis correction) | Say **"wrap up"** |
+| **secretary** | Single secretary mode (focus on a project when relevant), memory architecture, organization rhythm, INDEX routing, output control | Auto-loaded every session |
+| **wrap-up** | Two-stage wrap-up: project manager closes out → secretary reviews with 13-item checklist (experience extraction + system updates + memory sync + synthesis correction) | Say **"wrap up"** |
 | **handoff** | Cross-session and cross-platform handoff protocol. Ensures zero information loss between sessions | Auto-loaded; runs at every session end |
 
 ### Project & Knowledge Skills
@@ -37,18 +37,18 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 | **knowledge-base** | Personal knowledge pipeline: paste a URL → auto-fetch → summarize → archive. Supports articles and YouTube. Includes synthesis layer (cross-article compiled knowledge), tiered search (L1→L2→L3), and periodic health checks. Bridges knowledge to projects via `kb-digest` | Share a **URL** in conversation, or say **"save this"** |
 | **github-recon** | Security reconnaissance for GitHub repos: 5-step SOP producing red/yellow/green light reports. Read-only, zero execution — builds risk picture before you clone/install | Auto-triggers when you paste a **github.com URL** |
 | **tool-scout** | Discover tools via MCP Registry, Plugin store, and GitHub. Includes security assessment checklist | Say **"find a tool for X"** or **"is there a plugin for X"** |
-| **gemini-deep-research** | Gemini Deep Research SOP: decision tree (when to use Deep Research vs regular Gemini vs Opus), platform routing, API quota consolidation, research Brief template, quality control | Say **"have Gemini research X"** |
-| **debate-protocol** | Multi-round structured debate for high-stakes decisions. Advocate vs Challenger with word limits, secretary moderates | Triggered during **project-setup Step 4**, or say **"let's debate X"** |
+| **deep-research** | Deep Research SOP (provider-agnostic): decision tree (Deep Research vs a regular LLM worker vs Opus), platform routing, API quota consolidation, research Brief template, quality control | Say **"research X"** |
+| **debate-protocol** | Multi-round structured debate for high-stakes decisions. Advocate vs Challenger with word limits, secretary moderates. *(A protocol in `refs/debate-agents/`, not an installable `.claude/skills/` Skill.)* | Triggered during **project-setup Step 4**, or say **"let's debate X"** |
 | **growth-coach** | Personal growth coach — independent second role for daily reflection. Scans daily achievements, guides reflection dialogue, weekly secretary×coach consultation | Say **"start growth coach"** or **"bedtime reflection"** |
 
 ### Tool SOPs (optional, remove if unused)
 
 | Skill | What It Does | How to Trigger |
 |---|---|---|
-| **chrome-sop** | Standard operating procedure for Chrome browser automation | Load when **operating Chrome** tools |
 | **gcp-ops** | GCP VM operations: SSH, firewall, deployment | Load when **using GCP** |
 | **github-ops** | GitHub operations: PAT management, clone/push, security | Load when **using GitHub** |
 | **subagent-guide** | Best practices for launching and prompting sub-agents | Load when **launching a sub-agent** |
+| **meta-skill** | The meta-skill for building and auditing a single Skill. Three workflows: (1) an A→E flow for building a new Skill (before → build → verify → maintain → cross-platform), (2) a SKILL anatomy + boundary checklist, (3) a tiered single-Skill audit with retrofit prioritization. Enforces "entry is a map, not an encyclopedia" and the layering convention | Say **"build a skill for X"**, **"audit this skill"**, or when the secretary notices repeated manual work (N≥2) worth packaging |
 
 > **Customization tip**: Delete any Tool SOP Skills you don't need. The core system works fine without them.
 
@@ -70,15 +70,14 @@ workspace/                             ← Mount this folder
 ├── .claude/
 │   └── skills/
 │       ├── secretary/SKILL.md         ← Core secretary behavior
-│       ├── review/SKILL.md            ← Wrap-up Review (13-item checklist)
+│       ├── wrap-up/SKILL.md           ← Wrap-up Review (13-item checklist)
 │       ├── handoff/SKILL.md           ← Handoff protocol
 │       ├── project-setup/SKILL.md     ← Six-step project launch
 │       ├── knowledge-base/SKILL.md    ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md        ← Tool discovery + security
 │       ├── github-recon/SKILL.md      ← GitHub repo security recon
-│       ├── gemini-deep-research/SKILL.md ← Gemini Deep Research SOP
+│       ├── deep-research/SKILL.md      ← Deep Research SOP
 │       ├── growth-coach/SKILL.md      ← Personal growth coach
-│       ├── chrome-sop/SKILL.md        ← [Optional] Chrome SOP
 │       ├── gcp-ops/SKILL.md           ← [Optional] GCP SOP
 │       ├── github-ops/SKILL.md        ← [Optional] GitHub SOP
 │       └── subagent-guide/SKILL.md    ← [Optional] Sub Agent guide
@@ -124,14 +123,14 @@ Open `workspace/CLAUDE.md` and modify:
 
 Open `workspace/.claude/skills/secretary/SKILL.md` and modify:
 
-- **Operating modes**: Adjust secretary mode / project mode behavior
+- **Operating mode**: Adjust single secretary mode behavior (how it focuses on a project when relevant)
 - **Memory architecture**: Adjust folder structure (if yours differs)
 - **Cleanup rhythm**: Set your preferred Review frequency
 - **Tool preferences**: Add your tool choice decisions
 
 ### 5. Launch
 
-Open the `workspace/` folder in Claude Code or Cowork. The Agent will auto-read CLAUDE.md → load secretary Skill → detect first use → run setup wizard → enter secretary mode.
+Open the `workspace/` folder in Claude Code or Cowork. The Agent will auto-read CLAUDE.md → load secretary Skill → detect first use → run setup wizard → start as the secretary.
 
 ## Core Design Principles
 
@@ -176,6 +175,19 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 5. Look up `docs/lessons-learned.md` when you hit issues (15 pitfalls)
 
 ## Version History
+### v1.0 (2026-06-14)
+
+**Added**:
+- **The Four Principles (behavioral layer)** in CLAUDE.md: think-and-search-before-acting / narrow-scope-deep-execution / surgical-changes / verifiable-not-just-confident — the judgment spine the AI loads every session, plus a principles self-audit at wrap-up. Previously the template shipped only operational Golden Rules (the "how to act"), not the "how to judge."
+- **meta-skill**: the meta-skill for building / auditing / modifying a single Skill (A→E build flow + SKILL anatomy + 4-Tier audit + modify-existing-skill flow). Lets users grow their own Skills instead of only using the shipped ones. Ships with `references/build-checklist.md` — the first Skill to demonstrate the references/ layering convention.
+- **concept-guide "How to Organize a Skill"** section: the folder + SKILL.md-entry + references/ + templates/ layering convention, with soft→hard and inline→isolate tests, using knowledge-base as a should-have-been-split example.
+
+**Changed**:
+- **review Skill → wrap-up** (avoids collision with Claude Code's built-in /review). Breaking change for existing forks: the skill folder and all references are renamed.
+- **gemini-deep-research Skill → deep-research** (provider-agnostic): the decision tree and routing no longer hard-bind to a single provider.
+- **extras scheduled tasks** (02:09 daily-secretary-review): reframed as a fallback; the primary path is user-triggered manual review.
+- Wrap-up checklist count unified to 13 items across all docs.
+
 
 ### v0.8 (2026-04-24)
 
@@ -292,11 +304,11 @@ This system was battle-tested through daily production use. Here are the top pit
 
 See `docs/lessons-learned.md` for the full list of 15 pitfalls with symptoms, root causes, and solutions.
 
-## External Validation
+## Related Work
 
-This architecture has been independently validated by:
-- **Anthropic's official Claude Code guide** (23 pages, 10 departments): confirms "the more detailed your CLAUDE.md, the better Claude performs"
-- **YC's Garry Tan** released gstack (7,700 GitHub stars in 48 hours): uses the same Skills-based role specialization pattern
+The core ideas here converge with other public work on agent / CLAUDE.md design:
+- **Anthropic's official Claude Code guidance**: emphasizes that a more detailed CLAUDE.md improves how well Claude performs.
+- **Garry Tan's gstack** (open-source): uses the same Skills-based role-specialization pattern.
 
 ## License
 
@@ -314,7 +326,7 @@ Questions, suggestions, or pitfalls to share?
 
 # 繁體中文
 
-# AI 個人秘書 — 模板 v0.8
+# AI 個人秘書 — 模板 v1.0
 
 > 一套基於 Claude Code / Cowork 的 AI 個人秘書系統模板。
 > Fork 後改幾個參數就能跑。
@@ -323,7 +335,7 @@ Questions, suggestions, or pitfalls to share?
 
 一套讓 AI Agent 扮演你的個人秘書的系統架構，支援：
 
-- **雙模式運作**：秘書模式（全局管理）+ 專案模式（專注推進）
+- **單一秘書模式**（可聚焦專案）：你始終是秘書，對話涉及某個既有專案時直接聚焦、不需先問切換
 - **跨平台一致體驗**：Cowork、Claude Code、Antigravity 都能用
 - **結構化記憶**：INDEX 索引層 + inbox 日記層 + memory 知識層 + 專案層，越舊顆粒度越粗
 - **自動化交接**：Agent 換班時不掉球
@@ -339,8 +351,8 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 
 | Skill | 功能 | 觸發方式 |
 |---|---|---|
-| **secretary** | 雙模式運作、記憶架構、整理節奏、INDEX 寫入分流、輸出控制 | 每次自動載入 |
-| **review** | 兩階段收尾：專案經理收尾 → 秘書 Review（13 條檢查清單：經驗提煉 + 系統更新 + 記憶同步 + synthesis 修正偵測） | 說 **「收尾吧」** |
+| **secretary** | 單一秘書模式（可聚焦專案）、記憶架構、整理節奏、INDEX 寫入分流、輸出控制 | 每次自動載入 |
+| **wrap-up** | 兩階段收尾：專案經理收尾 → 秘書 Review（13 條檢查清單：經驗提煉 + 系統更新 + 記憶同步 + synthesis 修正偵測） | 說 **「收尾吧」** |
 | **handoff** | 跨 session 和跨平台交接協議，確保零資訊遺失 | 自動載入；每次 session 結束執行 |
 
 ### 專案與知識 Skills
@@ -351,18 +363,18 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 | **knowledge-base** | 個人知識管線：貼 URL → 自動抓取 → 摘要 → 存檔。支援文章和 YouTube。含 Synthesis 層（跨文章編譯知識）、分層搜尋（L1→L2→L3）、定期健康檢查。透過 `kb-digest` 橋接知識到專案 | 分享 **URL** 或說 **「存一下這個」** |
 | **github-recon** | GitHub Repo 資安偵察：5 步 SOP 產出紅/黃/綠燈報告。純讀取零執行，在 clone/install 前先建立風險圖 | 貼 **github.com URL** 自動觸發 |
 | **tool-scout** | 透過 MCP Registry、Plugin 商店、GitHub 探索工具。含資安評估清單 | 說 **「幫我找 X 的工具」** |
-| **gemini-deep-research** | Gemini Deep Research SOP：決策樹（Deep Research vs 普通 Gemini vs Opus）、平台分流、API 配額整合、研究 Brief 模板、品質控管 | 說 **「請 Gemini 研究 X」** |
-| **debate-protocol** | 高風險決策的多輪結構化辯論。Advocate vs Challenger，秘書主持 | **開案 Step 4** 觸發，或說 **「來辯論 X」** |
+| **deep-research** | Deep Research SOP（provider-agnostic）：決策樹（Deep Research vs 普通 LLM worker vs Opus）、平台分流、API 配額整合、研究 Brief 模板、品質控管 | 說 **「研究 X」** |
+| **debate-protocol** | 高風險決策的多輪結構化辯論。Advocate vs Challenger，秘書主持。*（位於 `refs/debate-agents/` 的協議，非 `.claude/skills/` 可載入 Skill。）* | **開案 Step 4** 觸發，或說 **「來辯論 X」** |
 | **growth-coach** | 個人成長教練——獨立於秘書的第二角色，每日反思。掃描當日成果、引導反思對話、每週秘書×教練會診 | 說 **「啟動成長教練」**或**「睡前反思」** |
 
 ### 工具 SOP（可選，不用的可以刪）
 
 | Skill | 功能 | 觸發方式 |
 |---|---|---|
-| **chrome-sop** | Chrome 瀏覽器自動化操作 SOP | 操作 **Chrome** 時載入 |
 | **gcp-ops** | GCP VM 操作：SSH、防火牆、部署 | 使用 **GCP** 時載入 |
 | **github-ops** | GitHub 操作：PAT 管理、clone/push、安全 | 使用 **GitHub** 時載入 |
 | **subagent-guide** | 啟動和提示 Sub Agent 的最佳實踐 | 啟動 **Sub Agent** 時載入 |
+| **meta-skill** | 建立與檢核**單一** Skill 的後設 Skill。三個工作流：(1) 建新 Skill 的 A→E 流程（背景 → 建立 → 驗證 → 維護 → 跨平台）、(2) SKILL anatomy + 邊界 checklist、(3) 4-Tier 單一 Skill audit + retrofit 排序。落實「入口是地圖不是百科」與分層慣例 | 說 **「幫我建一個 Skill」**、**「audit 這支 Skill」**，或秘書察覺重複工作（N≥2）值得封裝時 |
 
 > **自訂建議**：刪掉你不需要的工具 SOP Skill，核心系統不受影響。
 
@@ -384,15 +396,14 @@ workspace/                             ← 掛載這個資料夾
 ├── .claude/
 │   └── skills/
 │       ├── secretary/SKILL.md         ← 秘書核心行為
-│       ├── review/SKILL.md            ← 收尾 Review（13 條檢查清單）
+│       ├── wrap-up/SKILL.md           ← 收尾 Review（13 條檢查清單）
 │       ├── handoff/SKILL.md           ← 交接協議
 │       ├── project-setup/SKILL.md     ← 六步開案流程
 │       ├── knowledge-base/SKILL.md    ← 知識庫管線
 │       ├── tool-scout/SKILL.md        ← 工具探索 + 資安
 │       ├── github-recon/SKILL.md      ← GitHub repo 資安偵察
-│       ├── gemini-deep-research/SKILL.md ← Gemini Deep Research SOP
+│       ├── deep-research/SKILL.md      ← Deep Research SOP
 │       ├── growth-coach/SKILL.md      ← 個人成長教練
-│       ├── chrome-sop/SKILL.md        ← [可選] Chrome SOP
 │       ├── gcp-ops/SKILL.md           ← [可選] GCP SOP
 │       ├── github-ops/SKILL.md        ← [可選] GitHub SOP
 │       └── subagent-guide/SKILL.md    ← [可選] Sub Agent 指南
@@ -438,14 +449,14 @@ workspace/                             ← 掛載這個資料夾
 
 開啟 `workspace/.claude/skills/secretary/SKILL.md`，修改：
 
-- **運作模式**：調整秘書模式 / 專案模式的行為描述
+- **運作模式**：調整單一秘書模式（可聚焦專案）的行為描述
 - **記憶架構**：調整資料夾結構（如果你的不一樣）
 - **整理節奏**：改成你想要的 Review 頻率
 - **工具偏好**：加入你的工具選擇決策
 
 ### 5. 啟動
 
-在 Claude Code 或 Cowork 中開啟 `workspace/` 資料夾，Agent 會自動讀取 CLAUDE.md → 載入 secretary Skill → 偵測首次使用 → 執行設定精靈 → 進入秘書模式。
+在 Claude Code 或 Cowork 中開啟 `workspace/` 資料夾，Agent 會自動讀取 CLAUDE.md → 載入 secretary Skill → 偵測首次使用 → 執行設定精靈 → 以秘書身份啟動。
 
 ## 核心設計原則
 
@@ -490,6 +501,19 @@ workspace/                             ← 掛載這個資料夾
 5. 遇到問題查 `docs/lessons-learned.md`（15 個踩坑紀錄）
 
 ## 版本歷史
+### v1.0 (2026-06-14)
+
+**新增**：
+- **四原則（行為層）** 進 CLAUDE.md：動手前先想先查 / 窄範圍深執行 / 外科手術改動 / 可驗證——AI 每次 session 載入的判斷骨幹，加收尾時的原則自審。先前模板只散了操作性 Golden Rules（怎麼做），沒散「怎麼判斷」。
+- **meta-skill**：建立 / audit / 修改單一 Skill 的後設 Skill（A→E 建立流程 + SKILL anatomy + 4-Tier audit + 修改既有 skill 流程）。讓使用者能自己長 Skill、不只用內附的。附 `references/build-checklist.md`——首支示範 references/ 分層慣例的 Skill。
+- **concept-guide「Skill 怎麼組織」** 段：folder + SKILL.md 入口 + references/ + templates/ 分層慣例，含 soft→hard / inline→isolate 兩個判準，用 knowledge-base 當「該拆未拆」示範。
+
+**變更**：
+- **review Skill → wrap-up**（避撞 Claude Code 內建 /review）。對既有 fork 是 breaking change：skill 資料夾與所有引用改名。
+- **gemini-deep-research Skill → deep-research**（provider-agnostic）：決策樹與路由不再綁死單一 provider。
+- **extras 排程**（02:09 daily-secretary-review）：改述為備援；主路徑是 user 手動觸發。
+- 收尾清單條數全文統一為 13 條。
+
 
 ### v0.8（2026-04-24）
 
@@ -589,11 +613,11 @@ workspace/                             ← 掛載這個資料夾
 
 基礎秘書系統，包含雙模式、記憶分層、INDEX 結構。
 
-## 外部驗證
+## 相關工作
 
-這套架構已獲得獨立驗證：
-- **Anthropic 官方 Claude Code 指南**（23 頁，10 個部門實測）：確認「CLAUDE.md 越詳細，Claude 表現越好」
-- **YC 的 Garry Tan** 開源 gstack（48 小時 7,700 GitHub Stars）：使用同樣的 Skills 角色分工模式
+本系統的核心構想與其他公開的 agent / CLAUDE.md 設計工作不謀而合：
+- **Anthropic 官方 Claude Code 指南**：指出 CLAUDE.md 越詳細、Claude 表現越好。
+- **Garry Tan 的 gstack**（開源）：使用同樣的 Skills 角色分工模式。
 
 ## 授權
 

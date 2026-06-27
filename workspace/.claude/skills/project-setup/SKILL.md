@@ -220,5 +220,5 @@ After completing setup, self-check:
 
 - **secretary Skill**: Reads main INDEX.md, handles mode switching
 - **debate-protocol.md**: Reference for Step 4 Debate execution
-- **review Skill**: After setup, if involving new tools/platforms, updates tool preferences at wrap-up
+- **wrap-up Skill**: After setup, if involving new tools/platforms, updates tool preferences at wrap-up
 - **handoff Skill**: If setup involves cross-platform collaboration, creates handoff files

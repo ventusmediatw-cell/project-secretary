@@ -26,4 +26,4 @@ Uses `/tmp/claude-startup-check-last-run` to record today's date. Runs only once
 
 ## Cowork Equivalent
 
-Cowork has no hook mechanism. Use a daily scheduled task (e.g., at 02:09) to achieve the same check.
+Cowork has no hook mechanism. As a fallback, a daily scheduled task (e.g., at 02:09) can achieve the same check — though in practice the user is better off triggering it manually.

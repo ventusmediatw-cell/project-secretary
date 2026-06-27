@@ -1,6 +1,6 @@
 ---
-name: review
-description: "Wrap-up Review: two-stage flow (project manager wrap-up → secretary review) with 13-item checklist (A: experience extraction, B: system updates, C: memory sync). Triggered when user says 'wrap up'."
+name: wrap-up
+description: "Wrap-Up: two-stage flow (project manager wrap-up → secretary review) with 13-item checklist (A: experience extraction, B: system updates, C: memory sync). Triggered when user says 'wrap up'."
 disable-model-invocation: true
 ---
 
@@ -19,11 +19,11 @@ When user says "wrap up," execute immediately:
 3. If there are important decisions or research conclusions → write to `memory.md`
 4. Tell user: "Project wrap-up complete. Ready for secretary review."
 
-> If session was purely in secretary mode, skip directly to Stage 2.
+> If the session was not focused on any project, skip directly to Stage 2.
 
 ## Stage 2: Secretary Review
 
-Execute when transitioning from project mode, or directly in secretary mode wrap-up.
+Execute when transitioning from being focused on a project, or directly when not focused on any project.
 
 ### Determine Review Level
 
@@ -113,7 +113,7 @@ When Claude Code triggers auto-compact on long conversations, a PreCompact hook 
 2. **Inbox exists**: Does `inbox/YYYY-MM-DD.md` have today's entry? If not, write a minimal one (completed items + pending)
 3. **Stale handoffs**: Any `handoff/pending/` files older than 3 days not yet flagged?
 4. **Synthesis-correction**: Any real-world findings this session that contradict KB/synthesis conclusions? Tag `[synthesis-correction]` in inbox
-5. **Project INDEX**: If in project mode, is the project INDEX.md up to date?
+5. **Project INDEX**: If focused on a project, is the project INDEX.md up to date?
 
 ### Behavior Rules
 

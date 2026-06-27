@@ -10,7 +10,7 @@ When the user wants to know "is there an existing tool for X," execute this flow
 ## Trigger Moments
 
 - "Is there a tool for..." "Help me find..." "Can this be automated"
-- In project mode encountering new needs, looking for off-the-shelf solutions
+- When focused on a project and hitting a new need, looking for off-the-shelf solutions
 - project-setup Step 3 tool chain exploration (directly load this Skill)
 
 ## Flow

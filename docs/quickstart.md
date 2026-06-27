@@ -31,7 +31,7 @@ cd ~/【Your folder】
 ### Other Platforms (Antigravity, etc.)
 In conversation, manually run:
 ```
-Please read CLAUDE.md, then start secretary mode
+Please read CLAUDE.md, then start as my secretary
 ```
 
 ---
@@ -50,8 +50,8 @@ Secretary will ask you some questions:
 
 ## Step Four: Daily Usage
 
-### Secretary Mode (Default)
-Chat anytime; secretary will:
+### How the Secretary Works
+It's always your secretary — there's just one mode. Chat anytime; secretary will:
 - Record your thoughts
 - Track to-do items
 - Remind you of important deadlines
@@ -61,10 +61,10 @@ You: "I'm thinking whether I should start a new project"
 Secretary: "Great idea! Want to start a project? I can set up the files"
 ```
 
-### Enter Project Mode
+When the conversation touches one of your projects, secretary simply focuses on it — reading that project's INDEX and staying on it — no mode switch needed. Leave the topic and it naturally returns to the global view.
 ```
-You: "Enter project XXX mode"
-Secretary: "Entering XXX project mode, now focused on this project"
+You: "Let's work on project XXX"
+Secretary: "Now focusing on project XXX"
 ```
 
 ### Wrap Up
@@ -84,7 +84,7 @@ workspace/
 ├── .claude/
 │   └── skills/                        ← All Skills
 │       ├── secretary/SKILL.md         ← Core rules
-│       ├── review/SKILL.md            ← Wrap-up flow (13-item checklist)
+│       ├── wrap-up/SKILL.md           ← Wrap-up flow (13-item checklist)
 │       ├── project-setup/SKILL.md     ← Project launch
 │       ├── knowledge-base/SKILL.md    ← URL → summarize → synthesis → archive
 │       ├── github-recon/SKILL.md      ← Paste GitHub URL → security check
@@ -113,7 +113,7 @@ workspace/
 | Check this week's priorities | "What are this week's priorities" |
 | Find old thought | "Check what I said about..." |
 | Generate weekly report | "Generate weekly report" (secretary asks if there's anything new) |
-| Return to secretary mode | "Return to secretary mode" |
+| Back to the global view | "Let's step back to the overview" |
 | Save a link to knowledge base | "Save this: [URL]" |
 | Security-check a GitHub repo | Paste a GitHub URL (auto-triggers recon) |
 | Check memory status | "Secretary, what do you remember?" |

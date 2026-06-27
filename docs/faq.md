@@ -55,9 +55,8 @@
 
 **Migration status**:
 - ✅ Secretary core rules → secretary Skill
-- ✅ Wrap-up flow → review Skill
+- ✅ Wrap-up flow → wrap-up Skill
 - ✅ Handoff protocol → handoff Skill
-- ✅ Chrome tool SOP → chrome-sop Skill
 - ❌ SYSTEM.md deprecated, don't read
 
 **If your old workspace still has SYSTEM.md**: Safe to delete, all content replaced by Skills.
@@ -153,7 +152,7 @@ See project-setup Skill's branching logic.
 | Layer | Storage | Load When |
 |---|---|---|
 | **Short-term** | Current dialogue context | Immediate (same session) |
-| **Mid-term** | `projects/{name}/INDEX.md` | Enter project mode |
+| **Mid-term** | `projects/{name}/INDEX.md` | When focused on a project |
 | **Long-term** | `projects/{name}/memory.md` | Cold start |
 
 **What gets remembered**:
@@ -268,7 +267,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ## Q13: What is "synthesis correction"?
 
-**A:** When the review Skill runs the 13-item checklist, item A5 checks for **synthesis correction** — cases where new information contradicts or updates what's already in a synthesis page.
+**A:** When the wrap-up Skill runs the 13-item checklist, item A5 checks for **synthesis correction** — cases where new information contradicts or updates what's already in a synthesis page.
 
 **Example**: Your synthesis page says "Tool X doesn't support feature Y," but today's article shows it now does. The secretary flags this, annotates the correction, and updates the synthesis page.
 
@@ -288,7 +287,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 | **Gemini API** (Deep Research) | ~$0-5/month | Only if using Gemini for research |
 | **The files themselves** | Free | Just Markdown on your computer |
 
-**Minimum viable cost**: $20/month (Pro plan + local only). That gets you secretary mode, project management, knowledge base — everything except the most capable model.
+**Minimum viable cost**: $20/month (Pro plan + local only). That gets you the secretary, project management, knowledge base — everything except the most capable model.
 
 **Author's setup**: ~$100/month (Max plan) + ~$7/month (GCP e2-micro VM for cron jobs). No API costs most months because Max plan includes generous usage.
 
@@ -326,7 +325,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 | **Scope** | One project at a time | Multiple projects + global overview |
 | **Memory** | Project-level only (~200KB) | Layered: INDEX → inbox → memory → summaries |
 | **Cross-project awareness** | ❌ | ✅ Secretary sees all projects |
-| **Self-organization** | ❌ Manual | ✅ Automated review rhythm (daily/weekly/monthly) |
+| **Self-organization** | ❌ Manual | ✅ Built-in review rhythm (wrap-up + weekly/monthly; daily optional) |
 | **Cross-session handoff** | ❌ Start fresh each time | ✅ Structured handoff protocol |
 | **Cross-model** | ❌ Claude only | ✅ Any model reads Markdown |
 | **Knowledge base** | ❌ | ✅ URL → summarize → synthesize |

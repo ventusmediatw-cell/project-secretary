@@ -89,12 +89,12 @@ Read `knowledge-base/inbox/fetch-queue.md` "Pending" section:
 
 ---
 
-## Gemini Deep Research Integration
+## Deep Research Integration
 
-> **Full SOP migrated to independent Skill**: `.claude/skills/gemini-deep-research/SKILL.md`
+> **Full SOP migrated to independent Skill**: `.claude/skills/deep-research/SKILL.md`
 > Includes: decision tree, platform routing, API quota consolidation (≤ 3 batches), research Brief template, quality control.
 
-**Trigger phrase**: User says "**have Gemini research XXX**" → load gemini-deep-research Skill
+**Trigger phrase**: User says "**research XXX**" → load deep-research Skill
 
 **KB-specific flow** (parts not covered by the Skill):
 - Archive output to `knowledge-base/articles/YYYY-MM-DD-{slug}.md`, Metadata type: `research`

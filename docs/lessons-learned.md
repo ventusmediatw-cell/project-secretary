@@ -205,7 +205,7 @@ This system treats workspace markdown as source of truth. Ensure sync:
 1. **Always write handoff** at session end (secretary auto-does)
 2. **Handoff written where**:
    - Cowork → `inbox/YYYY-MM-DD.md`
-   - Claude Code project mode → `projects/{name}/daily/YYYY-MM-DD.md`
+   - Claude Code, focused on a project → `projects/{name}/daily/YYYY-MM-DD.md`
 3. **Cross-platform tasks** → `handoff/pending/`
 
 **Best practice**:
@@ -337,7 +337,7 @@ Build cleanup rhythm (see Problem 2 solution):
 - Secretary treats Review as a checklist of file updates, not knowledge capture
 
 **Solution**:
-Use the full 12-item checklist in the review Skill. Sections A (experience extraction) and B (system updates) are the core value — not just C (memory sync).
+Use the full 13-item checklist in the wrap-up Skill. Sections A (experience extraction) and B (system updates) are the core value — not just C (memory sync).
 
 **Best practice**:
 ```
@@ -395,7 +395,7 @@ Use the knowledge-base Skill's "Project Knowledge Bridge" (kb-digest):
    git add .
    git commit -m "initial backup"
    ```
-2. **Regular commits** — review Skill's git auto-save does this at each wrap-up
+2. **Regular commits** — wrap-up Skill's git auto-save does this at each wrap-up
 3. **Lock file workaround** (Cowork): `mv .git/index.lock .git/index.lock.tmp 2>/dev/null` before commit
 4. **Recovery**: `git checkout -- path/to/file` to restore
 

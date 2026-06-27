@@ -1,188 +1,181 @@
-# INDEX / memory 管理 SOP
+# INDEX / Memory Management SOP
 
-> 完整 SOP。指針在 secretary SKILL.md，本檔按需讀取。
-> 建立：2026-04-15。來源：index-mgmt-upgrade-discussion.md 三輪討論。
+> The full SOP. The pointer lives in `secretary/SKILL.md`; read this on demand.
 
 ---
 
-## 1. 檔案定位
+## 1. File Roles
 
-| 檔案 | 定位 | 目標行數 |
+| File | Role | Target lines |
 |------|------|---------|
-| **INDEX.md** | 身份證 — 當前狀態 + 未完成待辦 + 導航 | < 150 行 |
-| **memory.md** | 累積知識 — 3 個月後仍有效的設計、決策、技術常識 | < 100 行 |
-| **refs/** | 長流程 / 模板 / 填空格式 | 不限 |
-| **refs/index-archive-*.md** | 已完成項 / 歷史快照 | 不限 |
+| **INDEX.md** | ID card — current status + open to-dos + navigation | < 150 |
+| **memory.md** | Accumulated knowledge — designs, decisions, and durable facts still valid in 3 months | < 100 |
+| **refs/** | Long procedures / templates / fill-in formats | no limit |
+| **refs/index-archive-*.md** | Completed items / historical snapshots | no limit |
 
-INDEX/memory 只留一行導航指向 refs/，不放完整流程。
+INDEX and memory keep only a one-line pointer to refs/; they don't hold the full procedure.
 
-### 活躍專案列 schema
+### Active-project row schema
 
 ```
-| [專案名](path/INDEX.md) | {定位 ≤10字} {狀態emoji} {里程碑 ≤15字} |
+| [Project name](path/INDEX.md) | {role ≤10 words} {status emoji} {milestone ≤15 words} |
 ```
 
-**狀態 emoji**：🟢 運作中 / 🟡 需注意 / 🔴 阻塞 / ✅ 階段完成 / ⏳ 待啟動 / ⛔ 暫停
+**Status emojis**: 🟢 active / 🟡 needs attention / 🔴 blocked / ✅ stage done / ⏳ not started / ⛔ paused
 
-**不放**：具體數字、下一步行動、期限（這些歸 W?? 週計畫 + 待辦 + 該專案 INDEX）。
+**Do NOT put here**: specific numbers, next actions, deadlines — those go in the weekly plan + to-dos + that project's INDEX.
 
-**更新觸發**：
-1. 里程碑達成/放棄 → 更新該列
-2. 狀態降級（🟢→🟡 / 🟡→🔴）→ 立即更新 + 近期重點記錄原因
-3. 停滯門檻：14 天無動靜 → 🟡，30 天 → 🔴，60 天 → ⛔ 候選
-4. 每日晨檢比對各列狀態與該專案 INDEX last update，異常列入健康報告
+**Update triggers**:
+1. Milestone reached/abandoned → update that row
+2. Status downgrade (🟢→🟡 / 🟡→🔴) → update immediately + note the reason in recent priorities
+3. Staleness thresholds: 14 days idle → 🟡, 30 days → 🔴, 60 days → ⛔ candidate
+4. If you run a daily check, compare each row's status against that project's INDEX last-update and flag anomalies
 
 ---
 
-## 2. SOP 抽離判準
+## 2. SOP Extraction Criteria
 
-### 前置過濾
+### Pre-filter
 
-**事件敘述類（已完成項 / 歷史快照）直接走 archive，不進入下方判準流程。** §2 判準只適用於活躍內容的抽離決策。已完成的 P0/P1/P2 事項、特定 event 復盤、歷史快照 → `projects/{name}/refs/index-archive-YYYYMMDD.md`。
+**Event narratives (completed items / historical snapshots) go straight to archive, not through the criteria below.** The §2 criteria apply only to extracting *active* content. Completed items, post-mortems, and historical snapshots → `projects/{name}/refs/index-archive-YYYYMMDD.md`.
 
-### 活躍內容抽離判準
+### Active-content extraction criteria
 
-瘦身時主動掃描，符合 **2 項以上** → 候選抽離：
+While slimming down, scan proactively; meeting **2 or more** → extraction candidate:
 
-1. 有明確步驟或固定流程
-2. 有固定格式 / 模板 / 填空範例
-3. 會被重複觸發（同類任務每月至少發生 1 次，如 checkpoint 報告、handoff、週報）
-4. 3 個月後仍有效
-5. 長度 > 15 行 OR 與 memory/refs 既有內容重複 OR 屬已完成事件敘述
+1. Has clear steps or a fixed procedure
+2. Has a fixed format / template / fill-in example
+3. Recurs (the same kind of task happens at least monthly — e.g. status reports, handoffs, weekly reviews)
+4. Still valid in 3 months
+5. Length > 15 lines OR duplicates existing memory/refs content OR is a completed-event narrative
 
-### 抽離前先問
+### Before extracting, ask
 
-「這是**怎麼做**還是**為什麼這樣設計**？」
+"Is this **how to do it** or **why it's designed this way**?"
 
-- **怎麼做** → 抽 SOP / template 到 refs/
-- **為什麼這樣** → 進 memory.md
+- **How to do it** → extract the SOP / template to refs/
+- **Why this way** → put it in memory.md
 
-例：「V2 策略三層架構設計」是設計常識（→ memory），不是 SOP。
+Example: "the three-layer architecture decision" is design knowledge (→ memory), not an SOP.
 
-### 抽出位置四層
+### Four extraction destinations
 
-| 類型 | 位置 | 例子 |
+| Type | Location | Example |
 |------|------|------|
-| 專案專屬 SOP/spec | `projects/{name}/refs/` | Elon `checkpoint-report-spec.md` |
-| 跨專案流程模板 | `.claude/skills/{name}/` 或升級既有 Skill | debate-protocol |
-| 純填空模板 | 對應 Skill 的 `templates/` 子目錄 | handoff templates |
-| 已完成事件敘述 | `projects/{name}/refs/index-archive-YYYYMMDD.md` | Elon `index-archive-20260415.md` |
+| Project-specific SOP/spec | `projects/{name}/refs/` | ProjectX `checkpoint-report-spec.md` |
+| Cross-project process template | `.claude/skills/{name}/` or upgrade an existing Skill | debate-protocol |
+| Pure fill-in template | the Skill's `templates/` subdirectory | handoff templates |
+| Completed-event narrative | `projects/{name}/refs/index-archive-YYYYMMDD.md` | ProjectX `index-archive-20260415.md` |
 
-**archive 命名慣例**：`index-archive-YYYYMMDD.md`。同日多次瘦身同檔追加，不同日新檔。
+**Archive naming**: `index-archive-YYYYMMDD.md`. Same-day repeated slim-downs append to the same file; a new day gets a new file.
 
-**archive 檔案首段必含**：
-1. 來源檔案（`INDEX.md` / `memory.md`）
-2. 時間範圍（哪段期間的內容）
-3. 觸發原因（哪次瘦身 / 何事驅動）
+**The archive file's first block must include**:
+1. Source file (`INDEX.md` / `memory.md`)
+2. Time range (which period the content covers)
+3. Trigger (which slim-down / what drove it)
 
-格式：`# {來源檔} 歸檔內容（YYYY-MM-DD {觸發原因}）`
+Format: `# {source file} archived content (YYYY-MM-DD {trigger})`
 
 ---
 
-## 3. 灰色地帶判準（memory vs INDEX）
+## 3. Gray-Area Criteria (memory vs INDEX)
 
-- 3 個月後仍有效 → **memory**
-- 會隨時間失效 → **INDEX / daily**
-- 具時間性的觀察結論（live 運行數據、特定 event 復盤）超過 1 批新數據後進 archive，memory 只留通則
-- **已驗證假設**：結論壓成 1 行留 memory，推理過程與數據佐證抽 archive。未驗證的假設留原位
+- Still valid in 3 months → **memory**
+- Expires over time → **INDEX / daily**
+- Time-bound observations (live run data, a specific post-mortem) go to archive after more than one batch of new data; memory keeps only the general rule
+- **Verified hypotheses**: compress the conclusion to one line in memory, extract the reasoning and supporting data to archive. Unverified hypotheses stay where they are.
 
-### 範例
+### Examples
 
-| 內容 | 去向 | 理由 |
+| Content | Goes to | Why |
 |------|------|------|
-| V2 策略三層架構設計 | memory | 設計常識 |
-| 當前 event 350722 | INDEX | 快照，會過期 |
-| CLOB API 用法 | memory | 技術常識 |
-| 本週計畫 W16 | INDEX | 時效性 |
+| A three-layer architecture decision | memory | Design knowledge |
+| Current snapshot: Project A at stage 3 | INDEX | Snapshot, will expire |
+| How the payment API auth flow works | memory | Technical knowledge |
+| This week's plan (W16) | INDEX | Time-sensitive |
 
-### memory 延伸閱讀
+### memory "further reading"
 
-refs/ 超過 3 個時建議在 memory 尾段加「延伸閱讀」區塊，列出最重要的 3-5 個。不強制。
+When refs/ exceeds 3 files, consider adding a "further reading" block at the end of memory listing the 3-5 most important ones. Not mandatory.
 
 ---
 
-## 4. 整理節奏（分層）
+## 4. Organization Rhythm (layered)
 
-| 頻率 | 動作 | 執行主體 | 成本 |
+| Frequency | Action | Who | Cost |
 |------|------|---------|------|
-| **每次收尾** | 只更新主 INDEX + 寫 inbox 日記（零檢查） | agent（review Skill） | 低 |
-| **每日凌晨 02:09** | 秘書 Review（含晨檢職責，§5 詳述） | Cowork scheduled task `daily-secretary-review` | ~10K token |
-| **每日首次 Code session** | 開機檔案斷鏈掃描 | SessionStart hook + daily-gate | ~500 token |
-| **每週（週報 Step 6）** | 結構性瘦身：行數體檢 + SOP 抽離候選 + 搬 archive | agent | 高，15-30 分鐘 |
-| **手動** | 使用者說「瘦身」「impact check」 | agent | 按需 |
+| **Each wrap-up** | Update the main INDEX + write the inbox journal (no checks) | agent (wrap-up Skill) | low |
+| **Daily (optional, you set it up)** | Secretary Review (incl. the daily check, §5) — **best-effort, not guaranteed; a fork has no such schedule by default** | a scheduled task you register on your platform (e.g. a Cowork scheduled task) | ~10K tokens |
+| **First session each day (optional)** | A startup link-check, if you wire one up | a SessionStart hook on Claude Code (see `extras/`) | ~500 tokens |
+| **Weekly (weekly-report Step 6)** | Structural slim-down: line-count check + SOP extraction candidates + move to archive | agent | high, 15-30 min |
+| **Manual** | User says "slim down" / "impact check" | agent | on demand |
 
 ---
 
-## 5. 每日秘書 Review 內含晨檢三項
+## 5. What a Daily Review Should Do
 
-> 2026-04-15 更新：原獨立 `daily-secretary-morning-check`（08:30）已併入 `daily-secretary-review`（02:09）。Scheduled task 的 prompt 已包含下列 B7/B8/D3 步驟。
+> ⚠️ This section describes what a daily Review *should do* **if you set one up**. A fork has **no such schedule by default** — register a scheduled task on your platform if you want it, and treat it as **best-effort, not guaranteed**. The reliable persistence layer is behavioral (wrap-up + the startup scan in CLAUDE.md); a schedule is a bonus.
 
-### 晨檢三項（由 Review Phase B7 / B8 / D3 執行）
+### The daily check (three items)
 
-1. **刷新主 INDEX 的 W?? 週計畫表狀態欄**（Review Phase D2 既有動作）
-2. **呼叫 `.claude/scripts/impact_check.sh`** 掃開機檔案斷鏈（Phase B7）
-3. **掃所有活躍專案 INDEX 行數**，> 150 行列入清單（Phase B8）
-4. **健康報告整合至 Review 報告的「掃描範圍」與「診斷發現」區塊**（不再另寫獨立 sub-section）
-5. **寫 / 替換 / 清除主 INDEX 警示行區塊**（Phase D3）：
+1. **Refresh the status column** of the main INDEX's weekly-plan table
+2. **Run a link-check** over the startup files (see §6) to catch broken links
+3. **Scan every active project's INDEX line count**; list any over 150 lines
+4. **Fold the health findings into the Review report** (don't write a separate sub-section)
+5. **Write / replace / clear the alert block in the main INDEX**:
 
-#### 有問題時
+#### When there's a problem
 
-在主 INDEX「系統狀態」區塊下方 insert 或 replace：
+Insert or replace, below the main INDEX's "system status" block:
 
 ```
 <!-- impact-check-alert -->
-⚠️ YYYY-MM-DD 體檢：{專案A} {N}行 / {專案B} {N}行 / {M} 斷鏈 — 詳見 inbox/YYYY-MM-DD.md
+⚠️ YYYY-MM-DD check: {Project A} {N} lines / {Project B} {N} lines / {M} broken links — see inbox/YYYY-MM-DD.md
 <!-- /impact-check-alert -->
 ```
 
-#### 無問題時
+#### When there's no problem
 
-整個 `<!-- impact-check-alert -->` ... `<!-- /impact-check-alert -->` 區塊刪除（含 marker）。
+Delete the entire `<!-- impact-check-alert -->` … `<!-- /impact-check-alert -->` block (including the markers).
 
-#### 已存在今日警示時
+#### When today's alert already exists
 
-替換為最新狀態，**不追加**。
+Replace it with the latest status — **don't append**.
 
-### Scheduled task 註冊規格
+### Registering it
 
-晨檢三項已併入 `daily-secretary-review`（02:09 cron），不再單獨註冊 `daily-secretary-morning-check`。原 task 已於 2026-04-15 停用（`enabled: false`）。
-
-> Code 端不建對等 scheduled task（防寫入衝突，SessionStart hook 已覆蓋）。
+If you want this to run on its own, register it as a scheduled task on your platform (Cowork supports scheduled tasks; on Claude Code, use a SessionStart hook or a scheduled routine). On a single machine, avoid registering two writers for the same files — pick the hook *or* the scheduled task, not both.
 
 ---
 
-## 6. 影響性檢查 SOP
+## 6. Impact-Check (link-check) SOP
 
-### 觸發時機
+The template ships an example link-check script at `extras/claude-code/scripts/impact_check.sh` (plus `startup_link_check.sh`). It's **optional** — run it manually, or wire it to a SessionStart hook (Claude Code) / scheduled task (Cowork) if you want it to run automatically. It does not run on its own unless you set that up.
 
-- **Claude Code**：SessionStart hook 每日自動（`.claude/scripts/startup_link_check.sh`）
-- **Cowork**：scheduled task 每日自動 / 手動呼叫
-- **手動**：使用者說「跑 impact check」
-
-### 開機檔案（五大 + refs）
+### Startup files to check (the core set + refs)
 
 1. `CLAUDE.md`
 2. `INDEX.md`
-3. 任一 `projects/*/memory.md`
-4. `.claude/skills/handoff/` 下任一檔
-5. `.claude/skills/review/` 下任一檔
-6. 上述檔案指向的任一 refs（`refs/`、`projects/*/refs/`）
+3. any `projects/*/memory.md`
+4. any file under `.claude/skills/handoff/`
+5. any file under `.claude/skills/wrap-up/`
+6. any refs those files point to (`refs/`, `projects/*/refs/`)
 
-### 執行步驟
+### Steps
 
-1. 呼叫 `.claude/scripts/impact_check.sh <檔案路徑>`
-2. 解讀輸出：
-   - **BROKEN**（目標不存在）→ 必修
-   - **SUSPICIOUS**（路徑存在但 anchor 不對）→ 評估
-   - **CLEAN** → 通過
-3. 修復所有 BROKEN 項
-4. 搬動檔案時舊位置留一行 `> 已搬至 {新路徑}`（保留 3 個月，由週報 Step 6 清理過期導航）
+1. Run `impact_check.sh <file path>`
+2. Read the output:
+   - **BROKEN** (target doesn't exist) → must fix
+   - **SUSPICIOUS** (path exists but the anchor is wrong) → assess
+   - **CLEAN** → pass
+3. Fix every BROKEN item
+4. When you move a file, leave one line at the old location: `> moved to {new path}` (keep for 3 months; the weekly Step 6 clears expired pointers)
 
-### Cowork 手動呼叫方式
+### Running it manually (Cowork)
 
 ```bash
-# Cowork 環境下（路徑可能需依掛載調整）
-bash .claude/scripts/impact_check.sh INDEX.md CLAUDE.md
+# In Cowork (adjust the path to your mount if needed)
+bash extras/claude-code/scripts/impact_check.sh INDEX.md CLAUDE.md
 ```
 
-腳本會自動從自身位置推算根目錄，無需傳入絕對路徑。
+The script derives the repo root from its own location; no absolute path needed.

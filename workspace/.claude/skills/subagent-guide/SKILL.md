@@ -53,7 +53,7 @@ Rule of thumb: **Most token output on cheaper model, only use expensive model fo
 Main agent should make its own judgment at these moments—don't blindly delegate to sub agent:
 
 1. **After exploration, before action** — After sub agent finishes data collection, main agent consolidates and plans before dispatching next round of execution. Don't rush upon receiving data
-2. **After completion, before declaring done** — After writing files / running tests, open a verification sub agent to review (echoes review Skill's wrap-up flow)
+2. **After completion, before declaring done** — After writing files / running tests, open a verification sub agent to review (echoes wrap-up Skill's flow)
 3. **When stuck** — Same error repeating, approach not converging: main agent should reassess strategy, don't let sub agent retry endlessly
 4. **Before changing direction** — Don't silently switch; lay out known facts vs new direction conflicts. Escalate to user for decision if necessary
 

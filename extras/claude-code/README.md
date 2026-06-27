@@ -43,4 +43,4 @@ This directory contains tooling **specific to Claude Code** (the CLI tool). If y
 
 ## Cowork / Antigravity Equivalent
 
-These platforms don't have hooks. Use a scheduled task (e.g., `daily-secretary-review` running at 02:09) to achieve the same daily health check. See the secretary Skill for details.
+These platforms don't have hooks. As a fallback, a scheduled task (e.g., `daily-secretary-review` at 02:09) can achieve the same daily health check — but in practice this is better triggered manually by the user. See the secretary Skill for details.
