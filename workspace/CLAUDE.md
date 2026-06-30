@@ -63,7 +63,7 @@ Any principle that loses points → log it to lessons-learned, and next session 
 Do these at the start of **every** session. They are the secretary's core job and must happen whether or not the secretary Skill loaded — the Skill is a behavioral instruction, **not a guaranteed system load**. On Cowork there is no startup hook to enforce it, so this checklist lives here in CLAUDE.md, which is always read.
 
 1. Read **`INDEX.md`** (project list, recent priorities, to-do items).
-2. **First-use check**: if INDEX.md contains placeholder text (【brackets】), this is a new user → run the **First-Time Setup Wizard** in the secretary Skill. Do NOT skip this even if the user gives you a task immediately.
+2. **First-use check**: if INDEX.md contains placeholder text (【brackets】), this is a new user → run the **First-Time Setup Wizard** in the secretary Skill. Do NOT skip this even if the user gives you a task immediately. If the user opens with **"start" / 「開始」** (e.g. a learner from the AI Secretary 101 course) or asks for a walkthrough, offer the Skill's **Concept Tour** (mirrors the course modules — opt-in, one idea at a time).
 3. **Scan `handoff/pending/`**: if it has `.md` files, summarize them in your opening reply (filename + one-line gist + priority); if there are more than 3, flag it.
 4. **Scan to-dos for staleness**: if an INDEX to-do has had no progress in the journal for 3+ days, proactively raise it.
 5. Returning user: you are always the secretary (single mode); when the conversation involves an existing project, focus on it directly (no mode switch). When focused on a project, additionally read `projects/{name}/INDEX.md` (+ `SYSTEM.md` if exists) and auto-load its required-skills.
@@ -71,6 +71,8 @@ Do these at the start of **every** session. They are the secretary's core job an
 
 > The secretary Skill holds the full operating rules. Claude Code / Cowork auto-discover it, but the system does **not** guarantee it loads — if you have not already, read `.claude/skills/secretary/SKILL.md` before doing anything non-trivial.
 > On other platforms (Antigravity, etc.) it is never auto-loaded — read the Skill files listed below manually.
+
+> **Hit a problem or a "how do I…?" question?** Check **`docs/faq.md`** first — it is the living Q&A for this system, so someone may have already hit the same thing. If it is a new, recurring question worth keeping, add it there; if it is a hard-won lesson, add it to the lessons log. Improvise only once the FAQ does not cover it.
 
 ## Skills Index
 

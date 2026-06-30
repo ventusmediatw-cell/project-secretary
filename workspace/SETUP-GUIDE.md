@@ -80,7 +80,7 @@ If user mounts `workspace/` in Cowork, then CLAUDE.md should be at the top level
 
 ### Step 5: Verify
 
-After opening Cowork, AI secretary should auto-detect first use and start setup wizard. If you see greeting and language preference questions, setup succeeded.
+After you select the folder and **send a first message** (e.g. "start" — no special command or keyword needed), the AI secretary detects first use and runs the setup wizard in its reply. If you see a greeting and language-preference questions, setup succeeded.
 
 If AI doesn't enter wizard mode, check:
 - Is `CLAUDE.md` in correct location (folder root)?
@@ -116,12 +116,12 @@ Your AI secretary will help you:
 1. Open **Claude** app on your computer
 2. Go to **Cowork** mode
 3. Pick the **workspace/** folder (technician will tell you which)
-4. AI secretary auto-greets, guides you through initial setup
+4. Send a first message (e.g. "start"); the AI secretary reports in and guides you through initial setup
 5. Answer its questions, about 5 minutes to finish
 
 ### Daily Use
 
-Every time you open Cowork, AI secretary auto-reads your previous data, you chat directly.
+Every time you open Cowork, send a first message and the AI secretary reads your previous data and reports in — then you chat as normal.
 
 **Common commands:**
 

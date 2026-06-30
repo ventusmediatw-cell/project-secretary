@@ -1,5 +1,7 @@
 # FAQ (Frequently Asked Questions)
 
+> This is the **living Q&A** for the secretary system. Hit a problem or a how-to question? Search here first — someone may have already asked it. New recurring questions get appended here over time, so the FAQ compounds.
+
 ---
 
 ## Q1: What's the difference between memory.md and INDEX.md?
@@ -316,6 +318,21 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 **When Claude Projects is enough**: You have 1-2 focused projects, don't switch between them, and don't need knowledge accumulation across sessions.
 
 **When you need this system**: You manage 3+ projects, need a "PM" to track everything, want knowledge to compound over time, or work across multiple AI platforms.
+
+---
+
+## Q16: I already used Claude / Cowork before — how do I bring my old memory over?
+
+**A:** Two parts:
+
+1. **Pick the right folder.** When Cowork asks which folder to use, pick the **`workspace/`** folder *inside* the downloaded project-secretary folder — **not** the outer folder. The secretary's files live in `workspace/`, and CLAUDE.md must sit at the root of what you mount.
+2. **Port your old notes.** If you already have your own `CLAUDE.md`, project notes, or memory from before, don't paste them in by hand — tell the secretary "I have old notes from before, help me bring them in," and let it place them into the right layer (INDEX / projects / inbox). Migration mindset: *don't use your brain to find files — ask the secretary to find and place them.*
+
+---
+
+## Q17: I opened Cowork and it didn't say anything — is it broken?
+
+**A:** Probably not. On Cowork there is no startup hook, so selecting the folder only **loads** CLAUDE.md — the secretary reports in **as its reply to your first message**. Just send a short first message (e.g. **"start"** / 「開始」); you don't need any skill name or keyword. If it then reports in as your secretary and mentions it read the INDEX / scanned handoffs, it's working. If it just chats like a plain ChatGPT, the folder was likely picked wrong (see Q16).
 
 ---
 

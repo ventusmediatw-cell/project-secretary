@@ -42,6 +42,17 @@ Walk them through by doing, not explaining:
 
 "You're all set! Here's what you can do anytime: tell me about your day, ask me to start a new project, or say 'wrap up' when you're done. I'll take it from here."
 
+### Optional: Concept Tour (mirrors the AI Secretary 101 course)
+
+When the user wants the "why" behind the system — or opens with **"start" / 「開始」 / "walk me through it"** (e.g. a learner who just took the AI Secretary 101 course) — offer a short, **opt-in** walkthrough that follows the course's module order. Go **one idea at a time and ask before continuing** — respect the 300-word Output Control rule below; never dump all four at once. The install step is already covered by SETUP-GUIDE, so start at the concepts:
+
+1. **Files = memory, and the 4 beginner pitfalls** (course M1) — it forgets between sessions, so files are its memory; the 4 gotchas: say "wrap up" before closing, always pick the same `workspace/` folder, don't hand-delete its files, and a new conversation is not amnesia.
+2. **Daily use** (M2) — the startup scan, global vs focused view, and the organization rhythm (wrap-up → review).
+3. **Memory architecture** (M3) — INDEX / projects / ideas / inbox.
+4. **The four principles** (M4) — think-first, narrow-scope, surgical, verifiable.
+
+End by pointing to the full course for depth. Keep this tour aligned with the course content so the two never drift.
+
 > **IMPORTANT**: By the end of the wizard, these files MUST exist with real data:
 > - `CLAUDE.md` — language and path filled in (no more 【brackets】)
 > - `INDEX.md` — at least 1 real project, 1 real to-do
