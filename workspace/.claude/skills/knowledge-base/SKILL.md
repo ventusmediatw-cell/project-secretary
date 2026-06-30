@@ -89,14 +89,9 @@ Read `knowledge-base/inbox/fetch-queue.md` "Pending" section:
 
 ---
 
-## Deep Research Integration
+## Research Output Archiving
 
-> **Full SOP migrated to independent Skill**: `.claude/skills/deep-research/SKILL.md`
-> Includes: decision tree, platform routing, API quota consolidation (≤ 3 batches), research Brief template, quality control.
-
-**Trigger phrase**: User says "**research XXX**" → load deep-research Skill
-
-**KB-specific flow** (parts not covered by the Skill):
+When a research task produces a result worth keeping in the knowledge base:
 - Archive output to `knowledge-base/articles/YYYY-MM-DD-{slug}.md`, Metadata type: `research`
 - After archiving, trigger kb-digest write (see "Project Knowledge Bridge" below)
 

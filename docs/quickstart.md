@@ -87,7 +87,6 @@ workspace/
 │       ├── wrap-up/SKILL.md           ← Wrap-up flow (13-item checklist)
 │       ├── project-setup/SKILL.md     ← Project launch
 │       ├── knowledge-base/SKILL.md    ← URL → summarize → synthesis → archive
-│       ├── github-recon/SKILL.md      ← Paste GitHub URL → security check
 │       └── ...（other Skills）
 ├── INDEX.md                            ← Main index (most important)
 ├── BEGINNER-TIPS.md                   ← Tips for beginners

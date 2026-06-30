@@ -39,12 +39,8 @@ workspace/                          ← User mounts this folder
 │       ├── project-setup/SKILL.md  ← Project launch flow
 │       ├── knowledge-base/SKILL.md ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md     ← Tool discovery + security
-│       ├── github-recon/SKILL.md   ← GitHub repo security recon
-│       ├── deep-research/SKILL.md   ← Deep Research SOP
-│       ├── growth-coach/SKILL.md   ← Personal growth coach
-│       ├── gcp-ops/SKILL.md        ← [Optional] GCP SOP
-│       ├── github-ops/SKILL.md     ← [Optional] GitHub SOP
-│       └── subagent-guide/SKILL.md ← [Optional] Sub Agent guide
+│       ├── meta-skill/SKILL.md     ← Build / audit a single skill
+│       └── plan-discuss/SKILL.md   ← Multi-model plan review
 ├── INDEX.md                        ← Main index (project list, to-dos)
 ├── BEGINNER-TIPS.md                ← Beginner tips
 ├── SETUP-GUIDE.md                  ← This file

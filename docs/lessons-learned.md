@@ -145,7 +145,6 @@ Secretary produces summary immediately after Debate, user reviews again before d
 - First login needs manual browser confirmation
 
 **Solution**:
-See gcp-ops Skill's "Cowork Sandbox" section:
 1. Settings → Enable Network Egress
 2. Run `curl -sSL https://sdk.cloud.google.com | bash`
 3. Run `gcloud init` → Browser login window appears
@@ -171,7 +170,6 @@ See gcp-ops Skill's "Cowork Sandbox" section:
 - PAT in dialogue = assume leaked
 
 **Solution**:
-See github-ops Skill's "PAT Usage Rules":
 1. Use Classic PAT, not fine-grained
 2. **PAT in dialogue = treat as leaked**
 3. After operations immediately remind user to revoke
@@ -230,7 +228,6 @@ This system treats workspace markdown as source of truth. Ensure sync:
 - Prompt must be **complete and explicit**
 
 **Solution**:
-See subagent-guide Skill's "Usage Notes":
 1. **Complete explicit prompt**:
    ```
    Don't: "Research X market"

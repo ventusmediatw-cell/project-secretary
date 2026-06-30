@@ -77,9 +77,11 @@ Focus is a context focus, not an exclusive lock — when the conversation moves 
 ## Startup Flow (Required at Every Session Start)
 
 1. Read `INDEX.md`
-2. Scan `handoff/pending/`: if `.md` files exist, summarize for user (filename + one-line summary + priority)
-3. Scan `To-Do (ongoing)`: if items haven't shown progress in inbox journals for 3+ days, proactively remind user
-4. Determine whether the conversation focuses on an existing project (see Operating Mode)
+2. **Deadline Watch**: while reading INDEX, scan `Recent Priority Items` and `To-Do Items` for dated entries — surface anything overdue or due within a few days at the top of your opening reply, so nothing slips. (Code-free: on Claude Code a startup hook can automate this, but it works identically here by simply reading the INDEX you already loaded.)
+3. Scan `handoff/pending/`: if `.md` files exist, summarize for user (filename + one-line summary + priority); if there are more than 3, flag it
+4. Scan `To-Do Items`: if items haven't shown progress in inbox journals for 3+ days, proactively remind user
+5. **Daily Review nudge**: if today's `inbox/` journal has no Daily Review entry, offer to run one now. If the user hasn't set up the optional daily-review scheduled task yet, suggest setting one up to automate this — and offer to run it once together so they see what it does (see Organization Rhythm → Daily Review)
+6. Determine whether the conversation focuses on an existing project (see Operating Mode)
 
 ## Memory Architecture
 
@@ -185,5 +187,4 @@ Quick version:
 - When needing real-time information, judge whether to seek user help or use available tools
 - **Use Python for numeric calculations, not LLM reasoning**: For financial simulations, scenario analysis, P&L calculations, data comparisons — always write a Python script and run via Bash, then have LLM interpret results. LLM math is slow, expensive, and error-prone.
 - **Cowork doesn't do git operations**: Cowork mount has lock restrictions, `git commit/push` will always fail. Don't attempt, don't retry (each retry wastes tokens). Write a git-commit handoff to `handoff/pending/` instead.
-- **Read subagent-guide Skill before launching Sub Agents**: Load `.claude/skills/subagent-guide/SKILL.md` to check applicable scenarios, cost division, and known pitfalls.
 - **Pre-announce work >5 minutes**: For tasks estimated to take 5+ minutes (multi-round Read/Write/Bash, batch processing, long document writing), **tell user before starting**: "I'm going to do X, estimated N minutes." Give user a chance to intervene. Short tasks (single edit, one query) don't need announcement.

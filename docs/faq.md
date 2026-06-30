@@ -180,7 +180,6 @@ See project-setup Skill's branching logic.
 
 3. **Cowork open Subagent**
    - Parallel tasks given to sub agent, each saves tokens
-   - See subagent-guide Skill
 
 **Best practice**:
 - Deep thinking, decisions → Opus
@@ -248,24 +247,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ---
 
-## Q12: What is github-recon? When does it trigger?
-
-**A:** github-recon is a **security reconnaissance Skill** that auto-triggers when you paste a GitHub repo URL in conversation.
-
-**What it does**:
-- Scans the repo's README, directory structure, dependencies, and commit patterns
-- Produces a Red / Yellow / Green traffic-light assessment
-- Checks a **red-flag list**: hardcoded secrets, suspicious install scripts, typosquatting package names, etc.
-
-**Important distinction**: Recon ≠ source code review. Recon is a quick, read-only safety check before you clone or install anything. A full code review is a separate, deeper process.
-
-**When to use**:
-- Someone recommends a new tool or library → paste the URL, let recon run first
-- Evaluating an MCP server or plugin → recon before installing
-
----
-
-## Q13: What is "synthesis correction"?
+## Q12: What is "synthesis correction"?
 
 **A:** When the wrap-up Skill runs the 13-item checklist, item A5 checks for **synthesis correction** — cases where new information contradicts or updates what's already in a synthesis page.
 
@@ -275,7 +257,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ---
 
-## Q14: How much does this cost?
+## Q13: How much does this cost?
 
 **A:** Depends on your setup:
 
@@ -298,7 +280,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ---
 
-## Q15: Is it safe? Will the AI delete my files?
+## Q14: Is it safe? Will the AI delete my files?
 
 **A:** The AI operates within its working directory and can read/write any files there. This is powerful but comes with risk.
 
@@ -316,7 +298,7 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ---
 
-## Q16: How is this different from Claude Projects?
+## Q15: How is this different from Claude Projects?
 
 **A:** Claude Projects is great for single-topic deep work. This system is for managing your entire work life across multiple projects.
 

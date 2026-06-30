@@ -175,7 +175,6 @@ This skill synthesizes best practices from multiple sources: the Anthropic offic
 | Existing SKILL | Relationship | Action |
 |---|---|---|
 | `project-setup` | parallel | new "project" six-step vs new "skill" A→E |
-| `subagent-guide` | complementary | a subagent is the executor, a skill is the rulebook |
 | wrap-up review skill | downstream | run the wrap-up checklist after building — mandatory in §1 stage C |
 | `handoff` | cross-platform | write SKILL logic on a restricted platform → land it in `.claude/skills/` on a platform with permission |
 | Anthropic official `skill-creator` | same meta-layer source | meta-skill is the wrapper; can call skill-creator to run an iteration loop / dual-subagent benchmark |

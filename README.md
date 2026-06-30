@@ -35,22 +35,17 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 |---|---|---|
 | **project-setup** | Six-step project launch flow: background → architecture → research → Debate → decision → execution. Includes branching logic for simple vs complex projects | Say **"start new project"** or **"open a project"** |
 | **knowledge-base** | Personal knowledge pipeline: paste a URL → auto-fetch → summarize → archive. Supports articles and YouTube. Includes synthesis layer (cross-article compiled knowledge), tiered search (L1→L2→L3), and periodic health checks. Bridges knowledge to projects via `kb-digest` | Share a **URL** in conversation, or say **"save this"** |
-| **github-recon** | Security reconnaissance for GitHub repos: 5-step SOP producing red/yellow/green light reports. Read-only, zero execution — builds risk picture before you clone/install | Auto-triggers when you paste a **github.com URL** |
 | **tool-scout** | Discover tools via MCP Registry, Plugin store, and GitHub. Includes security assessment checklist | Say **"find a tool for X"** or **"is there a plugin for X"** |
-| **deep-research** | Deep Research SOP (provider-agnostic): decision tree (Deep Research vs a regular LLM worker vs Opus), platform routing, API quota consolidation, research Brief template, quality control | Say **"research X"** |
 | **debate-protocol** | Multi-round structured debate for high-stakes decisions. Advocate vs Challenger with word limits, secretary moderates. *(A protocol in `refs/debate-agents/`, not an installable `.claude/skills/` Skill.)* | Triggered during **project-setup Step 4**, or say **"let's debate X"** |
-| **growth-coach** | Personal growth coach — independent second role for daily reflection. Scans daily achievements, guides reflection dialogue, weekly secretary×coach consultation | Say **"start growth coach"** or **"bedtime reflection"** |
+| **plan-discuss** | Multi-model independent plan review: send a plan to independent reviewers from different model families → synthesize → final-check in a separate session. Cross-family signal rules + override guardrails. Complements debate-protocol | Say **"run a discuss round"** or **"multi-model review"** |
 
-### Tool SOPs (optional, remove if unused)
+### Meta Skill (extend the system)
 
 | Skill | What It Does | How to Trigger |
 |---|---|---|
-| **gcp-ops** | GCP VM operations: SSH, firewall, deployment | Load when **using GCP** |
-| **github-ops** | GitHub operations: PAT management, clone/push, security | Load when **using GitHub** |
-| **subagent-guide** | Best practices for launching and prompting sub-agents | Load when **launching a sub-agent** |
 | **meta-skill** | The meta-skill for building and auditing a single Skill. Three workflows: (1) an A→E flow for building a new Skill (before → build → verify → maintain → cross-platform), (2) a SKILL anatomy + boundary checklist, (3) a tiered single-Skill audit with retrofit prioritization. Enforces "entry is a map, not an encyclopedia" and the layering convention | Say **"build a skill for X"**, **"audit this skill"**, or when the secretary notices repeated manual work (N≥2) worth packaging |
 
-> **Customization tip**: Delete any Tool SOP Skills you don't need. The core system works fine without them.
+> **Customization tip**: meta-skill is how you build and audit your own Skills as your system grows. You can delete any Skill you don't use — the core (secretary / wrap-up / handoff) always runs on its own.
 
 ## Quick Start
 
@@ -75,12 +70,8 @@ workspace/                             ← Mount this folder
 │       ├── project-setup/SKILL.md     ← Six-step project launch
 │       ├── knowledge-base/SKILL.md    ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md        ← Tool discovery + security
-│       ├── github-recon/SKILL.md      ← GitHub repo security recon
-│       ├── deep-research/SKILL.md      ← Deep Research SOP
-│       ├── growth-coach/SKILL.md      ← Personal growth coach
-│       ├── gcp-ops/SKILL.md           ← [Optional] GCP SOP
-│       ├── github-ops/SKILL.md        ← [Optional] GitHub SOP
-│       └── subagent-guide/SKILL.md    ← [Optional] Sub Agent guide
+│       ├── meta-skill/SKILL.md        ← Build / audit a single skill
+│       └── plan-discuss/SKILL.md      ← Multi-model plan review
 ├── INDEX.md                           ← Main index (project list, to-dos)
 ├── BEGINNER-TIPS.md                   ← Beginner tips
 ├── inbox/                             ← Daily journals (auto-created)
@@ -117,7 +108,7 @@ Open `workspace/CLAUDE.md` and modify:
 - **Identity**: Change "AI personal secretary" to your desired role
 - **Model default**: Adjust based on your plan (Max / Pro / other)
 - **Cross-platform paths**: Set to your actual paths
-- **Skills index**: Remove tool SOP Skills you don't need
+- **Skills index**: Remove any Skills you don't need
 
 ### 4. Customize secretary Skill
 
@@ -175,16 +166,24 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 5. Look up `docs/lessons-learned.md` when you hit issues (15 pitfalls)
 
 ## Version History
-### v1.0 (2026-06-14)
+### v1.0 (2026-06-30)
+
+v1.0 repositions the public template as a **Cowork-first, deliberately simpler subset** of the author's live system — the Skills a newcomer actually needs to start, with nothing that depends on private setup.
+
+**Skill set — ships 8 Skills** (trimmed from the larger v0.x set):
+- **Kept**: secretary, wrap-up, handoff, project-setup, knowledge-base, tool-scout, meta-skill
+- **Added**: **plan-discuss** — multi-model independent plan review (English, de-identified)
+- **Removed** (live-only — depend on private config or out of scope for a starter template): deep-research (formerly gemini-deep-research), gcp-ops, github-ops, github-recon, subagent-guide, growth-coach, chrome-sop. `/loop` is taught as a built-in command rather than shipped as a Skill.
 
 **Added**:
 - **The Four Principles (behavioral layer)** in CLAUDE.md: think-and-search-before-acting / narrow-scope-deep-execution / surgical-changes / verifiable-not-just-confident — the judgment spine the AI loads every session, plus a principles self-audit at wrap-up. Previously the template shipped only operational Golden Rules (the "how to act"), not the "how to judge."
 - **meta-skill**: the meta-skill for building / auditing / modifying a single Skill (A→E build flow + SKILL anatomy + 4-Tier audit + modify-existing-skill flow). Lets users grow their own Skills instead of only using the shipped ones. Ships with `references/build-checklist.md` — the first Skill to demonstrate the references/ layering convention.
 - **concept-guide "How to Organize a Skill"** section: the folder + SKILL.md-entry + references/ + templates/ layering convention, with soft→hard and inline→isolate tests, using knowledge-base as a should-have-been-split example.
+- **Deadline Watch + Daily Review nudge** in the secretary startup flow — behavior-only (no hooks required, so it works on Cowork): surface overdue / today's deadlines, and prompt a daily Review when the day's journal has none.
 
 **Changed**:
+- **Single secretary mode**: consolidated from the earlier dual-mode design — you're always the secretary and focus on a project when the conversation calls for it (no mode switching).
 - **review Skill → wrap-up** (avoids collision with Claude Code's built-in /review). Breaking change for existing forks: the skill folder and all references are renamed.
-- **gemini-deep-research Skill → deep-research** (provider-agnostic): the decision tree and routing no longer hard-bind to a single provider.
 - **extras scheduled tasks** (02:09 daily-secretary-review): reframed as a fallback; the primary path is user-triggered manual review.
 - Wrap-up checklist count unified to 13 items across all docs.
 
@@ -361,22 +360,17 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 |---|---|---|
 | **project-setup** | 六步開案流程：背景 → 架構 → 研究 → Debate → 拍板 → 執行。含簡單/複雜專案分流邏輯 | 說 **「開新專案」** |
 | **knowledge-base** | 個人知識管線：貼 URL → 自動抓取 → 摘要 → 存檔。支援文章和 YouTube。含 Synthesis 層（跨文章編譯知識）、分層搜尋（L1→L2→L3）、定期健康檢查。透過 `kb-digest` 橋接知識到專案 | 分享 **URL** 或說 **「存一下這個」** |
-| **github-recon** | GitHub Repo 資安偵察：5 步 SOP 產出紅/黃/綠燈報告。純讀取零執行，在 clone/install 前先建立風險圖 | 貼 **github.com URL** 自動觸發 |
 | **tool-scout** | 透過 MCP Registry、Plugin 商店、GitHub 探索工具。含資安評估清單 | 說 **「幫我找 X 的工具」** |
-| **deep-research** | Deep Research SOP（provider-agnostic）：決策樹（Deep Research vs 普通 LLM worker vs Opus）、平台分流、API 配額整合、研究 Brief 模板、品質控管 | 說 **「研究 X」** |
 | **debate-protocol** | 高風險決策的多輪結構化辯論。Advocate vs Challenger，秘書主持。*（位於 `refs/debate-agents/` 的協議，非 `.claude/skills/` 可載入 Skill。）* | **開案 Step 4** 觸發，或說 **「來辯論 X」** |
-| **growth-coach** | 個人成長教練——獨立於秘書的第二角色，每日反思。掃描當日成果、引導反思對話、每週秘書×教練會診 | 說 **「啟動成長教練」**或**「睡前反思」** |
+| **plan-discuss** | 多模型獨立計畫審閱：把計畫送給不同模型家族的獨立 reviewer → 合併 → 另開 session 把關。跨家族訊號規則 + override 護欄。與 debate-protocol 互補 | 說 **「跑一輪 discuss」**或**「多模型 review」** |
 
-### 工具 SOP（可選，不用的可以刪）
+### Meta Skill（擴充系統用）
 
 | Skill | 功能 | 觸發方式 |
 |---|---|---|
-| **gcp-ops** | GCP VM 操作：SSH、防火牆、部署 | 使用 **GCP** 時載入 |
-| **github-ops** | GitHub 操作：PAT 管理、clone/push、安全 | 使用 **GitHub** 時載入 |
-| **subagent-guide** | 啟動和提示 Sub Agent 的最佳實踐 | 啟動 **Sub Agent** 時載入 |
 | **meta-skill** | 建立與檢核**單一** Skill 的後設 Skill。三個工作流：(1) 建新 Skill 的 A→E 流程（背景 → 建立 → 驗證 → 維護 → 跨平台）、(2) SKILL anatomy + 邊界 checklist、(3) 4-Tier 單一 Skill audit + retrofit 排序。落實「入口是地圖不是百科」與分層慣例 | 說 **「幫我建一個 Skill」**、**「audit 這支 Skill」**，或秘書察覺重複工作（N≥2）值得封裝時 |
 
-> **自訂建議**：刪掉你不需要的工具 SOP Skill，核心系統不受影響。
+> **自訂建議**：meta-skill 讓你隨系統成長自己建/檢 Skill。用不到的 Skill 都可以刪——核心（secretary / wrap-up / handoff）單獨也能跑。
 
 ## 快速開始
 
@@ -401,12 +395,8 @@ workspace/                             ← 掛載這個資料夾
 │       ├── project-setup/SKILL.md     ← 六步開案流程
 │       ├── knowledge-base/SKILL.md    ← 知識庫管線
 │       ├── tool-scout/SKILL.md        ← 工具探索 + 資安
-│       ├── github-recon/SKILL.md      ← GitHub repo 資安偵察
-│       ├── deep-research/SKILL.md      ← Deep Research SOP
-│       ├── growth-coach/SKILL.md      ← 個人成長教練
-│       ├── gcp-ops/SKILL.md           ← [可選] GCP SOP
-│       ├── github-ops/SKILL.md        ← [可選] GitHub SOP
-│       └── subagent-guide/SKILL.md    ← [可選] Sub Agent 指南
+│       ├── meta-skill/SKILL.md        ← 建 / 檢核單一 Skill
+│       └── plan-discuss/SKILL.md      ← 多模型計畫審閱
 ├── INDEX.md                           ← 主索引（專案清單、待辦）
 ├── BEGINNER-TIPS.md                   ← 新手提示
 ├── inbox/                             ← 每日日記（自動建立）
@@ -443,7 +433,7 @@ workspace/                             ← 掛載這個資料夾
 - **身份描述**：把「AI 個人秘書」改成你想要的角色
 - **模型預設**：根據你的方案調整（Max / Pro / 其他）
 - **跨平台路徑**：改成你的實際路徑
-- **Skills 索引**：刪掉你不需要的工具 SOP Skill
+- **Skills 索引**：刪掉你不需要的 Skill
 
 ### 4. 自訂 secretary Skill
 
@@ -501,16 +491,24 @@ workspace/                             ← 掛載這個資料夾
 5. 遇到問題查 `docs/lessons-learned.md`（15 個踩坑紀錄）
 
 ## 版本歷史
-### v1.0 (2026-06-14)
+### v1.0 (2026-06-30)
+
+v1.0 把公開模板重新定位為作者活系統的 **Cowork-first、刻意更精簡的子集**——新手真正上手需要的 Skill，不含任何依賴私有設定的東西。
+
+**Skill 集——ship 8 支**（從 v0.x 較大的集合收斂）：
+- **保留**：secretary、wrap-up、handoff、project-setup、knowledge-base、tool-scout、meta-skill
+- **新增**：**plan-discuss**——多模型獨立計畫審閱（英文、去識別化）
+- **移除**（活系統限定——依賴私有設定或不在 starter 模板範圍）：deep-research（原 gemini-deep-research）、gcp-ops、github-ops、github-recon、subagent-guide、growth-coach、chrome-sop。`/loop` 改為當內建指令教，不 ship 成 Skill。
 
 **新增**：
 - **四原則（行為層）** 進 CLAUDE.md：動手前先想先查 / 窄範圍深執行 / 外科手術改動 / 可驗證——AI 每次 session 載入的判斷骨幹，加收尾時的原則自審。先前模板只散了操作性 Golden Rules（怎麼做），沒散「怎麼判斷」。
 - **meta-skill**：建立 / audit / 修改單一 Skill 的後設 Skill（A→E 建立流程 + SKILL anatomy + 4-Tier audit + 修改既有 skill 流程）。讓使用者能自己長 Skill、不只用內附的。附 `references/build-checklist.md`——首支示範 references/ 分層慣例的 Skill。
 - **concept-guide「Skill 怎麼組織」** 段：folder + SKILL.md 入口 + references/ + templates/ 分層慣例，含 soft→hard / inline→isolate 兩個判準，用 knowledge-base 當「該拆未拆」示範。
+- **Deadline Watch + 每日 Review 提醒** 進 secretary 啟動流程——純行為版（不需 hook、Cowork 也能用）：surface 逾期/今日 deadline，當日日記沒 Review 段時主動提議。
 
 **變更**：
+- **單一秘書模式**：從早期雙模式設計收斂——你始終是秘書，對話涉及某專案時自動聚焦（不需切換模式）。
 - **review Skill → wrap-up**（避撞 Claude Code 內建 /review）。對既有 fork 是 breaking change：skill 資料夾與所有引用改名。
-- **gemini-deep-research Skill → deep-research**（provider-agnostic）：決策樹與路由不再綁死單一 provider。
 - **extras 排程**（02:09 daily-secretary-review）：改述為備援；主路徑是 user 手動觸發。
 - 收尾清單條數全文統一為 13 條。
 
