@@ -336,6 +336,47 @@ Secretary: "Saved! Related to project Marketing-Strategy.
 
 ---
 
+## Q18: I downloaded the project but the `.claude` folder (or `.gitignore`) is missing — where did it go?
+
+**A:** It's not missing — it's hidden. Any folder or file whose name starts with a dot (`.claude`, `.gitignore`, `.git`) is treated as "hidden" by macOS and Finder, so it won't show up by default.
+
+**To see hidden files in Finder**: press **Cmd + Shift + .** (the period key). All the dot-folders appear (slightly greyed out). Press the same shortcut again to hide them.
+
+**In Terminal**: use `ls -a` instead of plain `ls` to list hidden items.
+
+Nothing is broken — the files are there, just invisible until you toggle them on. You rarely need to open `.claude` by hand anyway; the secretary manages it for you.
+
+---
+
+## Q19: What's the difference between `.claude` and `Claude`? I keep getting them mixed up.
+
+**A:** The **dot** is the whole difference. One is the app's own config; the other is your work.
+
+| Folder | What it is | Should you edit it? |
+|---|---|---|
+| **`.claude`** (with a dot, hidden) | Claude Code's own home — global settings, installed Skills, plugins, logs. System-managed. | ❌ Don't hand-edit unless you know exactly why |
+| **Your workspace folder** (e.g. `project-secretary/workspace/`, no dot) | *Your* files — `CLAUDE.md`, `projects/`, memory, notes | ✅ Yes, this is your stuff |
+
+**Rule of thumb**: `.claude` (with the dot) = the program's settings, leave it alone. A folder literally named `Claude` with no dot is just something you or someone named — it is **not** the same thing and the system does not read it as config. If you're unsure which folder to point Cowork/Code at, see Q16 — you want the `workspace/` folder that contains `CLAUDE.md`, not `.claude`.
+
+---
+
+## Q20: Can I run Cowork and Claude Code on the same workspace at the same time?
+
+**A:** You *can*, but be careful — this is the one thing that can silently lose your work.
+
+Both platforms read and write the **same Markdown files**. If you edit the same file from Cowork and from Claude Code at the same time, whoever saves **last wins** — and the other one's changes are gone, with no warning. The highest-risk files are the shared ones everything touches: `INDEX.md`, `memory.md`, the lessons file, and `MEMORY.md`.
+
+**Safe practice**:
+
+1. **One platform at a time per workspace** whenever you can. Finish and say **"wrap up"** on one (which saves + commits) before opening the other.
+2. If you truly need both at once, keep them on **different projects / different files** so they never touch the same file.
+3. **Commit to git often.** git is your undo button — if a collision does happen, you can recover the overwritten version from history.
+
+**Bottom line**: parallel editing of the *same* file = risk of lost work. Different files or one-at-a-time = safe.
+
+---
+
 ## Still have questions?
 
 Check:

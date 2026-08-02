@@ -88,6 +88,7 @@ Established Skills (auto-loaded in Claude Code / Cowork):
 | **knowledge-base** | `.claude/skills/knowledge-base/SKILL.md` | Personal knowledge base pipeline (URL → fetch → summarize → archive) with project knowledge bridging | Load when processing URLs or managing knowledge |
 | **meta-skill** | `.claude/skills/meta-skill/SKILL.md` | Meta-skill for building and auditing a single Skill (A→E build flow, SKILL anatomy + boundary checklist, tiered audit + retrofit prioritization, layering convention) | Load when building/auditing/modifying a Skill, or when repeated work (N≥2) is worth packaging |
 | **plan-discuss** | `.claude/skills/plan-discuss/SKILL.md` | Multi-model independent plan review (independent reviewers across model families → synthesize → final check; cross-family signal rules + override guardrails) | Say "run a discuss round" / "multi-model review" |
+| **audio-transcribe** | `.claude/skills/audio-transcribe/SKILL.md` | Recording → transcript SOP (router entry point, cloud-first with local fallback, auto-compression, language/domain-prompt guards) | Say "transcribe this" / drop an audio file path |
 | **debate-protocol** | `refs/debate-agents/debate-protocol.md` | Debate protocol (multi-round dialogue, word limits, secretary moderation, storage format) | Load during Step 4 Debate |
 
 ## Cross-Platform Paths

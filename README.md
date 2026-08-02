@@ -166,6 +166,11 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 5. Look up `docs/lessons-learned.md` when you hit issues (15 pitfalls)
 
 ## Version History
+### Unreleased (next)
+
+**Skill set — 9 Skills** (v1.0's 8 + 1):
+- **Added: audio-transcribe** — recording / voice-note → transcript SOP (single router entry point, cloud-first with local fallback, auto-compression under the size cap, language and domain-prompt guards against misdetection). Pairs with the `transcribe-101` course: learners who finish it now have the matching Skill to install.
+
 ### v1.0 (2026-06-30)
 
 v1.0 repositions the public template as a **Cowork-first, deliberately simpler subset** of the author's live system — the Skills a newcomer actually needs to start, with nothing that depends on private setup.
@@ -491,6 +496,11 @@ workspace/                             ← 掛載這個資料夾
 5. 遇到問題查 `docs/lessons-learned.md`（15 個踩坑紀錄）
 
 ## 版本歷史
+### 未發布（下一版）
+
+**Skill 集——9 支**（v1.0 的 8 支 + 1）：
+- **新增 audio-transcribe**——錄音／語音筆記轉逐字稿 SOP（router 單一入口、cloud 優先本機 fallback、超過上限自動壓縮、語言與領域詞防誤判）。對應課程 `transcribe-101`：學員上完課現在裝得到對應的 Skill。
+
 ### v1.0 (2026-06-30)
 
 v1.0 把公開模板重新定位為作者活系統的 **Cowork-first、刻意更精簡的子集**——新手真正上手需要的 Skill，不含任何依賴私有設定的東西。

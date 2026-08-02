@@ -40,7 +40,8 @@ workspace/                          ← User mounts this folder
 │       ├── knowledge-base/SKILL.md ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md     ← Tool discovery + security
 │       ├── meta-skill/SKILL.md     ← Build / audit a single skill
-│       └── plan-discuss/SKILL.md   ← Multi-model plan review
+│       ├── plan-discuss/SKILL.md   ← Multi-model plan review
+│       └── audio-transcribe/SKILL.md ← Meeting / voice-note transcription
 ├── INDEX.md                        ← Main index (project list, to-dos)
 ├── BEGINNER-TIPS.md                ← Beginner tips
 ├── SETUP-GUIDE.md                  ← This file
@@ -65,6 +66,14 @@ workspace/                          ← User mounts this folder
 > On Mac press `Cmd + Shift + .` to show hidden files.
 > On Windows go File Explorer → View → Show hidden items.
 
+> **Alternative (Claude Code — clone anywhere):** Instead of moving the repo to a fixed location, you can clone it **anywhere** and add a shell alias to jump straight into the workspace. Add to `~/.zshrc` (or `~/.bashrc`):
+>
+> ```bash
+> alias secretary='cd /path/to/project-secretary/workspace'
+> ```
+>
+> Then typing `secretary` drops you into the workspace from any directory. This keeps the repo wherever you cloned it — a second path that stands parallel to the mount-at-root approach above, whichever the user prefers.
+
 ### Step 3: Verify CLAUDE.md Position
 
 **Most critical step**: Confirm `CLAUDE.md` is at the **root** of the mounted folder (i.e., directly inside `workspace/`).
@@ -85,6 +94,14 @@ After you select the folder and **send a first message** (e.g. "start" — no sp
 If AI doesn't enter wizard mode, check:
 - Is `CLAUDE.md` in correct location (folder root)?
 - Does `INDEX.md` exist (should have placeholder text)?
+
+### ⚠️ Caution: Pre-existing Machine (not a fresh install)
+
+If the user's computer has been used with Claude before, `~/.claude/projects/` may already hold data from **unrelated** past sessions. The first-use wizard must **not** silently treat that leftover data as identity clues about this user — doing so pulls in stale, wrong context. On a non-fresh machine:
+
+- Check whether `~/.claude/projects/` already contains folders from prior use.
+- If it does, say so to the user explicitly ("this machine already has Claude data from before") instead of passively inferring who they are from it.
+- Treat the mounted `workspace/` repo as the **only** source of secretary identity — not leftover `~/.claude/` state.
 
 ### If User Using Antigravity (Not Cowork)
 

@@ -7,7 +7,33 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+
+# ROOT: walk up looking for the secretary root anchor; never assume how deep the
+# script is buried.
+#   home layout : <root>/CLAUDE.md + <root>/.claude/
+#   repo layout : <repo>/workspace/CLAUDE.md + <repo>/workspace/.claude/  (root = that workspace/)
+# The old hard-coded "$SCRIPT_DIR/../.." resolved to extras/ when the script ships
+# under extras/claude-code/scripts/, so the reverse-reference grep pointed at paths
+# that do not exist and was silently swallowed by 2>/dev/null.
+find_root() {
+  local d="$1"
+  while [ "$d" != "/" ]; do
+    if [ -f "$d/CLAUDE.md" ] && [ -d "$d/.claude" ]; then echo "$d"; return 0; fi
+    if [ -f "$d/workspace/CLAUDE.md" ] && [ -d "$d/workspace/.claude" ]; then echo "$d/workspace"; return 0; fi
+    d="$(dirname "$d")"
+  done
+  return 1
+}
+
+if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  ROOT="$CLAUDE_PROJECT_DIR"
+else
+  ROOT="$(find_root "$SCRIPT_DIR" || find_root "$PWD" || true)"
+fi
+if [ -z "${ROOT:-}" ]; then
+  echo "WARN: no secretary root found (no CLAUDE.md + .claude/ in any parent);" >&2
+  echo "      reverse-reference checking will be skipped. Set CLAUDE_PROJECT_DIR=<path> to override." >&2
+fi
 
 if [ $# -eq 0 ]; then
   echo "Usage: impact_check.sh <file1> [file2] ..."
@@ -20,9 +46,18 @@ YELLOW=()
 GREEN=()
 
 for file in "$@"; do
-  # Normalize path
+  # Normalize path: resolve relative paths against CWD first (normal CLI behaviour),
+  # falling back to ROOT. Treating them as ROOT-relative only breaks in the repo
+  # layout, where ROOT is <repo>/workspace and "workspace/X.md" typed from the repo
+  # root would be joined into workspace/workspace/X.md.
   if [[ "$file" != /* ]]; then
-    file="$ROOT/$file"
+    if [ -f "$PWD/$file" ]; then
+      file="$PWD/$file"
+    elif [ -n "${ROOT:-}" ] && [ -f "$ROOT/$file" ]; then
+      file="$ROOT/$file"
+    else
+      file="$PWD/$file"
+    fi
   fi
 
   if [ ! -f "$file" ]; then
@@ -65,11 +100,25 @@ for file in "$@"; do
     else
       GREEN+=("$file -> $link")
     fi
-  done < <(awk '/^```/{f=!f; next} !f' "$file" 2>/dev/null | grep -oE '\[[^]]*\]\([^)]+\)' | sed 's/.*](//' | sed 's/)$//' | grep -v '^http' || true)
+  # Strip fenced code blocks first, then inline code spans (`...`) — an example
+  # link inside backticks is documentation, not a real link. Without the second
+  # step, a line like `- [Title](file.md) — hook` gets reported as broken.
+  done < <(awk '/^```/{f=!f; next} !f' "$file" 2>/dev/null | sed 's/`[^`]*`//g' | grep -oE '\[[^]]*\]\([^)]+\)' | sed 's/.*](//' | sed 's/)$//' | grep -v '^http' || true)
 
   # Reverse check: are other files referencing this file?
+  # Only search paths that actually exist; skip the whole step if ROOT is unknown
+  # rather than silently returning nothing.
   basename_file=$(basename "$file")
-  refs=$(grep -rl --include='*.md' "$basename_file" "$ROOT/workspace" "$ROOT/CLAUDE.md" "$ROOT/.claude/skills" 2>/dev/null | grep -v "$file" | head -5 || true)
+  search_paths=()
+  if [ -n "${ROOT:-}" ]; then
+    for p in "$ROOT/workspace" "$ROOT/CLAUDE.md" "$ROOT/.claude/skills" "$ROOT/projects" "$ROOT/refs"; do
+      [ -e "$p" ] && search_paths+=("$p")
+    done
+  fi
+  refs=""
+  if [ ${#search_paths[@]} -gt 0 ]; then
+    refs=$(grep -rl --include='*.md' "$basename_file" "${search_paths[@]}" 2>/dev/null | grep -v "^$file$" | head -5 || true)
+  fi
   if [ -n "$refs" ]; then
     while IFS= read -r ref; do
       [ -z "$ref" ] && continue
