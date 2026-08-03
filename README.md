@@ -101,6 +101,27 @@ workspace/                             ← Mount this folder
 
 > Root-level `docs/`, `extras/`, and `README.md` are for reading on GitHub — they don't affect the running system.
 
+#### Cowork
+
+Pick `workspace/` in the folder chooser. That's it. Pick the **same folder every time** — a different folder means the secretary can't find its memory.
+
+#### Claude Code — read this, it fails silently otherwise
+
+Claude Code has no "mount". It looks for `CLAUDE.md` by scanning **upward** from your current directory, never downward. Since `CLAUDE.md` lives *inside* `workspace/`, running `claude` from the repo root or your home folder starts a **perfectly normal Claude with no secretary mode** — no error, no warning, just silently not the secretary.
+
+Make `claude` always start in `workspace/`:
+
+```bash
+echo 'claude() { (cd "$HOME/project-secretary/workspace" && command claude "$@"); }' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Adjust the path if you cloned somewhere else. Verify with `type claude` — it should report a shell function.
+
+> Trade-off: `claude` now always starts in `workspace/`, so project-local `CLAUDE.md` files elsewhere won't be picked up. If you also code in other repos, use a separate alias name (e.g. `secretary`) instead of overriding `claude`.
+
+**How to tell it worked**: say `hi`. If the first-time setup wizard starts, `CLAUDE.md` was read. If you just get a normal "How can I help?", it wasn't.
+
 ### 3. Customize CLAUDE.md
 
 Open `workspace/CLAUDE.md` and modify:
@@ -122,6 +143,8 @@ Open `workspace/.claude/skills/secretary/SKILL.md` and modify:
 ### 5. Launch
 
 Open the `workspace/` folder in Claude Code or Cowork. The Agent will auto-read CLAUDE.md → load secretary Skill → detect first use → run setup wizard → start as the secretary.
+
+> ⚠️ Don't run Cowork and Claude Code on the same `workspace/` at the same time. Both write to the same files and there is no locking.
 
 ## Core Design Principles
 

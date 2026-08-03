@@ -81,13 +81,13 @@ Established Skills (auto-loaded in Claude Code / Cowork):
 | Skill | Path | Description | Trigger |
 |---|---|---|---|
 | **secretary** | `.claude/skills/secretary/SKILL.md` | Secretary core rules (single secretary mode, memory architecture, organization rhythm, INDEX distribution) | Auto-load |
-| **wrap-up** | `.claude/skills/wrap-up/SKILL.md` | Wrap-up Review two-stage flow + 13-item checklist (A: experience extraction, B: system updates, C: memory sync) | Trigger when user says "wrap up" |
+| **wrap-up** | `.claude/skills/wrap-up/SKILL.md` | Wrap-up Review two-stage flow + 13-item checklist (A: experience extraction, B: system updates, C: memory sync) | When the user says "wrap up": **Read this file** and follow it. Do **not** call the Skill tool on it — `disable-model-invocation` is set deliberately so that only the user can start a wrap-up, and the Skill tool will return an error. |
 | **handoff** | `.claude/skills/handoff/SKILL.md` | Handoff protocol (handoff report format, cross-platform handoff/ queue) | Auto-load |
 | **project-setup** | `.claude/skills/project-setup/SKILL.md` | Project launch six-step flow (background → architecture → research → Debate → decision → execution) with branching logic | Load when starting new project |
 | **tool-scout** | `.claude/skills/tool-scout/SKILL.md` | Tool scout (MCP Registry / Plugin / GitHub search + security assessment) | Load when exploring tools |
 | **knowledge-base** | `.claude/skills/knowledge-base/SKILL.md` | Personal knowledge base pipeline (URL → fetch → summarize → archive) with project knowledge bridging | Load when processing URLs or managing knowledge |
 | **meta-skill** | `.claude/skills/meta-skill/SKILL.md` | Meta-skill for building and auditing a single Skill (A→E build flow, SKILL anatomy + boundary checklist, tiered audit + retrofit prioritization, layering convention) | Load when building/auditing/modifying a Skill, or when repeated work (N≥2) is worth packaging |
-| **plan-discuss** | `.claude/skills/plan-discuss/SKILL.md` | Multi-model independent plan review (independent reviewers across model families → synthesize → final check; cross-family signal rules + override guardrails) | Say "run a discuss round" / "multi-model review" |
+| **plan-discuss** | `.claude/skills/plan-discuss/SKILL.md` | Multi-model independent plan review (independent reviewers across model families → synthesize → final check; cross-family signal rules + override guardrails) | When the user says "run a discuss round" / "multi-model review": **Read this file** and follow it. Do **not** call the Skill tool on it — same `disable-model-invocation` reason as wrap-up. |
 | **audio-transcribe** | `.claude/skills/audio-transcribe/SKILL.md` | Recording → transcript SOP (router entry point, cloud-first with local fallback, auto-compression, language/domain-prompt guards) | Say "transcribe this" / drop an audio file path |
 | **debate-protocol** | `refs/debate-agents/debate-protocol.md` | Debate protocol (multi-round dialogue, word limits, secretary moderation, storage format) | Load during Step 4 Debate |
 
