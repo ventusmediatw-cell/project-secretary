@@ -192,7 +192,7 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 ### Unreleased (next)
 
 **Skill set — 9 Skills** (v1.0's 8 + 1):
-- **Added: audio-transcribe** — recording / voice-note → transcript SOP (single router entry point, cloud-first with local fallback, auto-compression under the size cap, language and domain-prompt guards against misdetection). Pairs with the `transcribe-101` course: learners who finish it now have the matching Skill to install.
+- **Added: audio-transcribe** — getting a recording, or something you'd rather say than type, into text your agent can use. Leads with the constraint people actually hit (Claude Code has no audio input, so a dropped recording silently does nothing), then the two routes that work: system dictation where your language is supported, and a multimodal model with the language explicitly named where it isn't. Pairs with the `transcribe-101` course.
 
 ### v1.0 (2026-06-30)
 
@@ -522,7 +522,7 @@ workspace/                             ← 掛載這個資料夾
 ### 未發布（下一版）
 
 **Skill 集——9 支**（v1.0 的 8 支 + 1）：
-- **新增 audio-transcribe**——錄音／語音筆記轉逐字稿 SOP（router 單一入口、cloud 優先本機 fallback、超過上限自動壓縮、語言與領域詞防誤判）。對應課程 `transcribe-101`：學員上完課現在裝得到對應的 Skill。
+- **新增 audio-transcribe**——把錄音、或不想打字的內容變成 agent 用得了的文字。開頭先講真正會踩到的限制（Claude Code 沒有音訊輸入，丟錄音進去會安靜地不作用），再給兩條可行路線：系統聽寫支援你的語言時走聽寫，不支援時走多模態模型並**明確指定語言**。對應課程 `transcribe-101`。
 
 ### v1.0 (2026-06-30)
 
