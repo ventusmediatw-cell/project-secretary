@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-08-07",
-  "generated_from_commit": "cee787f62296a4ede2c6b84411d553899edb6835",
+  "generated_from_commit": "a71bbe84ec2422f730ef166bcc7cdf01bbd67774",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 9,
   "versioning": {
@@ -45,8 +45,8 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "cee787f",
-      "updated": "2026-08-04",
+      "version": "a71bbe8",
+      "updated": "2026-08-07",
       "auto_invocable": true,
       "files": [
         {
@@ -77,8 +77,7 @@
       ],
       "referenced_but_not_present": [],
       "known_inconsistency": "Resolved 2026-08-07: the Skills Index row in workspace/CLAUDE.md used to describe the pre-2026-08-04 version ('router entry point, cloud-first with local fallback, auto-compression'). It has been rewritten upstream to match the 79-line SKILL.md and to name INSTALL.md / FLOW.md / VERIFY.md. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design. An upstream change to it WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
-      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4.",
-      "pending_commit": "INSTALL.md, VERIFY.md and FLOW.md are new in this batch and not yet committed. The sha values above are content hashes (git hash-object) and are already final. 'version' and 'updated' still point at cee787f and MUST be regenerated in the commit that ships them: git -C <repo> log -1 --format='%h %cs' -- workspace/.claude/skills/audio-transcribe/"
+      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4."
     },
     {
       "name": "handoff",
