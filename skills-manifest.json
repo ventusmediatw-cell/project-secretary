@@ -1,0 +1,273 @@
+{
+  "manifest_version": 1,
+  "purpose": "Lets an agent work out whether the skills on its machine differ from this repository without reading every file. Compare 'version' and each file 'sha' against the local clone. Authority is always the SKILL.md files themselves; this manifest is an index, not a contract.",
+  "repository": "ventusmediatw-cell/project-secretary",
+  "branch": "main",
+  "generated_at": "2026-08-07",
+  "generated_from_commit": "cee787f62296a4ede2c6b84411d553899edb6835",
+  "skills_root": "workspace/.claude/skills/",
+  "skill_count": 9,
+  "versioning": {
+    "scheme": "git",
+    "rule": "There are no invented version numbers. A skill's 'version' is the short hash of the last commit that touched its directory, and 'updated' is that commit's date. A skill whose files have not changed keeps the same version, even when the repository moves on.",
+    "verify_version": "git -C <repo> log -1 --format='%h %cs' -- workspace/.claude/skills/<name>/",
+    "verify_file_sha": "git -C <repo> ls-files -s workspace/.claude/skills/<name>/<file>   # column 2 is the sha below",
+    "sha_meaning": "git blob sha of the file's content. Two clones with the same sha have byte-identical files. A different sha means the file was changed on one side — it does not say which side.",
+    "note": "'lines' is a convenience for spotting large divergence at a glance. It is not authoritative; the sha is.",
+    "regenerate_when": "Any file under skills_root is added, removed or changed — in the same commit as that change, not afterwards. 'generated_from_commit' is how a reader tells whether this file has fallen behind: if it is not the tip of main, treat every entry below as a claim about an older state of the repository.",
+    "am_i_stale": "git -C <repo> rev-parse HEAD   # if this does not equal generated_from_commit, this manifest describes an older commit than the clone it is sitting in. Run it before you trust anything below.",
+    "authoritative_file_list": "git -C <repo> ls-files -s workspace/.claude/skills/   # this, not the 'skills' array, is the truth about which files exist and what their shas are. Where the two disagree, git wins and this file is the bug.",
+    "unlisted_files_on_disk": "A file present under a skill directory but absent from that skill's 'files' array means one of two things, and they need opposite responses. Either this manifest is stale (check am_i_stale, and check `git -C <repo> log --oneline -1 -- <path>` — if the file is tracked, it is ours and the manifest simply fell behind), or the file is untracked and is the person's own addition. In neither case is deleting it correct. Surface it and say which of the two it is.",
+    "referenced_but_not_present_scope": "Verified against generated_from_commit by resolving every backticked file path in each SKILL.md. Paths containing a date placeholder (YYYY-MM-DD) or a name placeholder ({name}, {project-name}, {slug}) are created at runtime and are deliberately excluded — their absence from a fresh clone is normal. Re-verify with: grep -o '`[^`]*\\.\\(md\\|py\\|sh\\)`' <SKILL.md>"
+  },
+  "how_to_diff": [
+    "git -C <repo> fetch origin",
+    "git -C <repo> diff --stat HEAD origin/main -- workspace/.claude/skills/",
+    "For a single skill: git -C <repo> log --oneline HEAD..origin/main -- workspace/.claude/skills/<name>/",
+    "Do not act on a difference by overwriting. See UPDATING.md."
+  ],
+  "not_shipped": {
+    "note": "Present in .gitignore, therefore absent from every fresh clone, but referenced by the skills below. Create them locally; do not add them to git.",
+    "directories": [
+      "workspace/handoff/pending/",
+      "workspace/handoff/done/",
+      "workspace/projects/",
+      "workspace/summaries/"
+    ]
+  },
+  "locally_modified_by_design": {
+    "note": "These are tracked by git and are also rewritten by the first-run setup wizard with the person's real content. That makes them permanently modified in every working install, which is what makes updates awkward. UPDATING.md section 5 is about exactly these two files. Never restore, reset or overwrite them to match this repository.",
+    "files": [
+      "workspace/CLAUDE.md",
+      "workspace/INDEX.md"
+    ]
+  },
+  "skills": [
+    {
+      "name": "audio-transcribe",
+      "version": "cee787f",
+      "updated": "2026-08-04",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 85,
+          "sha": "a4ac8f54e8f06e48905258ec7e1fb65890d39a67"
+        },
+        {
+          "path": "INSTALL.md",
+          "lines": 248,
+          "sha": "bb2c15cddaa3018ef5f227bbc532b5d804298d3e"
+        },
+        {
+          "path": "VERIFY.md",
+          "lines": 369,
+          "sha": "4db36060ddfafd560b114cca97f597f65ff5e871"
+        },
+        {
+          "path": "FLOW.md",
+          "lines": 179,
+          "sha": "a44a52f97e4a97b142275b49be4aa462caf6a88b"
+        }
+      ],
+      "requires": [
+        "A recording, or a microphone. Nothing here produces audio.",
+        "Route 2 needs a browser and an account on a multimodal assistant that accepts audio uploads. Not shipped and not configured by this repository.",
+        "Route 3 needs an API key and a one-time setup. INSTALL.md in this same folder is the setup instruction set. It is a separate task with its own consent step, not something to attempt during an update."
+      ],
+      "referenced_but_not_present": [],
+      "known_inconsistency": "Resolved 2026-08-07: the Skills Index row in workspace/CLAUDE.md used to describe the pre-2026-08-04 version ('router entry point, cloud-first with local fallback, auto-compression'). It has been rewritten upstream to match the 79-line SKILL.md and to name INSTALL.md / FLOW.md / VERIFY.md. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design. An upstream change to it WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
+      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4.",
+      "pending_commit": "INSTALL.md, VERIFY.md and FLOW.md are new in this batch and not yet committed. The sha values above are content hashes (git hash-object) and are already final. 'version' and 'updated' still point at cee787f and MUST be regenerated in the commit that ships them: git -C <repo> log -1 --format='%h %cs' -- workspace/.claude/skills/audio-transcribe/"
+    },
+    {
+      "name": "handoff",
+      "version": "5224531",
+      "updated": "2026-06-27",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 165,
+          "sha": "90885af4b976725482e238b8afdd3de58918d427"
+        }
+      ],
+      "requires": [
+        "workspace/handoff/pending/ and workspace/handoff/done/ — excluded by .gitignore, so absent from a fresh clone. Create them before first use.",
+        "workspace/projects/<name>/daily/ — same, created per project."
+      ],
+      "referenced_but_not_present": [
+        ".claude/skills/handoff/templates.md (SKILL.md calls it 'templates.md in same folder', at lines 57, 67 and 161)"
+      ],
+      "notes": "Every handoff format in this skill points at templates.md, which does not ship. The formats are described well enough in SKILL.md to write a handoff without it, so write one — do not create templates.md on someone else's machine to close the gap."
+    },
+    {
+      "name": "knowledge-base",
+      "version": "ad422b8",
+      "updated": "2026-06-30",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 389,
+          "sha": "192b1ad644e95b52eb676842e8235af25f000e42"
+        }
+      ],
+      "requires": [
+        "python3 on PATH.",
+        "A harness that can fetch web pages (this repository ships no fetcher)."
+      ],
+      "referenced_but_not_present": [
+        "knowledge-base/scripts/gen_wiki.py",
+        "knowledge-base/scripts/fetch_youtube.py",
+        "knowledge-base/scripts/search_kb.py",
+        "knowledge-base/scripts/epub_chapterize.py",
+        "knowledge-base/scripts/extract_chapters_raw.py",
+        "knowledge-base/scripts/build_skeleton.py",
+        "knowledge-base/scripts/fix_orphans.py",
+        "knowledge-base/articles/_TEMPLATE.md",
+        "knowledge-base/videos/_TEMPLATE.md",
+        "knowledge-base/refs/model-routing.md"
+      ],
+      "notes": "No knowledge-base/scripts/ directory ships at all — the seven scripts above are invoked by SKILL.md and none of them exist. The two _TEMPLATE.md files are named in the paths table at the end of SKILL.md; their directories ship containing only a .gitkeep. knowledge-base/refs/ does not exist. Any step that calls these cannot run as written. Do not write substitutes during an update — tell the person the step is unavailable and let them decide. This is the largest gap in the repository; it is known, not newly discovered by you."
+    },
+    {
+      "name": "meta-skill",
+      "version": "ad422b8",
+      "updated": "2026-06-30",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 208,
+          "sha": "2d4d9bf41d93410ce811aa6939718302bac405a0"
+        },
+        {
+          "path": "references/build-checklist.md",
+          "lines": 281,
+          "sha": "02d1a83e5dd7ab184f49e47fe84d7b951671aae7"
+        }
+      ],
+      "requires": [
+        "The upstream-scan step assumes a harness that can search a plugin marketplace or an MCP registry. Without one, do the scan by hand and say that you did."
+      ],
+      "referenced_but_not_present": [
+        "references/audit-checklist.md (SKILL.md line 128; that line already says the inline summary is the executable version, so the audit still runs)"
+      ],
+      "notes": "One of only two skills here with a references/ subdirectory; build-checklist.md is the only file in it. If a clone has files under meta-skill/ that are not listed above, do not assume they are local additions — check whether this manifest is simply stale first (see versioning.unlisted_files_on_disk). Either way: surface them, do not delete them."
+    },
+    {
+      "name": "plan-discuss",
+      "version": "ad422b8",
+      "updated": "2026-06-30",
+      "auto_invocable": false,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 154,
+          "sha": "5c2dbce6a96703716ad4cc24d97177acae3161ea"
+        }
+      ],
+      "requires": [
+        "Access to more than one model family. With a single model available the premise of the skill — independent reviewers — does not hold, and running it anyway produces a review that only looks independent."
+      ],
+      "referenced_but_not_present": [],
+      "notes": "Frontmatter sets disable-model-invocation: true, deliberately. Read the file and follow it; do not call it as a tool. In some harnesses this also removes it from the skill listing, which is not a missing skill."
+    },
+    {
+      "name": "project-setup",
+      "version": "5224531",
+      "updated": "2026-06-27",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 224,
+          "sha": "0907ae1d6631fcd226745eaa5d9e0264450b8067"
+        }
+      ],
+      "requires": [
+        "workspace/projects/ — excluded by .gitignore, absent from a fresh clone.",
+        "A harness that can run subagents, for the deep-excavation step. Without one, scan inline and say the step was reduced."
+      ],
+      "referenced_but_not_present": [
+        ".claude/skills/project-setup/templates.md (SKILL.md calls it 'templates.md in same folder', at lines 66, 163 and 167)"
+      ],
+      "notes": "Step 4 uses workspace/refs/debate-agents/debate-protocol.md, which does ship with this repository. The INDEX.md template and the decision-record format both point at templates.md, which does not. Follow the prose in SKILL.md; do not author a templates.md during an update."
+    },
+    {
+      "name": "secretary",
+      "version": "bf21ccc",
+      "updated": "2026-06-30",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 201,
+          "sha": "3080272de2a45206630bd5af0a3edfbd57609ab4"
+        },
+        {
+          "path": "refs/index-mgmt-sop.md",
+          "lines": 181,
+          "sha": "e28699015bd4f099111921af0f7ec97621459358"
+        }
+      ],
+      "requires": [
+        "workspace/projects/ and workspace/summaries/ — excluded by .gitignore, absent from a fresh clone.",
+        "workspace/INDEX.md filled in with real content. It ships with placeholder markers in brackets; their presence is what triggers the first-run wizard."
+      ],
+      "referenced_but_not_present": [
+        "extras/claude-code/scripts/impact_check.sh (as written, relative to workspace/) — refs/index-mgmt-sop.md lines 153 and 178 give it repo-root-relative, and extras/ ships one level above workspace/, so it does not resolve from a session started inside workspace/. Same shape as the wrap-up entry below. The script itself does ship; the step is explicitly optional."
+      ],
+      "notes": "This is the skill the whole system loads from. It is also the one whose setup wizard rewrites the two tracked files listed under locally_modified_by_design. Treat any difference here as high-consequence: confirm with the person before changing anything."
+    },
+    {
+      "name": "tool-scout",
+      "version": "5224531",
+      "updated": "2026-06-27",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 88,
+          "sha": "8ebbbc26d38ca275bf8b9d3293d9f91f26088d13"
+        }
+      ],
+      "requires": [
+        "Web search in the harness.",
+        "An MCP registry lookup, for the first step. Where that is unavailable, skip the step explicitly rather than guessing at results."
+      ],
+      "referenced_but_not_present": [
+        "refs/lessons-learned.md (SKILL.md line 88) — a lessons-learned file ships at docs/lessons-learned.md, at the repository root, not under workspace/refs/. Same shape as the wrap-up entry below."
+      ],
+      "notes": null
+    },
+    {
+      "name": "wrap-up",
+      "version": "5224531",
+      "updated": "2026-06-27",
+      "auto_invocable": false,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 157,
+          "sha": "ba6efaf607b2f684491f3093d37a331e8c569bec"
+        }
+      ],
+      "requires": [
+        "workspace/handoff/pending/ — excluded by .gitignore, absent from a fresh clone."
+      ],
+      "referenced_but_not_present": [
+        "docs/lessons-learned.md (as written, relative to workspace/) — SKILL.md lines 42-44",
+        ".claude/skills/handoff/templates.md — SKILL.md line 143"
+      ],
+      "notes": "Frontmatter sets disable-model-invocation: true, deliberately — only the person starts a wrap-up. Read the file and follow it; do not call it as a tool. On the two paths above: a lessons-learned file does ship, but at the repository root, one level above workspace/, so the path in SKILL.md does not resolve from a session started inside workspace/. templates.md does not ship at all (the handoff and project-setup entries hit the same missing file). Neither is worth silently patching during an update; report them (see UPDATING.md section 7)."
+    }
+  ],
+  "not_a_skill": {
+    "note": "Listed in the Skills Index in workspace/CLAUDE.md, but it is a reference document rather than a skill directory, so it has no entry above.",
+    "path": "workspace/refs/debate-agents/debate-protocol.md",
+    "version": "7d2315b",
+    "updated": "2026-04-24"
+  }
+}

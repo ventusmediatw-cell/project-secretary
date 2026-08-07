@@ -60,6 +60,12 @@ A browser round-trip is fine occasionally. If you transcribe regularly, it can r
 
 This needs a free API key and a short one-time setup. **Ask before you start** — it is a setup task, not something to attempt in the middle of other work.
 
+Three files in this folder carry the rest, and they are written for the agent, not for the person:
+
+- **`INSTALL.md`** — the setup itself: what to check on this machine first, choosing a provider, where the key goes, and what this repository deliberately does not ship.
+- **`FLOW.md`** — two diagrams: how the setup runs, and how a recording becomes text once it is done.
+- **`VERIFY.md`** — how to prove any of it worked *on this machine*. Reading a file and concluding it should work is not evidence.
+
 ---
 
 ## Once you have the text
