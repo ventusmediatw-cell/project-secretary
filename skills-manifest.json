@@ -45,7 +45,7 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "PENDING-COMMIT",
+      "version": "b988a3b",
       "updated": "2026-08-10",
       "auto_invocable": true,
       "files": [
