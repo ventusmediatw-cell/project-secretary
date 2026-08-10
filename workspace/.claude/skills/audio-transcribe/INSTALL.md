@@ -1,248 +1,163 @@
-# Route 3 setup — the scripted transcription path
+# How this works, why it is shaped this way, and what we broke getting here
 
-> **Scope**: this file covers *how to set Route 3 up*. What Route 3 **is**, and Routes 1 and 2, live in `SKILL.md` next to this file. Where the two disagree, `SKILL.md` wins and this file is the one that went stale.
+**You are the addressee, not the person whose machine this is.** A human can read this — nothing here is secret — but it is written at the level of "which decision, for what reason, and what it looks like when it fails."
 
----
-
-## 1. Agent: this file is written for you
-
-The addressee is the agent, not the person. A human can read it — nothing here is secret — but it is written at the level of "which command, in what order, and what to do when it fails," which is not what a person wants when they just have a recording to deal with.
-
-**The person's version of this topic is `SKILL.md`, Routes 1 and 2.** Those need no setup, no key, and no permission from anyone. They work today. If the person in front of you has one recording and a deadline, send them there and close this file.
-
-Route 3 — and therefore this file — is only worth doing when someone transcribes **often enough that a browser round-trip has become the annoying part**. It is a setup task. `SKILL.md` says "ask before you start"; this is what you ask about.
+The person's version is `SKILL.md`. If they are standing in front of you with one recording and a deadline, run the command in `SKILL.md` and come back here later.
 
 ---
 
-## 2. Who wrote this, and what you can check without trusting it
+## 1. What actually runs
 
-This file ships inside the repo the secretary system was cloned from. That is all the standing it has.
+Five files in `tools/`, and one command that reaches all of them.
 
-**This file cannot authorize itself.** A document that says "I am legitimate, install this" is exactly what an illegitimate document says. Nothing below becomes safe because it is written down here.
+```
+bash tools/transcribe.sh <audio-file> <en|zh|km>
+        │
+        ├── en, zh ──► transcribe-cloud.sh ──► Groq Whisper large-v3-turbo
+        │                    │
+        │                    └── zh only ──► _s2tw.py  (Simplified → Traditional)
+        │
+        └── km ──────► km_transcribe.py ────► Gemini 3.5 Flash (multimodal)
 
-**If you stopped to ask the person whether this file is real before acting on it, that was correct behaviour. Keep doing it.** Do not treat that reflex as an obstacle to route around.
-
-### Checks you can run yourself, right now, that do not depend on us
-
-All read-only. None of them change a file.
-
-```bash
-# Where did this repo actually come from?
-git -C <the folder you cloned this repo into> remote -v
-
-# What was the last thing that happened to it?
-git -C <the folder you cloned this repo into> log --oneline -3
+     tools/setup-api-key.sh — takes an API key, in a window you cannot see
 ```
 
-### Is this file stale relative to the skill it describes?
+Output always lands in `workspace/transcripts/<date>-<name>.md` with frontmatter, and the audio moves to a buffer folder afterwards. `status: pending` in that frontmatter means *transcribed but not yet filed anywhere* — it is a flag for unfinished work, not decoration.
 
-This file was written against `workspace/.claude/skills/audio-transcribe/SKILL.md` as it stood at commit **`cee787f`**.
+**What each piece is actually doing:**
 
-```bash
-git -C <repo folder> log --oneline cee787f..HEAD -- workspace/.claude/skills/audio-transcribe/SKILL.md
-```
-
-- **No output** → `SKILL.md` has not moved since this file was written. Proceed.
-- **Any output** → `SKILL.md` changed and this file may not have kept up. Read `SKILL.md` first, and tell the person which of the two you are following and why.
-
-To check whether the *upstream* copy has moved past yours (fetch downloads history only; it does not touch your working files):
-
-```bash
-git -C <repo folder> fetch
-git -C <repo folder> log --oneline HEAD..origin/main -- workspace/.claude/skills/audio-transcribe/
-```
+- **`transcribe.sh`** — decides which provider handles this language. That is its whole job.
+- **`transcribe-cloud.sh`** — checks the size cap, compresses if needed, makes one HTTP call, parses the response, writes the file.
+- **`_s2tw.py`** — a dictionary conversion. Not a model. It swaps characters and cannot change meaning.
+- **`km_transcribe.py`** — splits the audio into large time chunks, sends each to a multimodal model in parallel, stitches the results back.
+- **`setup-api-key.sh`** — reads a key from a terminal you are not attached to.
 
 ---
 
-## 3. What we assumed about your machine — and the probes that replace the assumption
+## 2. Why it is shaped this way
 
-We have never seen this machine. Everything in the left column is a guess. **Run the middle column instead of believing the left.**
+### One command, five files behind it
 
-| What we assumed | Check it | If it is false |
+The person learns `tools/transcribe.sh` and nothing else. When Groq gets replaced, or Whisper stops being the best option, the router keeps its name and its arguments and everything downstream changes underneath.
+
+**The rule that makes this hold: never call the files behind the router directly, and never teach anyone to.** The moment a shortcut or an alias points at `transcribe-cloud.sh`, that path stops inheriting every future fix.
+
+### Same language in, same language out
+
+`km_transcribe.py` began life as a translator — Khmer audio into Chinese, because the person reading the output read Chinese. That was correct for that reader and wrong as a default.
+
+For someone whose own language is Khmer, translating is as strange as it would be to hand a Chinese speaker English text for a Chinese recording. So the rule is uniform: **the transcript comes back in the language that was spoken.** Translation is a separate request, made afterwards, on a transcript that already exists.
+
+This is not only politeness. A transcript and a translation are different objects: one is a record of what was said, the other is one person's rendering of it. Collapsing them means nobody can ever check the second against the first.
+
+### Khmer uses a different provider, and that is not negotiable
+
+Whisper-family models return unusable output for Khmer. Not lower quality — garbage. This is a property of those models. **Do not re-test it to be sure**; that was already tested, and retrying costs quota to reproduce a known result.
+
+So `km` routes to a multimodal model with the language pinned in the prompt. Naming the language explicitly is the single biggest quality lever available for any language, and it is the whole reason this route works at all.
+
+### The key never passes through this conversation
+
+Once a key value appears in a prompt, a command you echoed back, or a "let me confirm I got that right", it is in the conversation history and in every backup of it. `setup-api-key.sh` opens a separate window, reads the key there, and prints back only a length and the last four characters.
+
+**Do not offer to accept the key directly "just this once."** There is no version of that which is safe, and the script is faster anyway.
+
+### We ship the scripts. An earlier version of this file did not.
+
+The previous stance was that each machine's agent should write its own call, because a hard-coded endpoint is the part that goes stale first. That argument is not wrong, but the trade it makes is bad:
+
+- Five machines wrote nothing at all — the setup was never once completed, so it was untested as well as unshared.
+- Everything in §3 below would have had to be rediscovered independently, five times. Most of it is invisible until it bites.
+
+So the scripts ship. The staleness concern is handled in §5 instead: know what going stale *looks like*, so it gets recognised rather than debugged from scratch.
+
+---
+
+## 3. What we broke getting here
+
+Every one of these was found by running the thing, and most were silent. That is the pattern worth internalising: **in this domain, failure usually looks like success.**
+
+| What you see | What it actually is | What to do |
 |---|---|---|
-| You can run shell commands here | you already know; say which harness you are | **Stop.** See below. |
-| macOS or Linux | `uname -sm` | Windows paths and clipboard commands below are wrong; ask before improvising |
-| `ffmpeg` is either present or installable | `command -v ffmpeg \|\| echo "no ffmpeg"` | you are limited to short files until it is installed — §5 explains why |
-| No transcription key exists yet | `ls -la ~/.config 2>&1 \| head -20` | **do not overwrite anything** — §6 |
-| No key is sitting in the environment | `env \| grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' \| tr -d '=' \| grep -iE '(api\|token\|key)'` | names only, never values — it strips to variable names *first*, so a value that happens to span lines cannot fall through into the output. A match means something is already configured — ask what |
-| The recording is a size an API will accept | `ls -lh <the recording>` | tens of MB is where most endpoints start refusing |
-
-Two notes on running these:
-
-- **Do not append `2>/dev/null`.** The error message is the finding. A probe that hides its own failure reports "clean" for a machine you never actually looked at.
-- **Do not infer one answer from another.** "It's a Mac, so it has Homebrew" is how you end up reporting a setup that does not exist.
-
-**If you cannot run shell commands on the machine that holds the recordings** — you are a browser-side or chat-only agent, or the files are on someone else's laptop — then you cannot do this setup, and neither can the person by pasting your commands to you. Say that plainly. Routes 1 and 2 still work for them, and they lose nothing today.
-
-**Anything you see that contradicts this file: stop and say so. Your screen is newer than this document.**
+| **`401 Unauthorized`** | Nine times out of ten, a newline at the end of the key file — usually from writing it with `echo`. The API says nothing about whitespace. | `wc -c ~/.config/<provider>/key`. One byte longer than what was copied? That's it. Re-run `setup-api-key.sh`, which uses `printf '%s'`. |
+| **`413` / "file too large" / a truncated transcript** | The 25 MB cap. Not a broken key. | The compression step. If it is already compressed and still over, the recording has to be split — and splitting mid-sentence damages the result. |
+| **Chinese transcript comes back in Simplified** | Whisper leans Simplified for `zh` at the architecture level, regardless of how the speaker writes. | `_s2tw.py` handles it. Use `s2tw`, **never `s2twp`** — the `p` variant also localizes vocabulary and turns video 腳本 (*script*) into the IT term 指令碼. Wrong word, silently. |
+| **The transcript is one enormous paragraph** | The response format. Plain text comes back as a wall; `verbose_json` returns segments, which is what preserves line breaks. | Keep `response_format=verbose_json`. It is not cosmetic. |
+| **Khmer transcript stops early, no error** | `gemini-3.5-flash` is a thinking model, and thinking tokens come out of the same `maxOutputTokens` budget as the answer. On a dense chunk they eat the budget and the output is cut off, reported only as `finishReason=MAX_TOKENS`. | `thinkingConfig.thinkingBudget: 0`. Already set in `km_transcribe.py`. Transcription needs no reasoning. **Do not remove it.** |
+| **A flag you passed did nothing, and nothing was reported** | Argument parsers that only read *leading* flags. `transcribe.sh file.m4a zh --prompt "..."` silently dropped the prompt — the natural word order was the broken one. | Fixed here: flags are read from anywhere, and unknown flags are rejected loudly. If you extend these scripts, keep that property. |
+| **Short Chinese comes back as fluent English** | Language auto-detection guessing wrong on a short clip. | Always pass the language explicitly. This router refuses `auto` for exactly this reason. |
+| **A Chinese filename or heading turns into corrupted bytes** | Multi-byte text through shell `echo` / `sed -i ''`. | Do that work in Python. This bit us on a different tool and cost a rebuild. |
+| **Repeated `429` on a long job** | Groq's free tier allows roughly two hours of audio per hour. Not a bug — a ceiling. | Wait and retry. For a long batch, split into ~15-minute pieces, which recover faster. |
+| **A confident, fluent, completely wrong name or number** | The normal behaviour of every speech model, and the most dangerous one, because it reads as correct. | The correction table in `SKILL.md`. Never trust a number nobody checked. |
 
 ---
 
-## 4. What we may have gotten wrong
+## 4. Setting it up
 
-Stated up front so nobody spends an hour assuming they are the problem.
+Two providers, because they do different jobs. Set up whichever the person actually needs — Khmer is not required for someone who never records Khmer.
 
-1. **`SKILL.md`'s Route 3 has no steps in it.** It says a free API key and a short one-time setup are needed, and stops. That gap is ours; this file is the patch for it. It also means `SKILL.md` does not currently link here — if you found this file by listing the directory rather than by following a pointer, that is why, and it is not a sign you are in the wrong place.
-2. **Free tiers move.** Limits, model names, which endpoints exist, and whether a card is demanded at signup all change without notice and without anyone updating this file. Anything below that reads like a fact about a vendor is a fact about the day it was written. The vendor's own page is right and this file is wrong.
-3. **We do not know what is already installed.** If this person already has a working transcription setup — a script, a menu-bar app, a colleague's tool — this file does not know about it, and adding a second one is a downgrade, not an upgrade. Ask before building.
-4. **We do not know what is in the recordings.** §5 assumes they can be uploaded. That assumption is the person's to confirm, not ours and not yours.
-
----
-
-## 5. Why any of this is needed
-
-Explain the mechanism, not the rule. The three questions people actually ask:
-
-### Why a key at all
-
-Turning audio into text takes a speech model, and your harness has no audio input — that is the hard limit `SKILL.md` opens with. So the model runs on someone else's computer. The key is how that computer knows *whose* quota a request belongs to, so it can rate-limit it and cut it off at the free ceiling. No key means no way to tell one caller from another, which means no free tier for anyone.
-
-It is an identifier with a spending limit attached. That is the whole of it.
-
-### Where the money comes from
-
-A free tier means the provider absorbs the compute cost. They get two things back: hard rate limits, and — commonly on free tiers specifically — the right to use what you submit to improve their models. Paid tiers usually carry the opposite commitment.
-
-So "free" is not free of consequence. It is paid for in data. **Say that to the person before the first upload, not after.**
-
-- **Never move to a paid tier, and never enter card details, without the person saying yes in that conversation.** Not "they'd probably be fine with it."
-- **If a "free" signup demands a card, stop and report it.** That is their decision. Do not proceed on the theory that it will not be charged.
-
-### Where the audio goes
-
-The file leaves the machine. Whole, over the network, to the provider.
-
-That is fine for a voice memo to yourself. It is a real decision for: client recordings, anything with names, prices or contract terms in it, a meeting someone else was in, and anything where a password or a key was spoken out loud.
-
-**Before the first upload, tell the person what is in the file and ask.** If the recording is confidential, the correct answer may be that Route 3 is not for this one — and saying so is doing your job, not failing at it.
-
-### Why `ffmpeg` keeps coming up
-
-Most endpoints cap upload size at tens of megabytes and accept only a few container formats. An hour of phone audio usually exceeds that. `ffmpeg` is what re-encodes it down to a small mono format, or splits it into chunks that fit. Without it you are limited to short files, and the failure arrives as a size error at upload time rather than as anything about audio.
-
----
-
-## 6. Choosing a provider — and how to hold the key
-
-### Stay generic; pick one; say why
-
-Any speech-to-text API with a free tier will do. They fall into two families, and the choice between families is the part that actually matters:
-
-| Family | Good at | Watch out for |
-|---|---|---|
-| **A multimodal model API that accepts audio directly** (e.g. Google's AI Studio / Gemini API — a free Google account is enough, and it is the same vendor as the browser route in `SKILL.md` Route 2) | You can name the language in the prompt, which is the single biggest quality lever. Markedly better on languages Whisper mangles | Per-request size and duration caps; the reply is prose, so pin the output format in the prompt or you will get commentary wrapped around the transcript |
-| **A dedicated speech-to-text endpoint** (e.g. a hosted Whisper) | Fast, cheap, returns a clean transcript object, timestamps come free | Whisper-family models produce unusable output for a number of low-resource languages — `SKILL.md` Route 2 says this and it is not an exaggeration |
-
-**The routing rule**: if the language was missing from the system dictation list in Route 1, or a Whisper-based tool has already returned nonsense for it, use the first family. Do not re-test Whisper to be sure. That was already tested; the result was garbage; retrying is not a plan.
-
-**Do not hand the person a shortlist of six vendors to choose from.** Pick one that satisfies the rule, name it, say in one line why that one, and let them overrule you.
-
-### Holding the key
-
-**The key value must never pass through the conversation.** Not in a prompt to you, not in a command you echo back, not in a log line, not in a "let me confirm I got it right." Once it is in the transcript it is in every backup of that transcript.
-
-The person copies the key from the provider's page to their clipboard. Then:
-
-```bash
-mkdir -p ~/.config/<provider>
-pbpaste > ~/.config/<provider>/key        # macOS
-chmod 600 ~/.config/<provider>/key
-ls -l ~/.config/<provider>/key            # expect -rw-------
-wc -c ~/.config/<provider>/key            # a length, never the value
+```sh
+bash tools/setup-api-key.sh groq   https://console.groq.com/keys        # en, zh
+bash tools/setup-api-key.sh gemini https://aistudio.google.com/apikey   # km
 ```
 
-On Linux, `xclip -o >` or `wl-paste >` in place of `pbpaste`.
+Both are free tiers and both are the person's own account.
 
-Three traps, all of which have bitten real setups:
+**Before you run anything:**
 
-- **Trailing newline.** Writing the key with `echo` appends `\n`. Several APIs then return **401** with a message that says nothing whatsoever about whitespace, and the next hour goes into regenerating a key that was fine. If you must write it programmatically, `printf '%s'`.
-- **Masked diagnostics only.** When something is wrong, print the byte count and the last four characters. Never the key.
-- **The key lives outside the repo.** `~/.config/...` is outside the working tree by design. The repo's `.gitignore` is a backstop for accidents, not the plan. Never `git add` it, never place it inside the cloned folder "temporarily."
-
-**If a key already exists at that path, do not overwrite it.** Inventory first, show the person: path, modification time, byte length — never the value — and ask which one stays.
-
-### Writing the call
-
-**This file does not ship the script, and that is deliberate.** A hard-coded endpoint, model name and request body is the part that goes stale first — §4 says why — and a script that was right the day it was written fails months later with an error that looks like a broken key. So the call itself is yours to write:
-
-1. **Open the provider's own current API reference** for sending audio. Not a blog post, not this file, not your memory of the API.
-2. **Write the smallest thing that works**: read the key from the file, send one recording, print the transcript back. **Name the language in the request** — `SKILL.md` Route 2 explains why that single line fixes most bad transcriptions, and it matters exactly as much here.
-3. **One small script, in a location the person chose**, so the additive-footprint rule below still holds.
-
-If you cannot reach the provider's documentation, stop there and say so. A call written from memory of an API usually fails as a `401` or a malformed-request error, and then everyone spends an hour on the key file, which was fine all along.
-
-### Do
-
-- **Destructive action → inventory, show the person, then delete.** Existing key files, old transcripts, a previous script. "I'll just replace it" is a plan with the person removed from it.
-- **Installing software is their decision on their machine.** Show the exact command, say what it pulls down and roughly how large, and wait. On a clean macOS, installing a package manager first can mean hundreds of megabytes of command line tools and a password prompt — say so *before* it starts, not while it is running.
-- **Keep the change additive.** A key outside the repo, and at most one small script. That is the whole footprint.
-
-### Don't
-
-- **Don't route around a block by switching tools.** If an edit was refused and your next move is a shell command that does the same edit, stop — the refusal was the signal, and going back to ask is the cheap path. This has happened; the workaround succeeded and that was the bad outcome.
-- **Don't modify `SKILL.md` or any other file already in this repo** as part of this setup.
-- **Don't upload a recording you have not described to the person.**
-- **Don't paste a transcript of a confidential recording anywhere shared or public**, including issue trackers.
-- **Don't claim it works because a command exited zero.** §7.
+- **Say what a free tier means here** — there is a ceiling, requests start being refused when it is reached, nothing breaks permanently, and you will come back and ask before anything costs money.
+- **Say where their audio goes** — the file is sent to a named company's servers to be transcribed, and on a free plan that company may use it to improve their own systems. Do not soften this into "it's processed in the cloud." For a client recording or anything with prices and names in it, that is a decision they get to make.
+- **`ffmpeg` is needed only for files over 25 MB** and for the Khmer route. Installing it pulls down a few hundred megabytes and asks for a password. Say that *before* it starts, not while it is running.
+- **If a key already exists at that path, do not overwrite it.** Show path, modification time, byte length — never the value — and ask which one stays. The script does this, but the same rule applies to you.
 
 ---
 
-## 7. How you know it worked
+## 5. How you know it worked — and how you know it went stale
 
-Run it. Reading the script and concluding it should work is not evidence, and it is the specific failure mode this section exists to block.
+Run it. Reading a script and concluding it should work is not evidence, and it is the specific failure this section blocks.
 
-1. **Key is readable and shaped right** — `ls -l` shows `-rw-------`, `wc -c` shows a plausible length. Not zero, not three bytes longer than it should be.
-2. **Tooling is present** — `command -v ffmpeg` prints a path, or you have told the person it is missing and what that costs.
-3. **The round trip, on a sentence whose words you already know.** Ask the person to record about ten seconds in the target language containing **one name and one number** — theirs, a colleague's, a price, a date. Run the pipeline. Compare the output against what they said they said.
-   - This is the only check that distinguishes "the API answered" from "the API answered correctly." A confident, fluent, wrong transcript exits zero exactly like a right one.
-4. **The language check** — the transcript comes back in the language that was spoken, not translated into English. If it came back translated, the language was not pinned; fix the prompt, not the model.
-5. **Report the two failures by name, so they are recognised rather than debugged from scratch:**
-   - **401 / unauthorized** → the key file, nine times out of ten the trailing newline, not the key itself.
-   - **413 / "file too large" / a truncated transcript** → the size cap. This is the `ffmpeg` step, not a broken key.
+1. **The round trip, on a sentence whose words you already know.** Ask for about ten seconds in the target language containing **one name and one number**. Run it. Compare against what they said they said. This is the only check that separates "the API answered" from "the API answered correctly" — a confident wrong transcript exits zero exactly like a right one.
+2. **The language check.** The transcript is in the language that was spoken, not translated. If it came back translated, the language was not pinned — fix the request, not the model.
+3. **The key check.** `ls -l` shows `-rw-------`; `wc -c` shows a plausible length. Never print the value.
 
-Then say what you actually ran and what came back. "Setup complete" without a transcript of a sentence you knew in advance is not a result.
+`VERIFY.md` in this folder is the fuller sequence and is stricter — a check passes there only when you have pasted real output.
 
-> **`VERIFY.md`, in this same folder, is the full check sequence — read it before you call this finished.** The five checks above are only the setup-specific subset. `VERIFY.md` is stricter (a check passes only when you have pasted the real output), it covers the whole skill rather than Route 3, and its `C7` is the authority on the key check that appears as item 1 above. It also carries a negative control that demonstrates on *this* machine that the agent genuinely cannot hear audio, which nothing above proves.
+**Signs this file has gone stale**, which is the risk we accepted by shipping scripts rather than instructions:
 
-And run the listing yourself, from the folder that holds `CLAUDE.md`:
+- A model name in these scripts returns `404` or "model not found" → the model was retired. Replace the name; the rest of the pipeline is unaffected.
+- A provider's response no longer contains `segments` → the response shape changed. The transcript will still be produced, as one wall of text.
+- The setup instructions point at a page that no longer exists → the provider reorganised. Find the current page; do not guess a URL.
 
-```bash
-ls .claude/skills/audio-transcribe/
-```
-
-If it shows files this document never mentions, read them before you finish. They were added after this file and they are the newer word.
+In all three cases: **say the mismatch before acting on it**, then §7.
 
 ---
 
-## 8. Then explain it to the person, in their language
+## 6. Then explain it to the person, in their language
 
-Not a summary of this file. Four things, in the language they have been speaking to you, in plain words, with no paths and no vendor jargon:
+Not a summary of this file. Four things, in plain words, no paths and no vendor names they did not ask for:
 
-1. **What now works** — "you can hand me a recording and I'll turn it into text without you going through the browser."
-2. **Where their audio goes** — that the file is sent to a company's servers to be transcribed, named plainly, and that on the free plan that company may use it to improve their own systems. Do not soften this into "it's processed in the cloud."
-3. **What the free plan means in practice** — that there is a ceiling, roughly what happens when it is reached (requests start being refused, nothing breaks permanently), and that you will come back and ask before anything costs money.
-4. **Where the key lives** — that it is a file on their machine only they can read, and that you never put its contents in the chat. Not the value, not part of the value.
+1. **What now works** — "hand me a recording and I'll turn it into text; you don't have to go through a browser."
+2. **Where their audio goes** — see §4. Plainly.
+3. **What the ceiling is** — and that you will ask before anything costs money.
+4. **Where the key lives** — a file on their machine only they can read, and that you never put its contents in the chat. Not the value, not part of the value.
 
-**End by asking: "is any of that different from what you were expecting?"** That question is not politeness. It is the last cheap chance to catch a wrong assumption before it becomes an hour of debugging — and the person knows things about their own machine and their own recordings that this file never could.
-
-### If the plain-language version still does not land
-
-Some of this is genuinely awkward to explain out loud. Check whether this copy of the repo carries a long-form page written for people rather than agents:
-
-```bash
-git ls-files ':/*edu*.html'
-```
-
-This asks the repo itself rather than guessing a folder name, so it works from whatever directory you are in and keeps working if that page ships somewhere other than where we expected.
-
-If it **prints a path**, that page is in this copy — offer to open it for them and let them read at their own pace. If it **prints nothing**, that page is not in this copy: **say nothing about it and do not link it.** A pointer to a page that is not there costs more trust than the explanation was worth. If instead git answers that this is not a repository, this copy was downloaded rather than cloned — say so, because the checks in §2 do not work either.
+**End by asking: "is any of that different from what you were expecting?"** That is not politeness. It is the last cheap chance to catch a wrong assumption, and they know things about their own recordings that this file never could.
 
 ---
 
-## If something here is wrong
+## 7. This folder is meant to grow
+
+What ships here is a working floor, not a finished product. Two things are deliberately absent, and adding them is a good use of your time when the person needs them:
+
+- **Other languages.** The router handles three and refuses the rest by name rather than guessing. Adding one means deciding which provider it goes to — and for any language Whisper is known to mangle, that decision is already made.
+- **What happens after the transcript.** Filing it, extracting actions, feeding it somewhere else. That is the person's workflow, not this skill's, and it should be built to fit them.
+
+When you add something, add a row to `QA.md` too — in the person's own words, describing the symptom, not the cause. That file is the only part of this folder designed to be appended to forever, and it is what stops the same question being answered from scratch on five machines.
+
+### If something here is wrong
 
 Say the mismatch **before** you act on it, not after. Then open an issue on this repo and paste the real output of the command that disagreed — the actual text, not a description of it.
 
 You do not need write access to open an issue, and you should not be asking for any.
 
-This is not a formality. More than once, the agent on the receiving end has caught an error in what we shipped, and it was right both times. **An instruction cannot prove itself.** Yours is the only reading of it that happens on a real machine.
+This is not a formality. More than once the agent on the receiving end has caught an error in what we shipped, and it was right every time. **An instruction cannot prove itself.** Yours is the only reading of it that happens on a real machine.

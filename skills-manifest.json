@@ -45,39 +45,52 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "a71bbe8",
-      "updated": "2026-08-07",
+      "version": "PENDING-COMMIT",
+      "updated": "2026-08-10",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 85,
-          "sha": "a4ac8f54e8f06e48905258ec7e1fb65890d39a67"
+          "lines": 75,
+          "sha": "def5334f92dcd9c7c123a28fc619d6141f780752"
         },
         {
           "path": "INSTALL.md",
-          "lines": 248,
-          "sha": "bb2c15cddaa3018ef5f227bbc532b5d804298d3e"
+          "lines": 163,
+          "sha": "c265b8d83576f648a04bfe12440a5fb651ca3cfd"
         },
         {
-          "path": "VERIFY.md",
-          "lines": 369,
-          "sha": "4db36060ddfafd560b114cca97f597f65ff5e871"
+          "path": "QA.md",
+          "lines": 191,
+          "sha": "b47ec584d009db2ba9165b5fef37a2aaa4d5e4b7"
         },
         {
           "path": "FLOW.md",
-          "lines": 179,
-          "sha": "a44a52f97e4a97b142275b49be4aa462caf6a88b"
+          "lines": 96,
+          "sha": "4f3a804577db0877dd22a5ed23531380ed5defeb"
+        },
+        {
+          "path": "VERIFY.md",
+          "lines": 376,
+          "sha": "387a87039eaf1b9ccfdd79bb77b5c406a5097db1"
         }
       ],
       "requires": [
-        "A recording, or a microphone. Nothing here produces audio.",
-        "Route 2 needs a browser and an account on a multimodal assistant that accepts audio uploads. Not shipped and not configured by this repository.",
-        "Route 3 needs an API key and a one-time setup. INSTALL.md in this same folder is the setup instruction set. It is a separate task with its own consent step, not something to attempt during an update."
+        "A recording. Nothing here produces audio.",
+        "An API key on a free tier, in the person's own account: Groq for en/zh, Gemini for km. tools/setup-api-key.sh takes it without the value passing through the conversation.",
+        "ffmpeg, for recordings over 25 MB and for the Khmer route.",
+        "Scripts live in workspace/tools/ and are reached only through tools/transcribe.sh."
       ],
       "referenced_but_not_present": [],
       "known_inconsistency": "Resolved 2026-08-07: the Skills Index row in workspace/CLAUDE.md used to describe the pre-2026-08-04 version ('router entry point, cloud-first with local fallback, auto-compression'). It has been rewritten upstream to match the 79-line SKILL.md and to name INSTALL.md / FLOW.md / VERIFY.md. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design. An upstream change to it WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
-      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4."
+      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4.",
+      "ships_scripts": [
+        "workspace/tools/transcribe.sh",
+        "workspace/tools/transcribe-cloud.sh",
+        "workspace/tools/km_transcribe.py",
+        "workspace/tools/_s2tw.py",
+        "workspace/tools/setup-api-key.sh"
+      ]
     },
     {
       "name": "handoff",

@@ -19,4 +19,7 @@ workspace/inbox/*
 workspace/projects/*
 workspace/summaries/*
 workspace/handoff/*
+# Transcripts are verbatim records of real meetings, and this repo is public.
+# The audio buffer underneath them is the recordings themselves.
+workspace/transcripts/*
 !workspace/inbox/YYYY-MM-DD-example.md

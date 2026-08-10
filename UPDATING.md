@@ -116,11 +116,18 @@ modified files. Every update after that has to route around them. That is our de
 the friction in Section 5 exists entirely because of it. If the person's update "fails," it
 is not because they did something wrong.
 
-**An update can delete files, and that is expected.** When a skill is rewritten upstream,
-supporting files that used to ship with it are removed. A clone made before that rewrite
-will lose those files on the next pull. It looks alarming in the output. It is not damage.
-It is the clone catching up. Section 5 tells you how to show the person the list *before*
-it happens rather than after.
+**An update can delete files, and some of that is expected.** When a skill is rewritten
+upstream, supporting files that used to ship with it are removed, and a clone made from
+before that rewrite loses them on the next pull. That much is the clone catching up, not
+damage.
+
+Do not let that sentence talk you into accepting a deletion list you have not checked.
+Files that only ever existed on this machine — the person's own skills, their own notes,
+anything they or the wizard created — are **never** removed by a pull, because a pull is a
+merge, not a checkout. If such a file shows up in a deletion list, the list is wrong; the
+machine is fine. The obvious command for producing that list gets this wrong by default,
+which is why 5.2 does not use it. Produce the real list, prove what the merge will actually
+do, and show the person that — before it happens rather than after.
 
 **This file may be older than the repository it describes.** It is committed alongside the
 code, but nothing guarantees it was updated in the same commit as the change you are about
@@ -155,8 +162,24 @@ git -C "$REPO" log --oneline HEAD..origin/main
 # the shape of the change
 git -C "$REPO" diff --stat HEAD origin/main
 
-# which files will be DELETED by this update  (expect some; see Section 4)
-git -C "$REPO" diff --name-status HEAD origin/main | grep '^D' || echo "(no deletions)"
+# which files will be DELETED by this update  (see Section 4)
+#
+# Do NOT use `diff HEAD origin/main` for this. Its "D" means "HEAD has it, origin/main
+# does not", which lumps together two opposite cases: files upstream really deleted, and
+# files that only ever existed on this machine and upstream never had. A pull is a
+# three-way merge, and it keeps the second group. Listing them as "will be DELETED" is
+# how you end up telling the person their own skills are about to be removed.
+#
+# Compare against the merge base instead. This is the real deletion list:
+MB=$(git -C "$REPO" merge-base HEAD origin/main)
+git -C "$REPO" diff --name-status "$MB" origin/main | grep '^D' || echo "(no deletions)"
+
+# Stronger, and worth the extra line: do the merge in memory and read what comes out.
+# Nothing is written to the working tree. This turns "what will the pull do" from a
+# prediction into a fact you can check.  (needs git 2.38+)
+TREE=$(git -C "$REPO" merge-tree --write-tree HEAD origin/main) \
+  && git -C "$REPO" diff --name-status HEAD "$TREE" | grep '^D' \
+  || echo "(merge produces no deletions)"
 
 # has this machine got local commits upstream does not have?
 git -C "$REPO" log --oneline origin/main..HEAD || true
@@ -345,7 +368,14 @@ comm -23 <(sort -u ~/secretary-update-backup/CLAUDE.md.bak) \
 comm -23 <(sort -u ~/secretary-update-backup/INDEX.md.bak) \
          <(sort -u "$REPO/workspace/INDEX.md")
 #    expected: both print nothing.
-#    Anything printed is a line that was in their file before the update and is gone now.
+#    A printed line was in their file before the update and is not there now — but that is
+#    not the same as lost. workspace/CLAUDE.md carries a skills index whose rows are partly
+#    ours and partly theirs, so any upstream row whose description we rewrote will show up
+#    here every single time. Do not report it as a loss, and do not get numb to the check
+#    because it always prints something.
+#    Take each printed line, find its key in the new file (the skill name, the heading):
+#      still there, new wording  -> upstream replaced it. Fine. Say so explicitly.
+#      not there at all          -> a real loss. Stop and go to Section 8.
 #    (needs bash or zsh, like the check in 5.2)
 
 # 5. the skills on disk match the manifest

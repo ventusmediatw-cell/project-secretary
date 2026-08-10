@@ -1,80 +1,57 @@
 ---
 name: audio-transcribe
-description: "Turn a recording — or something you'd rather say than type — into text your agent can actually work with. Use this whenever the user has an audio or video file, mentions a recording, pastes a path ending in .m4a / .mp3 / .wav / .mp4 / .MOV, or asks to speak instead of type. Covers the hard limit (Claude Code cannot hear audio) and the route that works for languages your system's dictation does not support."
+description: "Turn a recording into text the person can actually work with. Use this whenever the user has an audio or video file, mentions a recording, pastes a path ending in .m4a / .mp3 / .wav / .mp4 / .MOV, or would rather talk than type a long thing. Covers the hard limit (this agent cannot hear audio), the one command that does the work, and the checks that stop a confident wrong transcript from being believed."
 ---
 
 # Audio → Text
 
-## Read this first: the agent cannot hear
+## Read this first: you cannot hear
 
-**Claude Code has no audio input.** `Read` handles images, PDFs and notebooks. It does not handle `.m4a`, `.mp3`, `.wav`, or `.mp4`.
+**You have no audio input.** `Read` handles images, PDFs and notebooks. It does not handle `.m4a`, `.mp3`, `.wav`, or `.mp4`.
 
-Dropping a recording into the chat does not work — and the agent will not necessarily tell you it failed. At best it guesses from the filename, which looks like an answer and isn't one.
+If someone drops a recording into the chat, you will not get an error. At worst you will guess from the filename and produce something that reads like a summary and is entirely invented. That has happened. It is the failure this whole skill exists to prevent.
 
-**Audio has to become text before it reaches the agent.** Everything below is about how.
-
----
-
-## Route 1 — Your system's dictation
-
-Fastest, nothing to install.
-
-- **macOS**: press `Fn` twice, then speak. **System Settings → Keyboard → Dictation** shows which languages are available.
-
-Good for widely-supported languages.
-
-**If your language is not in that list, stop and use Route 2.** There is no workaround — the language assets do not exist on the machine, and retrying will not change that.
+**Audio has to become text before it reaches you.** One command does that.
 
 ---
 
-## Route 2 — A multimodal model, in the browser
+## The command
 
-For languages dictation doesn't cover, or when you already have a recording file.
+```sh
+bash tools/transcribe.sh <audio-file> <language>
+```
 
-1. Open a multimodal assistant that accepts audio (for example `gemini.google.com` — a free account is enough)
-2. Speak into it, or upload the recording
-3. Ask for this — **the language line is the part that matters**:
+| Language | In | Out |
+|---|---|---|
+| `en` | English | English transcript |
+| `zh` | Chinese | Traditional Chinese transcript |
+| `km` | Khmer | Khmer transcript |
 
-   > Transcribe this audio. The audio is in `<language>`. Write the transcript in `<language>`.
-   > Do not translate unless I ask you to. If any part is unclear, mark it `(unclear)` — do not guess words.
+**What goes in comes out in the same language.** This is not a translator. If the person wants it in another language, translate the transcript afterwards as a separate step — that keeps the record of what was said apart from anyone's rendering of it.
 
-4. Copy the text back into your agent and carry on
+Useful flags — they work anywhere in the line:
 
-### Why naming the language matters so much
+```sh
+--prompt "names, product names, jargon"   # stops proper nouns coming back wrong
+--out PATH                                # write somewhere specific
+--keep-audio                              # don't move the audio afterwards
+```
 
-When you don't say what language it is, a speech model guesses — and for less common languages it guesses badly, usually substituting a regional neighbour. The output comes back fluent, confident, and wrong.
+`--prompt` is worth more than it looks. Names, brands and internal jargon are exactly what speech models mangle, and feeding them in advance is the cheapest fix available. Use it whenever you know what the recording is about.
 
-Naming the language explicitly is the single change that fixes most bad transcriptions. Do it even when it seems obvious.
+### First time on this machine
 
-### If you have tried Whisper-based tools and got nonsense
-
-Whisper — and the many services built on it — produce genuinely unusable output for a number of low-resource languages. Not "a bit worse": garbage.
-
-That is a property of the model, not something you did wrong. Switch to Route 2 and name the language.
-
----
-
-## Route 3 — Scripted, if you do this often
-
-A browser round-trip is fine occasionally. If you transcribe regularly, it can run as a single command from inside your agent instead.
-
-This needs a free API key and a short one-time setup. **Ask before you start** — it is a setup task, not something to attempt in the middle of other work.
-
-Three files in this folder carry the rest, and they are written for the agent, not for the person:
-
-- **`INSTALL.md`** — the setup itself: what to check on this machine first, choosing a provider, where the key goes, and what this repository deliberately does not ship.
-- **`FLOW.md`** — two diagrams: how the setup runs, and how a recording becomes text once it is done.
-- **`VERIFY.md`** — how to prove any of it worked *on this machine*. Reading a file and concluding it should work is not evidence.
+`tools/transcribe.sh` needs an API key and will tell you so, with the exact command, if one is missing. Do not go looking for the key or ask the person to paste it to you — **`INSTALL.md` in this folder explains why the key must never pass through this conversation**, and `tools/setup-api-key.sh` handles it in a separate window.
 
 ---
 
-## Once you have the text
+## After you have the text
 
-**Say what you want done with it.** "Summarise this", "pull out the action items", "draft a reply" — the transcript is raw material, not the deliverable.
+**Say what you want done with it.** A transcript is raw material, not the thing anyone wanted. Summarise it, pull the action items, draft the reply.
 
-**Check names and numbers before the text goes anywhere.** People's names, place names, product names, prices and dates are exactly what speech models get wrong, and they come out looking as confident as everything else. Verify those against a source you trust before any of it reaches a client, a colleague, or a shared document.
+**Check names and numbers before it goes anywhere.** People's names, place names, prices and dates are what speech models get wrong, and they come back looking exactly as confident as the parts that are right. Verify them against something you trust before any of it reaches a client, a colleague, or a shared document.
 
-**Keep the original transcript unedited.** If you need to correct something, put the correction in a short table above the transcript rather than editing the text itself:
+**Never edit the transcript body.** If something needs correcting, put a table above it:
 
 ```markdown
 | Heard as | Should be |
@@ -82,4 +59,17 @@ Three files in this folder carry the rest, and they are written for the agent, n
 | <what the transcript says> | <the correct term> |
 ```
 
-Editing the transcript directly destroys the only record of what was actually heard. After that you cannot tell an accurate transcription from a confident guess, and you cannot re-check it later against a better model.
+Editing the body destroys the only record of what was actually heard. After that you cannot tell an accurate transcription from a confident guess, and you cannot re-check it later against a better model.
+
+---
+
+## The rest of this folder
+
+| File | What it is | Read it when |
+|---|---|---|
+| **`INSTALL.md`** | Why this is built the way it is, what we broke getting here, and how to set it up | Before changing anything, and on first setup |
+| **`QA.md`** | Questions people actually asked, and what turned out to be wrong | Something behaves oddly — check here before debugging |
+| **`FLOW.md`** | Diagrams: how setup runs, how a recording becomes text | You want the shape at a glance |
+| **`VERIFY.md`** | Checks that produce evidence rather than claims | Before telling anyone this works |
+
+**If something on this machine disagrees with this file, the machine is right.** Say so before you act on it, then follow the instructions at the end of `INSTALL.md`.

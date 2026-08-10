@@ -63,9 +63,9 @@ Nothing here needs a credential. Nothing here writes inside the repo — every s
 | C2 | Skill is where the harness looks | The file is reachable, and unmodified | Yes |
 | C3 | The trigger fires | Discovery works in a real session | **No — needs a fresh session** |
 | C4 | The agent cannot hear (**negative control**) | The hard limit in `SKILL.md` is real, on *your* machine | Yes |
-| C5 | End-to-end on a known answer | A route works, not just that it is documented | Route 2 needs a human |
-| C6 | Route 1 language availability | Whether dictation is even an option for this language | Yes (macOS) |
-| C7 | Route 3 key present, value never printed | Setup done without leaking the key | Yes, if Route 3 was set up |
+| C5 | End-to-end on a known answer | The pipeline works, not just that it is documented | Yes |
+| C6 | The language actually routes somewhere | This language has a provider, and that provider is set up | Yes |
+| C7 | Key present, value never printed | Setup done without leaking the key | Yes |
 | C8 | Original transcript untouched | The record of what was heard still exists | Yes |
 | C9 | Names, numbers, dates checked | — | **No — human gate** |
 
@@ -124,7 +124,7 @@ In that new session, one line, nothing else:
 
 > I have a recording at `<path to any audio file>` — transcribe it.
 
-**PASS** — the reply names the limit *before* offering anything: that the agent cannot hear audio, that the file has to become text first, and then walks toward one of the routes.
+**PASS** — the reply names the limit *before* offering anything: that the agent cannot hear audio, that the file has to become text first, and then walks toward the one command that does the work.
 
 **FAIL A** — the reply starts describing what is in the recording. It cannot know. Go to C4, which demonstrates that on your own machine.
 
@@ -192,9 +192,13 @@ Keep the file. C5 uses it.
 
 C4 proved the wall. This proves there is a door.
 
-Take the **same file** through whichever route in `SKILL.md` you and your human chose. Use the wording from `SKILL.md` and **name the language explicitly** — that instruction is not decoration, it is the single change that fixes most bad transcriptions.
+Take the **same file** through the command in `SKILL.md`, and **name the language explicitly**:
 
-**Route 1 is the exception, and it is not a skip.** Dictation transcribes a live voice; there is no file to hand it. Run the check the other way round: have your human say *purple elephant seventeen* into dictation and check that those three words are what land in the box. Same ground truth, same pass condition, and it is still their keyboard, not yours.
+```sh
+bash tools/transcribe.sh <that file> <en|zh|km>
+```
+
+Naming the language is not decoration — it is the single change that fixes most bad transcriptions, and this router refuses to guess precisely so that nobody skips it.
 
 **PASS** — the text that comes back contains *purple elephant seventeen*.
 
@@ -208,40 +212,43 @@ This is the only check that requires a human at the keyboard if you are on the b
 
 ---
 
-## C6 — Route 1: is your language actually available? (macOS)
+## C6 — Does this language actually route anywhere?
 
-`SKILL.md` says: if your language is not in the dictation list, stop and use another route, because there is no workaround. Here is how to find out without opening anything:
+The router handles three languages and **refuses the rest by name**. It does not fall back to guessing, because fluent nonsense in the wrong language is worse than an error — nothing tells you it happened.
 
-```
-defaults read com.apple.assistant.support "Offline Dictation Status" \
-  | grep -oE '"[a-z]{2}[-_][A-Z]{2}"' | tr -d '"' | sort -u | tr '\n' ' '
-```
+Check what this machine will accept, without transcribing anything:
 
-Observed on one machine — 41 codes:
-
-```
-ar-SA da-DK de-AT de-CH de-DE en-AU en-CA en-GB en-IE en-IN en-NZ en-SG en-US en-ZA
-es-CL es-ES es-MX es-US fi-FI fr-BE fr-CA fr-CH fr-FR he-IL it-CH it-IT ja-JP ko-KR
-ms-MY nb-NO nl-BE nl-NL pt-BR ru-RU sv-SE th-TH tr-TR vi-VN zh-CN zh-HK zh-TW
+```sh
+bash tools/transcribe.sh
 ```
 
-**PASS** — your human's language is in the list. Route 1 is a real option.
+**PASS** — the usage text lists the language your human records in (`en`, `zh`, or `km`), *and* the key for that language's provider exists:
 
-**EMPTY — no codes come back at all.** This is not the same as FAIL, and it is the result most likely to be misread. `defaults read` writes `The domain/default pair of (...) does not exist` to **stderr**, so a blank list can mean the key was never written — dictation has simply never been switched on here — rather than that the language is missing from it. Do not report Route 1 as impossible on an empty list. Report that dictation has not been set up, and send your human to the settings pane. **Never add `2>/dev/null` to this command**: the error message is the finding, and hiding it turns "I could not look" into "I looked and there was nothing."
+| Language | Provider | Key path |
+|---|---|---|
+| `en`, `zh` | Groq | `~/.config/groq/key` |
+| `km` | Gemini | `~/.config/gemini/key` |
 
-**FAIL** — the list came back populated and your human's language is not in it. That is not a bug and there is nothing to install your way out of. Go to Route 2 and say plainly that Route 1 is unavailable for this language.
+```sh
+ls -l ~/.config/groq/key ~/.config/gemini/key 2>&1
+```
 
-**Honest limits on this check** — say these out loud rather than overstating the result:
+A missing file for a language they never record is not a failure. Report it as `NOT NEEDED`, and say which languages that machine is actually set up for.
 
-- The authority is **System Settings → Keyboard → Dictation**. This command is the fast read-only proxy. If the two disagree, the settings pane wins.
-- This reads the *on-device* dictation list. Treat a missing language as "do not promise Route 1", and confirm in the settings pane before telling your human it is impossible.
-- Not on macOS? This check does not apply — `SKILL.md` documents Route 1 for macOS only. Status: `NOT RUN`, with the reason.
+**FAIL — the language is not one of the three.** There is nothing to install your way out of, and **do not try `auto` to see what happens**. Some languages work through the Groq route, some need the Gemini route, and some return confident nonsense whichever you pick. Adding one is a real decision — `INSTALL.md` §7 covers it. Until then, say plainly that this language is not supported here.
+
+**FAIL — the language is listed but its key is missing.** The router will tell them, with the exact setup command. That is a setup step, not a broken install. Run `tools/setup-api-key.sh` for that provider — and never take the key value yourself.
+
+**Honest limits on this check** — say these rather than overstating:
+
+- This proves the language is *routed* and a key *exists*. It does not prove the key is valid, and it does not prove the transcript will be any good. C5 is the only check that proves either.
+- A key file of a plausible length can still be the wrong key, or have a trailing newline. Both surface as `401` on the first real call, not here.
 
 ---
 
-## C7 — Route 3 only: the key exists, and you never printed it
+## C7 — The key exists, and you never printed it
 
-Skip this entirely if the one-time setup was never done. **`SKIPPED — Route 3 not set up` is a correct and complete answer.** Do not invent a result for a route nobody uses.
+Skip this for a provider whose languages your human never records. **`SKIPPED — Gemini not set up; this machine only records English` is a correct and complete answer.** Do not invent a result for a provider nobody uses, and do not set one up just to make a row say PASS.
 
 There is no fixed path to fill in below, and that gap is ours: `SKILL.md` names no provider and no key location on purpose, so the path is whatever the setup actually created. If this folder also contains an `INSTALL.md`, that is where the setup steps and the key location live — read it instead of guessing a path, and if it is missing, ask rather than going looking.
 
@@ -312,8 +319,8 @@ C2 skill present + unmodified ... PASS   <paste all four commands and their outp
 C3 trigger fires ................ PASS   run in a fresh session by <who>; <paste the reply>
 C4 agent cannot hear ............ PASS   <paste the refusal; confirm the phrase never appeared>
 C5 end-to-end ................... PASS   route used: <n>; <paste the returned text>
-C6 language available ........... FAIL   <paste the language list>; <language> not present → Route 2
-C7 key present .................. SKIPPED  Route 3 not set up
+C6 language routes .............. FAIL   <language> is not one of en/zh/km; not supported here
+C7 key present .................. SKIPPED  Gemini not set up; this machine records en only
 C8 transcript unmodified ........ PASS   <paste both hashes>
 C9 names and numbers ............ NOT CHECKED  no human has reviewed the list yet
 ```
