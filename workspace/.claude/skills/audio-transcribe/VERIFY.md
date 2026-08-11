@@ -51,7 +51,9 @@ It is also a failure that is invisible afterwards, because the end state looks i
 
 ### What this file will and will not touch
 
-Nothing here needs a credential. Nothing here writes inside the repo — every scratch file goes to a temp directory you create. The last line of the report below is a `git status` proving that.
+Nothing here needs a credential. Most checks write only to a temp directory you create.
+
+⚠️ **C5 is the exception, and `git status` cannot show it.** Running `tools/transcribe.sh` writes a transcript into `workspace/transcripts/` and moves the recording into `workspace/transcripts/_audio_buffer/` — both inside the repo, and both invisible to `git status` because `.gitignore` covers them. That is by design, not a leak, but a report claiming "nothing was written inside the repo" on the strength of a clean `git status` would be false. Name those two paths yourself when you report C5.
 
 ---
 
@@ -250,7 +252,7 @@ A missing file for a language they never record is not a failure. Report it as `
 
 Skip this for a provider whose languages your human never records. **`SKIPPED — Gemini not set up; this machine only records English` is a correct and complete answer.** Do not invent a result for a provider nobody uses, and do not set one up just to make a row say PASS.
 
-There is no fixed path to fill in below, and that gap is ours: `SKILL.md` names no provider and no key location on purpose, so the path is whatever the setup actually created. If this folder also contains an `INSTALL.md`, that is where the setup steps and the key location live — read it instead of guessing a path, and if it is missing, ask rather than going looking.
+`SKILL.md` names Groq for `en`/`zh` and Gemini for `km`, and C6 above already prints both key paths — `~/.config/groq/key` and `~/.config/gemini/key`. Check those two. (An earlier version of this section said no provider was named anywhere; that was wrong, and it sent agents looking for a path that was two sections up.) If this folder also contains an `INSTALL.md`, that is where the setup steps and the key location live — read it instead of guessing a path, and if it is missing, ask rather than going looking.
 
 ```
 ls -l <the key file your setup created>

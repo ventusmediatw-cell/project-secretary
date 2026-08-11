@@ -24,6 +24,7 @@ import sys
 ARROWS = ("→", "->")
 START = "<!-- glossary:begin -->"
 END = "<!-- glossary:end -->"
+WORD = re.compile(r"\w", re.UNICODE)
 
 
 def glossary_path(script_dir):
@@ -32,52 +33,96 @@ def glossary_path(script_dir):
 
 
 def load_entries(path):
-    """Every line holding an arrow is an entry. Everything else is prose."""
+    """Only live prose lines count. Comment blocks and code fences do not.
+
+    The glossary file documents its own format with `heard → correct` inside a
+    fenced example, and ships commented-out samples. A parser that reads every
+    line containing an arrow turns both into live rules — which is how a stock
+    install came to "correct" the ordinary English word *heard*.
+    """
     entries = []
     seen = set()
+    in_comment = False
+    in_fence = False
     with open(path, encoding="utf-8") as f:
         for raw in f:
             line = raw.strip()
-            if line.startswith("<!--") or line.startswith("-->"):
+
+            if in_comment:
+                if "-->" in line:
+                    in_comment = False
                 continue
+            if line.startswith("<!--"):
+                if "-->" not in line:
+                    in_comment = True
+                continue
+
+            if line.startswith("```"):
+                in_fence = not in_fence
+                continue
+            if in_fence:
+                continue
+
+            # Backticks mean prose about the format, not an entry. The line
+            # explaining that `->` also works is the one that taught us this:
+            # it contains an arrow, and it became a rule rewriting a backtick.
+            if "`" in line:
+                continue
+
+            # Markdown decoration around a real entry is a normal thing to
+            # write and used to make the entry silently dead.
+            line = re.sub(r"^([-*+]|\d+[.)])\s+", "", line)
+            line = line.strip("| ").strip()
+
             for arrow in ARROWS:
-                if arrow in line:
-                    heard, _, correct = line.partition(arrow)
-                    # An inline "# note" is for the reader, not for the matcher.
-                    correct = correct.split("#")[0].strip()
-                    heard = heard.strip().lstrip("<!-").strip()
-                    if heard and correct and (heard, correct) not in seen:
-                        seen.add((heard, correct))
-                        entries.append((heard, correct))
+                # Whitespace on both sides. An arrow buried in a sentence, or
+                # inside a word, is punctuation rather than a mapping.
+                m = re.search(r"\s" + re.escape(arrow) + r"\s", line)
+                if not m:
+                    continue
+                heard, correct = line[:m.start()], line[m.end():]
+                # A trailing note, but only when it reads as one. A bare "#"
+                # can be part of a name or a product code.
+                correct = re.split(r"\s+#\s", correct, maxsplit=1)[0]
+                heard, correct = heard.strip(" |\t"), correct.strip(" |\t")
+                # Names are short. Anything sentence-length is prose that
+                # happened to contain an arrow.
+                if not (0 < len(heard) <= 80 and 0 < len(correct) <= 80):
                     break
+                if heard != correct and (heard, correct) not in seen:
+                    seen.add((heard, correct))
+                    entries.append((heard, correct))
+                break
     return entries
 
 
 def finder(term):
-    """ASCII terms need word boundaries; Khmer and Chinese have no word breaks.
+    """Word boundaries only where the term's own edge is a word character.
 
-    Without this, `Rea` matches inside `Reality`. With it applied to Khmer, a
-    term would never match at all — \\b is defined on word characters, and
-    Khmer text has no non-word characters between syllables to anchor against.
+    `\\b` is defined between a word and a non-word character. Anchoring it
+    against a term that starts or ends with punctuation, or with Khmer or Han
+    text, asks for a transition that never occurs — the term then matches
+    nothing, silently. Deciding per edge keeps `Rea` from matching inside
+    `Reality` without disabling the whole term because one character is not
+    ASCII.
     """
-    if all(ord(c) < 128 for c in term):
-        return re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE)
-    return re.compile(re.escape(term))
+    left = r"(?<!\w)" if WORD.match(term[0]) else ""
+    right = r"(?!\w)" if WORD.match(term[-1]) else ""
+    return re.compile(left + re.escape(term) + right, re.IGNORECASE)
 
 
 def split_document(text):
     """Body starts after the frontmatter and the header block that follows it.
 
-    Both writers (transcribe-cloud.sh, km_transcribe.py) end the header with a
-    `---` line and a blank line. Anything unexpected means we do not know where
-    the body is, and the right move is to leave the file alone.
+    Both writers end the header with a `---` line. Anything unexpected means we
+    do not know where the body is, and the right move is to leave the file alone.
     """
     if not text.startswith("---"):
         return None
-    marks = [m.start() for m in re.finditer(r"(?m)^---$", text)]
+    marks = [m.start() for m in re.finditer(r"(?m)^---[ \t]*\r?$", text)]
     if len(marks) < 3:
         return None
-    cut = marks[2] + len("---")
+    cut = marks[2] + text[marks[2]:].index("\n")
     return text[:cut], text[cut:]
 
 
@@ -85,36 +130,46 @@ def scan(body, entries):
     """Longest term first, so a short term cannot also match inside a long one."""
     hits, inconsistent = [], []
     claimed = []
-    lines = body.splitlines()
 
-    def line_of(pos):
-        return body.count("\n", 0, pos) + 1
+    def overlaps(s, e):
+        return any(s < ce and cs < e for cs, ce in claimed)
 
     for heard, correct in sorted(entries, key=lambda e: -len(e[0])):
-        already = finder(correct).search(body) is not None
         spans = []
         for m in finder(heard).finditer(body):
             s, e = m.span()
-            if any(s < ce and cs < e for cs, ce in claimed):
+            if overlaps(s, e):
                 continue
-            # `ប៉េលី` is a prefix of `ប៉េលីណា`. Reporting the correct spelling as
-            # an error is worse than saying nothing, so check before claiming.
-            if body[s:s + len(correct)] == correct:
+            # `ប៉េលី` is a prefix of `ប៉េលីណា`: the correct spelling contains the
+            # wrong one, so an occurrence that is already correct must not be
+            # reported. This only applies in that direction — when the model
+            # ADDS a syllable the heard form contains the correct one, and
+            # skipping those would discard every real hit.
+            if len(correct) > len(heard) and body[s:s + len(correct)] == correct:
                 continue
             spans.append((s, e))
         if not spans:
             continue
+
+        # "Spelled both ways" means the correct form appears somewhere that is
+        # not inside one of the wrong spellings we just found. Without that
+        # test, any entry whose correct form sits inside its heard form reports
+        # inconsistency on a transcript that is wrong every single time.
+        elsewhere = any(
+            not any(s <= m.start() and m.end() <= e for s, e in spans)
+            for m in finder(correct).finditer(body)
+        )
+
         claimed.extend(spans)
         hits.append({
             "heard": heard,
             "correct": correct,
             "count": len(spans),
-            "lines": sorted({line_of(s) for s, _ in spans}),
+            "lines": sorted({body.count("\n", 0, s) + 1 for s, _ in spans}),
         })
-        if already:
+        if elsewhere:
             inconsistent.append((heard, correct))
 
-    del lines
     return hits, inconsistent
 
 
@@ -157,7 +212,9 @@ def main():
     if not entries:
         return 0
 
-    with open(target, encoding="utf-8") as f:
+    # newline="" keeps CRLF exactly as it arrived. Universal-newline mode would
+    # rewrite every line ending in the body, which is an edit to the body.
+    with open(target, encoding="utf-8", newline="") as f:
         text = f.read()
 
     if START in text:  # already annotated; do not stack tables
@@ -167,7 +224,8 @@ def main():
     if parts is None:
         return 0
     head, body = parts
-    body = body.lstrip("\n")  # strip first, so scanned lines are the final ones
+    nl = "\r\n" if "\r\n" in text else "\n"
+    body = body.lstrip("\r\n")  # strip first, so scanned lines are the final ones
 
     hits, inconsistent = scan(body, entries)
     if not hits:
@@ -175,12 +233,27 @@ def main():
 
     # Two passes: the table's own length decides how far the body moves, and
     # that length does not change when the numbers inside it do.
-    prefix = head + "\n\n" + render(hits, inconsistent)
-    offset = prefix.count("\n")
-    prefix = head + "\n\n" + render(hits, inconsistent, offset)
+    def build(off):
+        table = render(hits, inconsistent, off).replace("\n", nl)
+        return head + nl + nl + table
 
-    with open(target, "w", encoding="utf-8") as f:
-        f.write(prefix + body)
+    prefix = build(0)
+    prefix = build(prefix.count("\n"))
+
+    # Write via a temp file in the same directory, then replace. A partial
+    # write here would destroy the transcript this script exists to annotate,
+    # and both call sites ignore the exit code, so nobody would be told.
+    tmp = target + ".glossary.tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8", newline="") as f:
+            f.write(prefix + body)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, target)
+    except Exception:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
 
     total = sum(h["count"] for h in hits)
     print(f"  glossary: {total} correction(s) across {len(hits)} term(s) — table added, body untouched")

@@ -8,7 +8,7 @@ The person's version is `SKILL.md`. If they are standing in front of you with on
 
 ## 1. What actually runs
 
-Five files in `tools/`, and one command that reaches all of them.
+Six files in `tools/`, and one command that reaches all of them.
 
 ```
 bash tools/transcribe.sh <audio-file> <en|zh|km>
@@ -18,6 +18,9 @@ bash tools/transcribe.sh <audio-file> <en|zh|km>
         │                    └── zh only ──► _s2tw.py  (Simplified → Traditional)
         │
         └── km ──────► km_transcribe.py ────► Gemini 3.5 Flash (multimodal)
+
+                                     └──► _glossary.py ──► correction table
+                                          (both routes, after the file is written)
 
      tools/setup-api-key.sh — takes an API key, run by the person, not by you
 ```
@@ -31,12 +34,13 @@ Output always lands in `workspace/transcripts/<date>-<name>.md` with frontmatter
 - **`_s2tw.py`** — a dictionary conversion. Not a model. It swaps characters and cannot change meaning.
 - **`km_transcribe.py`** — splits the audio into large time chunks, sends each to a multimodal model in parallel, stitches the results back.
 - **`setup-api-key.sh`** — reads a key at the person's own terminal prompt. You hand them the line; they run it.
+- **`_glossary.py`** — runs after every transcript, on both routes. Matches this machine's known-wrong names from `refs/transcribe-glossary.md` and writes a correction table **above** the text. It never edits the body, and it never fails a run: no glossary, no matches, or anything unexpected and it exits silently having changed nothing.
 
 ---
 
 ## 2. Why it is shaped this way
 
-### One command, five files behind it
+### One command, six files behind it
 
 The person learns `tools/transcribe.sh` and nothing else. When Groq gets replaced, or Whisper stops being the best option, the router keeps its name and its arguments and everything downstream changes underneath.
 

@@ -75,8 +75,9 @@ flowchart TD
   STITCH --> WRITE
 
   WRITE["workspace/transcripts/&lt;date&gt;-&lt;name&gt;.md<br/>status: pending"]
-  WRITE --> BUF["audio moves to buffer"]
-  BUF --> HUMAN["🟠 Now say what you want done with it.<br/>A transcript is raw material,<br/>not the thing anyone wanted."]
+  WRITE --> GLOSS["_glossary.py<br/>known-wrong names → correction table<br/>ABOVE the text. Body untouched.<br/>No glossary or no hits = does nothing."]
+  GLOSS --> BUF["audio moves to buffer"]
+  BUF --> HUMAN["🟠 Hand over a recap with the file.<br/>A transcript is raw material,<br/>not the thing anyone wanted."]
   HUMAN --> CHECKN["🟠 Before it goes to anyone else:<br/>check names, numbers, dates.<br/>Wrong ones look exactly like right ones."]
 
   classDef gate stroke:#f59e0b,stroke-width:3px;

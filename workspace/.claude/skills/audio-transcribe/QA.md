@@ -160,11 +160,22 @@ Normal, and the most dangerous thing this tool does — wrong names come back lo
 
 Two things:
 
-**Next time**, feed the names in beforehand:
+**Next time**, put the name in the glossary — not in `--prompt`:
 
-```sh
-bash tools/transcribe.sh meeting.m4a en --prompt "Marisa, Devraj, Northwind, QBR"
 ```
+refs/transcribe-glossary.md
+Marisa Devraj → Marisa Debraj
+```
+
+Every transcript from then on is checked against that list automatically, and hits
+appear as a correction table above the text. Proper nouns only.
+
+⚠️ **This used to say "feed the names in with `--prompt`". That advice was withdrawn on
+2026-08-11.** Measured on real recordings, supplying three personal names also turned a
+food item into a different food, corrupted a correct honorific, and rewrote `pain point`
+as `point point` four times. `--prompt` biases the whole transcription, not just the words
+you gave it. See `SKILL.md` for when it is still the right call — and it is never the
+default, and never unattended.
 
 **This time**, do not edit the transcript. Put a correction table above it instead:
 

@@ -83,7 +83,11 @@ if [ "$FILE_SIZE" -gt "$MAX_SIZE" ]; then
   fi
   COMPRESSED="/tmp/transcribe-$(date +%s)-${SLUG}.m4a"
   echo "File is $(( FILE_SIZE / 1024 / 1024 )) MB — over the 25 MB limit. Compressing..."
-  ffmpeg -i "$INPUT" -ac 1 -ar 16000 -b:a 32k "$COMPRESSED" -y -loglevel error
+  # -vn drops the video stream. Without it a screen recording or a phone video
+  # gets its picture re-encoded into the "compressed" audio file, which then
+  # stays over the limit and fails on a check that reads like the audio was
+  # too long. Nothing here ever needs the picture.
+  ffmpeg -i "$INPUT" -vn -ac 1 -ar 16000 -b:a 32k "$COMPRESSED" -y -loglevel error
   COMPRESSED_SIZE=$(stat -f%z "$COMPRESSED" 2>/dev/null || stat -c%s "$COMPRESSED" 2>/dev/null)
   echo "  → $(( COMPRESSED_SIZE / 1024 / 1024 )) MB"
   if [ "$COMPRESSED_SIZE" -gt "$MAX_SIZE" ]; then

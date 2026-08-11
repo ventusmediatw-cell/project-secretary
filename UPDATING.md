@@ -177,7 +177,10 @@ git -C "$REPO" diff --name-status "$MB" origin/main | grep '^D' || echo "(no del
 # Stronger, and worth the extra line: do the merge in memory and read what comes out.
 # Nothing is written to the working tree. This turns "what will the pull do" from a
 # prediction into a fact you can check.  (needs git 2.38+)
-TREE=$(git -C "$REPO" merge-tree --write-tree HEAD origin/main) \
+# head -1: see the note at the collision check below — on a conflicting merge
+# merge-tree prints the tree id first and then the conflicted paths, and its
+# non-zero exit would otherwise drop this straight into the "no deletions" line.
+TREE=$(git -C "$REPO" merge-tree --write-tree HEAD origin/main | head -1) \
   && git -C "$REPO" diff --name-status HEAD "$TREE" | grep '^D' \
   || echo "(merge produces no deletions)"
 

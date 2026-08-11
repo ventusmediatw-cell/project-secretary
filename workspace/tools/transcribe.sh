@@ -20,7 +20,9 @@
 # Shared flags:
 #   --keep-audio          don't move the audio into the buffer afterwards
 #   --out PATH            write the transcript here instead of the default
-#   --prompt "words..."   feed domain words in, so names stop coming back wrong
+#   --prompt "words..."   bias the model toward these words. A TRADE, not a free win:
+#                         it also changes words you did not supply. Not the default.
+#                         For names, use refs/transcribe-glossary.md instead.
 #   --no-trad             zh only: skip the Traditional-Chinese conversion
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
