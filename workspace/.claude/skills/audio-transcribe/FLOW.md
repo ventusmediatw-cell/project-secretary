@@ -31,8 +31,8 @@ flowchart TD
   EXIST -->|"yes"| SHOW["Show path, date, byte length.<br/>NEVER the value.<br/>Ask which one stays."]
   EXIST -->|"no"| RUN
 
-  SHOW --> RUN["bash tools/setup-api-key.sh &lt;provider&gt; &lt;url&gt;"]
-  RUN --> WIN["🟠 A separate window opens.<br/>You cannot see it. That is the point."]
+  SHOW --> RUN["Give them this line to run:<br/>bash tools/setup-api-key.sh &lt;provider&gt; &lt;url&gt;"]
+  RUN --> WIN["🟠 THEY run it, at their own terminal.<br/>You do not run it and no window opens.<br/>Run it yourself and it exits with an error,<br/>having written nothing.<br/>Hand it over, then wait."]
   WIN --> CONF["They compare length + last four<br/>against what they copied"]
   CONF --> VERIFY["Now prove it works —<br/>Figure 2, on a recording<br/>whose words you already know"]
 

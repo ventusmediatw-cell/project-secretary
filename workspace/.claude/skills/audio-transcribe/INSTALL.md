@@ -19,7 +19,7 @@ bash tools/transcribe.sh <audio-file> <en|zh|km>
         │
         └── km ──────► km_transcribe.py ────► Gemini 3.5 Flash (multimodal)
 
-     tools/setup-api-key.sh — takes an API key, in a window you cannot see
+     tools/setup-api-key.sh — takes an API key, run by the person, not by you
 ```
 
 Output always lands in `workspace/transcripts/<date>-<name>.md` with frontmatter, and the audio moves to a buffer folder afterwards. `status: pending` in that frontmatter means *transcribed but not yet filed anywhere* — it is a flag for unfinished work, not decoration.
@@ -30,7 +30,7 @@ Output always lands in `workspace/transcripts/<date>-<name>.md` with frontmatter
 - **`transcribe-cloud.sh`** — checks the size cap, compresses if needed, makes one HTTP call, parses the response, writes the file.
 - **`_s2tw.py`** — a dictionary conversion. Not a model. It swaps characters and cannot change meaning.
 - **`km_transcribe.py`** — splits the audio into large time chunks, sends each to a multimodal model in parallel, stitches the results back.
-- **`setup-api-key.sh`** — reads a key from a terminal you are not attached to.
+- **`setup-api-key.sh`** — reads a key at the person's own terminal prompt. You hand them the line; they run it.
 
 ---
 
@@ -58,7 +58,9 @@ So `km` routes to a multimodal model with the language pinned in the prompt. Nam
 
 ### The key never passes through this conversation
 
-Once a key value appears in a prompt, a command you echoed back, or a "let me confirm I got that right", it is in the conversation history and in every backup of it. `setup-api-key.sh` opens a separate window, reads the key there, and prints back only a length and the last four characters.
+Once a key value appears in a prompt, a command you echoed back, or a "let me confirm I got that right", it is in the conversation history and in every backup of it. `setup-api-key.sh` keeps the value out of that history by being **run by the person, at their own terminal, not by you** — it opens no window and spawns nothing, it reads the key with `read -rs` so the screen stays blank, and it prints back only a length and the last four characters.
+
+That means the handoff is yours to get right: give them the exact line, say you will not see what they type, and wait for them to come back. Running it inside a tool call of your own does not do a quieter version of the same thing — with no keyboard attached it reaches the prompt, reads nothing, exits non-zero and writes no key file at all.
 
 **Do not offer to accept the key directly "just this once."** There is no version of that which is safe, and the script is faster anyway.
 
@@ -96,12 +98,24 @@ Every one of these was found by running the thing, and most were silent. That is
 
 Two providers, because they do different jobs. Set up whichever the person actually needs — Khmer is not required for someone who never records Khmer.
 
+**The `km` route needs three things beyond its key, and the `en` / `zh` route needs none of them.** That asymmetry is what makes this go wrong: a machine set up and tested on English looks finished, and then fails on the first Khmer file. Do the whole column, not just the key.
+
 ```sh
-bash tools/setup-api-key.sh groq   https://console.groq.com/keys        # en, zh
-bash tools/setup-api-key.sh gemini https://aistudio.google.com/apikey   # km
+# en, zh — the key is the only hard requirement
+bash tools/setup-api-key.sh groq   https://console.groq.com/keys
+brew install ffmpeg                        # only for recordings over 25 MB
+pip3 install opencc-python-reimplemented   # zh only; without it the transcript still
+                                           # lands, it just stays in Simplified
+
+# km — all three lines. Any one missing and km_transcribe.py stops before it starts.
+bash tools/setup-api-key.sh gemini https://aistudio.google.com/apikey
+brew install ffmpeg                        # gives you ffmpeg AND ffprobe; it needs both
+pip3 install requests                      # km_transcribe.py imports it and exits without it
 ```
 
-Both are free tiers and both are the person's own account.
+The two `setup-api-key.sh` lines are the person's to run, at their own terminal — see §2. The `brew` and `pip3` lines are ordinary installs and you can run those yourself, after saying what they cost.
+
+Both keys are free tiers and both are the person's own account.
 
 **Before you run anything:**
 

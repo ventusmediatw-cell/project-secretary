@@ -69,7 +69,7 @@ Now pick your route from what you actually saw:
 | What `git remote -v` printed | Route |
 |---|---|
 | A `(fetch)` URL ending in `ventusmediatw-cell/project-secretary`, with or without a trailing `.git` | **Section 5** — this is the normal case |
-| A `(push)` line reading `DISABLED` alongside that fetch URL | **Section 5** — also normal, and deliberate. Pull works; push is meant to be off |
+| A `(push)` line reading `no-push` alongside that fetch URL | **Section 5** — also normal, and deliberate. Pull works; push is meant to be off |
 | A URL ending in `/project-secretary` under a **different account** | A fork. **Stop and report it** — see the note below, and Section 7 |
 | Nothing at all, or a URL pointing somewhere unrelated | **Stop. Report it, do not fix it.** See Section 7 |
 | `fatal: not a git repository` | **Read the next paragraph before you touch Section 6** |
@@ -185,15 +185,32 @@ TREE=$(git -C "$REPO" merge-tree --write-tree HEAD origin/main) \
 git -C "$REPO" log --oneline origin/main..HEAD || true
 ```
 
-And the one that predicts trouble — files the person changed locally *that this update also
-changes*. If this prints anything, the pull in 5.3 will refuse to run:
+And the one that predicts trouble — files the person has edited but not committed *that the
+merge also has to write*. `diff HEAD origin/main` is the wrong tool here for the same reason
+it was wrong above: it lists every path where the two tips differ, including ones this update
+never touches. `workspace/CLAUDE.md` and `workspace/INDEX.md` differ on every machine whose
+wizard committed the person's details into them, so that version names those two on every
+update, whether or not the update goes anywhere near them. Compare against what the merge
+actually produces instead:
 
 ```sh
-# needs bash or zsh (process substitution)
+# needs bash or zsh (process substitution), and git 2.38+ for merge-tree
+#
+# head -1: on a merge that conflicts, merge-tree prints the tree id on the first line
+# and then the conflicted paths. Only the first line is the tree.
+TREE=$(git -C "$REPO" merge-tree --write-tree HEAD origin/main | head -1)
 comm -12 \
   <(git -C "$REPO" diff --name-only | sort) \
-  <(git -C "$REPO" diff --name-only HEAD origin/main | sort)
+  <(git -C "$REPO" diff --name-only HEAD "$TREE" | sort)
 ```
+
+**If it prints nothing, that does not mean there is nothing to do — it means 5.5 is not
+coming.** The pull will run, and their uncommitted edits to everything else stay exactly as
+they are; a pull only touches the files the merge writes.
+
+**If it prints a name, that is the one file 5.5 is about**: git will refuse the whole merge,
+change nothing at all, and print that filename back at you. Read 5.5 before you run the pull,
+not after.
 
 **Show the person this output before you go further** — particularly the deletion list and
 the collision list. Inventory, then show them, then act. Never the other way round.

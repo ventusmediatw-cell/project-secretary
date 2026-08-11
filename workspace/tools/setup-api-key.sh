@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# setup-api-key.sh — take an API key in a SEPARATE terminal window.
+# setup-api-key.sh — take an API key at the person's own terminal prompt.
 #
-# Why a separate window: once a key value passes through the conversation with
-# an agent, it is in that conversation's history and in every backup of it.
-# This script runs in its own window. The agent cannot see what you type here.
+# Why the person runs this and not the agent: once a key value passes through
+# the conversation with an agent, it is in that conversation's history and in
+# every backup of it. This script opens nothing and spawns nothing — the person
+# runs it themselves, `read -rs` takes the key without echoing it, and only a
+# length and the last four characters are ever printed.
 #
 # Usage:  bash tools/setup-api-key.sh <provider> [url-to-get-the-key]
 #   bash tools/setup-api-key.sh groq   https://console.groq.com/keys

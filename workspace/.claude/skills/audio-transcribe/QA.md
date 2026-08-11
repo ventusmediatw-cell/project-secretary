@@ -72,7 +72,7 @@ Once the key value is in this conversation it is in the conversation's history a
 bash tools/setup-api-key.sh groq https://console.groq.com/keys
 ```
 
-That opens a separate window. Paste it there. Nothing on screen will appear as you paste — that is intentional. You get back a length and the last four characters so you can confirm it arrived.
+Run that yourself, in your own terminal — it is not something your agent runs for you, and no new window appears. Paste the key at the prompt it gives you. Nothing will appear on screen as you paste — that is intentional. You get back a length and the last four characters so you can confirm it arrived.
 
 _Source: design rule_
 
@@ -80,7 +80,7 @@ _Source: design rule_
 
 ### Q: Nothing showed up when I pasted the key. Did it work?
 
-Nothing appearing is normal — the window hides what you type on purpose.
+Nothing appearing is normal — the script hides what you type on purpose.
 
 To tell the difference between "it worked invisibly" and "the paste failed", read the two lines it prints afterwards: a **length in bytes** and the **last four characters**. Compare those against the key you copied. If they match, it worked.
 
@@ -189,3 +189,27 @@ Some languages work through the same route as English. Some need the route Khmer
 The router refuses unknown languages by name rather than guessing, for exactly this reason.
 
 _Source: design decision_
+
+---
+
+### Q: It rejected my recording and I don't understand the error. It's a `.aiff` / a `.mov`.
+
+The file type. For English and Chinese the recording is sent on exactly as it is, and the service at the other end takes only these:
+
+`flac` · `mp3` · `mp4` · `mpeg` · `mpga` · `m4a` · `ogg` · `opus` · `wav` · `webm`
+
+(If the error you got lists file types itself, believe that list over this one — it is coming from the service today.)
+
+`.aiff` — what a Mac records by default — and `.mov` — what a phone or a screen recording gives you — are not on that list. Convert it once and run the same command on the new file:
+
+```sh
+afconvert -f m4af -d aac recording.aiff recording.m4a   # macOS, nothing to install
+ffmpeg -i recording.mov -vn -c:a aac recording.m4a      # if you have ffmpeg
+```
+
+Two things that make this confusing while you are in it:
+
+- A **big** `.mov` may well have worked for you before. Over 25 MB the recording gets compressed first, and that step changes the file type on the way. Under 25 MB it goes as-is and is refused. Nothing about your machine changed between those two.
+- **Khmer recordings are not affected.** That route re-encodes everything before sending, so it takes `.mov` and `.aiff` without complaint.
+
+_Source: reported from a machine in use, 2026-08-11 · the accepted list had never been written down anywhere_

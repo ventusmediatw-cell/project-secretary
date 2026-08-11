@@ -69,7 +69,9 @@ def load_key():
     die(
         "No Gemini API key on this machine.\n\n"
         "  Set one up:  bash tools/setup-api-key.sh gemini https://aistudio.google.com/apikey\n\n"
-        "  That opens a separate window and never puts the key in this conversation."
+        "  Hand that line to the person to run in their own terminal — do not run it\n"
+        "  yourself. It reads the key without echoing it, so the value never enters\n"
+        "  this conversation."
     )
 
 
@@ -265,6 +267,17 @@ def main():
             "> Check them against something you trust before this goes anywhere.\n\n"
             "---\n\n" + body + "\n"
         )
+
+    # Glossary: writes a correction table above the text for any known-wrong
+    # name it finds. Never edits the body, never fails the run. See _glossary.py.
+    try:
+        subprocess.run(
+            [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          "_glossary.py"), out_path],
+            check=False,
+        )
+    except Exception:
+        pass
 
     print()
     print(f"Done — {out_path}")

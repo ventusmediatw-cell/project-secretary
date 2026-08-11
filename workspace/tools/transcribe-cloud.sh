@@ -40,7 +40,9 @@ else
   echo ""
   echo "  Set one up:  bash tools/setup-api-key.sh groq https://console.groq.com/keys"
   echo ""
-  echo "  That opens a separate window and never puts the key in this conversation."
+  echo "  Hand that line to the person to run in their own terminal — do not run it"
+  echo "  yourself. It reads the key without echoing it, so the value never enters"
+  echo "  this conversation."
   exit 1
 fi
 
@@ -138,6 +140,12 @@ fi
 if [ "$HTTP_CODE" != "200" ]; then
   echo "The API returned HTTP $HTTP_CODE"
   echo "$BODY"
+  echo ""
+  echo "If that message lists file types, it is the provider's own current list and it"
+  echo "is the one to trust. .aiff (what a Mac records) and .mov (phone video, screen"
+  echo "recording) are not on it. Convert first, then run this again on the new file:"
+  echo "  afconvert -f m4af -d aac \"$INPUT\" \"${INPUT%.*}.m4a\"     # macOS"
+  echo "  ffmpeg -i \"$INPUT\" -vn -c:a aac \"${INPUT%.*}.m4a\"       # anywhere"
   exit 1
 fi
 
@@ -189,6 +197,11 @@ EXPIRES=$(date -v+30d +%Y-%m-%d 2>/dev/null || date -d "+30 days" +%Y-%m-%d)
   echo ""
   echo "$TEXT"
 } > "$OUTPUT"
+
+# --- Glossary ---------------------------------------------------------------
+# Writes a correction table above the text for any known-wrong name it finds.
+# Never edits the body, and never fails the run — see tools/_glossary.py.
+python3 "$SCRIPT_DIR/_glossary.py" "$OUTPUT" 2>/dev/null || true
 
 echo "Done in ${ELAPSED}s"
 echo "  $OUTPUT"
