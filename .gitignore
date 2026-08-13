@@ -14,12 +14,34 @@ node_modules/
 __pycache__/
 *.pyc
 
-# Prevent personal workspace data from leaking in
+# Prevent personal workspace data from leaking in.
+# The `!` lines re-include ONLY an empty .gitkeep per folder, so a fresh clone
+# arrives with the folder structure the Skills expect. Contents stay ignored.
+# Without them git drops the empty folders entirely, and the startup flow's
+# `Scan handoff/pending/` step then silently reports "no pending handoffs".
 workspace/inbox/*
+!workspace/inbox/YYYY-MM-DD-example.md
+
 workspace/projects/*
+!workspace/projects/.gitkeep
+
 workspace/summaries/*
+!workspace/summaries/weekly/
+!workspace/summaries/monthly/
+workspace/summaries/weekly/*
+!workspace/summaries/weekly/.gitkeep
+workspace/summaries/monthly/*
+!workspace/summaries/monthly/.gitkeep
+
 workspace/handoff/*
+!workspace/handoff/pending/
+!workspace/handoff/done/
+workspace/handoff/pending/*
+!workspace/handoff/pending/.gitkeep
+workspace/handoff/done/*
+!workspace/handoff/done/.gitkeep
+
 # Transcripts are verbatim records of real meetings, and this repo is public.
 # The audio buffer underneath them is the recordings themselves.
 workspace/transcripts/*
-!workspace/inbox/YYYY-MM-DD-example.md
+!workspace/transcripts/.gitkeep
