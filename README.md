@@ -38,6 +38,8 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 | **tool-scout** | Discover tools via MCP Registry, Plugin store, and GitHub. Includes security assessment checklist | Say **"find a tool for X"** or **"is there a plugin for X"** |
 | **debate-protocol** | Multi-round structured debate for high-stakes decisions. Advocate vs Challenger with word limits, secretary moderates. *(A protocol in `refs/debate-agents/`, not an installable `.claude/skills/` Skill.)* | Triggered during **project-setup Step 4**, or say **"let's debate X"** |
 | **plan-discuss** | Multi-model independent plan review: send a plan to independent reviewers from different model families → synthesize → final-check in a separate session. Cross-family signal rules + override guardrails. Complements debate-protocol | Say **"run a discuss round"** or **"multi-model review"** |
+| **eli5** | Explain something to someone who knows nothing about it, as an HTML page with big pictures and few words. One sentence long on purpose — no steps, no checklist | Say **"eli5 this"** or **"explain like I'm 5"** |
+| **explain1min** | One-minute explainer diagram: a system or process as a self-contained HTML page — at most 3 flow diagrams, under 1000 words, a decision diamond wherever the flow branches. Narrow on purpose: a single function or term gets an answer in words | Say **"explain how this works"** or **"draw me a diagram"** |
 
 ### Meta Skill (extend the system)
 
@@ -71,7 +73,9 @@ workspace/                             ← Mount this folder
 │       ├── knowledge-base/SKILL.md    ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md        ← Tool discovery + security
 │       ├── meta-skill/SKILL.md        ← Build / audit a single skill
-│       └── plan-discuss/SKILL.md      ← Multi-model plan review
+│       ├── plan-discuss/SKILL.md      ← Multi-model plan review
+│       ├── eli5/SKILL.md             ← One-sentence ELI5 explainer
+│       └── explain1min/SKILL.md      ← One-minute explainer diagram (+ templates/)
 ├── INDEX.md                           ← Main index (project list, to-dos)
 ├── BEGINNER-TIPS.md                   ← Beginner tips
 ├── inbox/                             ← Daily journals (auto-created)
@@ -391,6 +395,8 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 | **tool-scout** | 透過 MCP Registry、Plugin 商店、GitHub 探索工具。含資安評估清單 | 說 **「幫我找 X 的工具」** |
 | **debate-protocol** | 高風險決策的多輪結構化辯論。Advocate vs Challenger，秘書主持。*（位於 `refs/debate-agents/` 的協議，非 `.claude/skills/` 可載入 Skill。）* | **開案 Step 4** 觸發，或說 **「來辯論 X」** |
 | **plan-discuss** | 多模型獨立計畫審閱：把計畫送給不同模型家族的獨立 reviewer → 合併 → 另開 session 把關。跨家族訊號規則 + override 護欄。與 debate-protocol 互補 | 說 **「跑一輪 discuss」**或**「多模型 review」** |
+| **eli5** | 把一件事解釋給完全不懂的人：HTML 頁、大圖少字。整支只有一句話，刻意不給步驟與檢查清單 | 說 **「eli5」** 或 **「解釋得像我五歲」** |
+| **explain1min** | 一分鐘解釋圖：一個系統或流程做成 self-contained HTML — 最多 3 張流程圖、1000 字以內、有分支就畫決策菱形。刻意收窄：單一函式或名詞用講的就好 | 說 **「解釋一下這怎麼跑」** 或 **「畫個流程圖」** |
 
 ### Meta Skill（擴充系統用）
 
