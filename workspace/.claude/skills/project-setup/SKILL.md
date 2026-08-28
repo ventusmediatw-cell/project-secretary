@@ -15,9 +15,9 @@ When the user decides to launch a new project, secretary executes this six-step 
 |---|---|---|
 | **Step 1** | Background Confirmation | Confirm basic project info, check for historical data |
 | **Step 2** | Architecture Creation | Create project folder + INDEX.md + update main list |
-| **Step 3** | External Research | Domain knowledge + tool chain exploration + security checks |
+| **Step 3** | External Research | Branch A domain knowledge + Branch B tool chain exploration (→ tool-scout, security rating included) + Branch C project automation |
 | **Step 4** | Assumption Challenge | Debate protocol (max 3 topics) |
-| **Step 5** | User Decision | Decision records + key assumption confirmation |
+| **Step 5** | User Decision | Decision records + key assumption confirmation — **including the option not to start** |
 | **Step 6** | Start Execution | Create execution plan + launch first action item |
 
 ---
@@ -162,6 +162,24 @@ Consolidate Debate's ❓ questions, invite user to make final decisions.
 
 > Decision list format and key decision record format: see `templates.md` in same folder.
 
+### 🔴 The decision list must include "do not start"
+
+**Any project that ran Step 4 must reach Step 5 with "do not start this project" on the list.**
+Challenging the assumptions is the entire point of a Debate. If the only exit from these six
+steps is Step 6, a Debate can conclude *how* to do the thing but never *not to* — which makes
+the challenge ceremonial.
+
+When the user picks "do not start" — **do not delete the folder.** The research and the Debate
+transcript are the asset, and they are the reason the answer was no.
+
+1. Change the status line at the top of the project's `INDEX.md` to `> Status: 🗄️ Not started (YYYY-MM-DD)`, and write **one line** saying why
+2. Remove it from the active project list in `workspace/INDEX.md`
+3. Move the whole folder to `workspace/projects/archived/` (create that directory if it is not there — `workspace/projects/` contents are gitignored, so a fresh clone has neither)
+4. The flow ends here. **Do not proceed to Step 6.**
+
+⚠️ The same applies when Step 3 alone is enough to show the project should not happen. Nobody
+has to sit through a Debate before being allowed to stop.
+
 ### Record Decisions to INDEX.md
 
 After user confirms, update project `INDEX.md`'s "Key Decisions" section (format in `templates.md`).
@@ -220,6 +238,7 @@ After completing setup, self-check:
 - [ ] If Debate was done, did I follow protocol and limit topics ≤ 3?
 - [ ] If Step 5 ran, did I consolidate all pending decisions (❓) for user?
 - [ ] If Step 5 ran, did I record decisions to INDEX.md's "Key Decisions"?
+- [ ] If Step 4 ran, did the decision list carry a "do not start" option? (If it was chosen: archive in four steps above, and do not proceed to Step 6.)
 - [ ] Did I create first week execution plan with 3-5 specific action items?
 
 ---
