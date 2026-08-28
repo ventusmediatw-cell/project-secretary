@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-08-28",
-  "generated_from_commit": "678cb9007e503f7a295a39a0692bcc855dab1108",
+  "generated_from_commit": "756b5485316a170085e37c980f9db3204ec92633",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 11,
   "versioning": {
@@ -224,14 +224,14 @@
     },
     {
       "name": "project-setup",
-      "version": "5224531",
-      "updated": "2026-06-27",
+      "version": "756b548",
+      "updated": "2026-08-28",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 224,
-          "sha": "0907ae1d6631fcd226745eaa5d9e0264450b8067"
+          "lines": 232,
+          "sha": "620eccfe82ba4074c4b1b597951dfb6f124e297d"
         }
       ],
       "requires": [
