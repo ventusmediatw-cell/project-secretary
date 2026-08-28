@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-08-28",
-  "generated_from_commit": "756b5485316a170085e37c980f9db3204ec92633",
+  "generated_from_commit": "f730fd5aeea75c2a21e37d2cdf9be282e1c99e10",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 11,
   "versioning": {
@@ -224,14 +224,14 @@
     },
     {
       "name": "project-setup",
-      "version": "756b548",
+      "version": "f730fd5",
       "updated": "2026-08-28",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 232,
-          "sha": "620eccfe82ba4074c4b1b597951dfb6f124e297d"
+          "lines": 251,
+          "sha": "434e3fda1cf683cb4e6ee750c7952d17c3a6d66d"
         }
       ],
       "requires": [
@@ -239,7 +239,7 @@
         "A harness that can run subagents, for the deep-excavation step. Without one, scan inline and say the step was reduced."
       ],
       "referenced_but_not_present": [
-        ".claude/skills/project-setup/templates.md (SKILL.md calls it 'templates.md in same folder', at lines 66, 163 and 167)"
+        "`.claude/skills/project-setup/templates.md` — SKILL.md points at it three times (INDEX.md template, memory.md seed, decision-list and key-decision formats). It does not ship. The formats are described well enough in SKILL.md to write the files without it; do not create it on someone else's machine to close the gap."
       ],
       "notes": "Step 4 uses workspace/refs/debate-agents/debate-protocol.md, which does ship with this repository. The INDEX.md template and the decision-record format both point at templates.md, which does not. Follow the prose in SKILL.md; do not author a templates.md during an update."
     },
