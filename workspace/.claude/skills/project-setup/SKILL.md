@@ -193,11 +193,19 @@ Not every project needs all six steps. Secretary judges and recommends after Ste
 | Project Type | Recommended Flow | Reason | Example |
 |---|---|---|---|
 | **Business decision / high importance** | Full six steps (1-2-3 complete-4-5-6) | High decision risk, far-reaching impact | Revenue strategy, market expansion |
-| **Infrastructure / systems** | 1-2-3 simplified-6 (skip Debate) | Technical path clearer, fewer design decisions | System upgrades, DevOps infra |
-| **Learning / experiment / low risk** | 1-2-6 (skip 3 and 4) | Low trial-and-error cost, knowledge accumulation primary | Learning clubs, experimental tool testing |
+| **Infrastructure / systems** | 1-2-3 simplified-6 (skip Debate and user decision) | Technical path clearer, fewer design decisions | System upgrades, DevOps infra |
+| **Learning / experiment / low risk** | 1-2-6 (skip deep research, Debate and user decision) | Low trial-and-error cost, knowledge accumulation primary | Learning clubs, experimental tool testing |
 | **Already has mature direction** | 1-2-5-6 (skip deep research and Debate) | Direction settled, quick launch | Pure execution new features, confirmed market |
 
 **User final confirmation**: Secretary recommends, user confirms which version, before proceeding.
+
+**Two of these four flows have no Step 5, and that is deliberate.** Step 5 consolidates the
+❓ that Step 4 produced, so a flow without a Debate has nothing to consolidate — the mature-
+direction flow is the exception, because what it ratifies is the key assumptions rather than
+a Debate's open questions. The consequence is visible on disk: a project set up on the
+infrastructure or the learning flow keeps an empty "Key Decisions" block in its INDEX.md, and
+nobody comes back to fill it in. Choosing the flow, and choosing Step 3's depth, remain the
+user's calls on every flow — it is the formal decision record that is skipped, not the user.
 
 ---
 
@@ -210,8 +218,8 @@ After completing setup, self-check:
 - [ ] Did I update main INDEX.md's active project list?
 - [ ] Does Step 3 depth match project importance (complete / simplified / skip)?
 - [ ] If Debate was done, did I follow protocol and limit topics ≤ 3?
-- [ ] Did I consolidate all pending decisions (❓) for user?
-- [ ] Did I record decisions to INDEX.md's "Key Decisions"?
+- [ ] If Step 5 ran, did I consolidate all pending decisions (❓) for user?
+- [ ] If Step 5 ran, did I record decisions to INDEX.md's "Key Decisions"?
 - [ ] Did I create first week execution plan with 3-5 specific action items?
 
 ---
