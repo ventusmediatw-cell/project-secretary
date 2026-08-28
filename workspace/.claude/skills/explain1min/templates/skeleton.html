@@ -1,0 +1,136 @@
+<meta charset="utf-8">
+<title>{{title}}</title>
+<!-- This file is a FRAGMENT on purpose. Do not add <!doctype>, <html>, <head> or <body>
+     back in: publishing surfaces wrap it in their own shell, and adding your own gives you
+     a double wrapper.
+     The <meta charset> on line 1 is not optional, though. Without it, opening the file
+     straight from disk renders non-ASCII text as mojibake — and that symptom is very easily
+     misdiagnosed as a missing font. The tell is the browser tab title: if the tab is
+     garbled too, it is the charset, not the font.
+     One line satisfies both the local and the published case, so there is no need to keep a
+     second local-only copy of the page. -->
+<style>
+/* ── Palette: two categorical slots + status colours, contrast-checked in both themes ── */
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#6f6d67;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#c9c8c0;
+ --warn:#fab219;--crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#8f8d86;
+ --axis:#4a4a45;--s1:#3987e5;--s2:#e2652f;--deemph:#4a4a45;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#8f8d86;
+ --axis:#4a4a45;--s1:#3987e5;--s2:#e2652f;--deemph:#4a4a45;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"Segoe UI",system-ui,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child{border:0}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
+.sub{font-size:16px;color:var(--muted);margin:0 0 20px}
+p{font-size:17px;color:var(--ink2);margin:0 0 10px}
+.lede{font-size:clamp(18px,2.7vw,22px);color:var(--ink2)}
+.tag{font-size:13px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:18px;display:block}
+/* Wide diagrams scroll inside the figure; the page body must never scroll sideways. */
+figure{margin:20px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 16px 16px;overflow-x:auto}
+figure svg{min-width:620px}
+figcaption{font-size:15px;color:var(--ink2);margin-bottom:14px;font-weight:600}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.n-lab{font-size:14px;fill:var(--ink)}      /* node label */
+.n-sub{font-size:12px;fill:var(--muted)}    /* node sub-label */
+.e-lab{font-size:12px;fill:var(--muted)}    /* yes / no on an arrow */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.note{border-left:3px solid var(--warn);padding-left:16px;margin-top:20px}
+.note b{font-size:14px;letter-spacing:.06em;color:var(--warn)}
+.note p{color:var(--ink);font-size:17px;margin:5px 0 0}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
+.box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+</style>
+
+<div class="wrap">
+
+<section>
+  <span class="tag">{{category}}</span>
+  <h1>{{subject}}<br>and how it actually runs</h1>
+  <p class="lede">In one sentence: <b style="color:var(--ink)">{{the mechanism in one sentence}}</b><br>The N diagrams below are the whole mechanism.</p>
+</section>
+
+<section>
+  <h2>Diagram 1 · {{the main line}}</h2>
+  <p class="sub">{{one-line subtitle}}</p>
+  <figure>
+    <figcaption>blue = a step&nbsp;&nbsp;orange = a decision&nbsp;&nbsp;red = turned away</figcaption>
+    <!-- Coordinates that work: main column at x=300; diamond half-width 92, half-height 24;
+         node height 40-52; vertical spacing 78. -->
+    <svg viewBox="0 0 700 400" role="img" aria-label="{{alt text: describe the flow in words}}">
+      <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
+
+      <!-- main line -->
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar)">
+        <path d="M300 66 L300 96"/>
+        <path d="M300 144 L300 174"/>
+      </g>
+      <!-- turned away: dashed + red (only for "this is where it ends") -->
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#ar)" stroke-dasharray="6 5">
+        <path d="M392 120 L560 120 L560 144"/>
+      </g>
+      <!-- detour that rejoins: solid + orange (this is NOT a rejection) -->
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar)">
+        <path d="M392 200 L598 200 L598 222"/>
+      </g>
+
+      <!-- process node: blue outline -->
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="150" y="26" width="300" height="40" rx="9"/>
+        <rect x="150" y="174" width="300" height="50" rx="9"/>
+      </g>
+      <!-- decision node: orange diamond (centre cx,cy; four points = top right bottom left) -->
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 96 L392 120 L300 144 L208 120 z"/>
+      </g>
+      <!-- turned away: red outline -->
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="470" y="144" width="180" height="42" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="43">{{step}}</text>
+        <text class="n-lab" x="300" y="125">{{decision?}}</text>
+        <text class="n-lab" x="300" y="196">{{step}}</text><text class="n-sub" x="300" y="214">{{detail}}</text>
+        <text class="n-lab" x="560" y="170" fill="var(--crit)">{{what happens when it stops}}</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="400" y="114">yes</text><text x="316" y="166">no</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>a step</span>
+      <span><i style="background:var(--s2)"></i>a decision</span>
+      <span><i style="background:var(--crit)"></i>turned away</span>
+    </div>
+  </figure>
+  <div class="note"><b>WHY IT IS BUILT THIS WAY</b><p>{{one sentence — not a paragraph}}</p></div>
+</section>
+
+<!-- Diagram 2: the decision that matters. Put every branch outcome on the SAME side and
+     stagger them vertically. Never let one branch's line pass directly under another
+     node — it reads as two steps in series instead of two exclusive branches. -->
+
+<section>
+  <h2>How the whole machine is designed</h2>
+  <div class="two">
+    <div class="box"><b>{{principle}}</b><ul><li>{{one line}}</li><li>{{one line}}</li></ul></div>
+  </div>
+</section>
+
+</div>
