@@ -3,10 +3,10 @@
   "purpose": "Lets an agent work out whether the skills on its machine differ from this repository without reading every file. Compare 'version' and each file 'sha' against the local clone. Authority is always the SKILL.md files themselves; this manifest is an index, not a contract.",
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
-  "generated_at": "2026-08-07",
-  "generated_from_commit": "a71bbe84ec2422f730ef166bcc7cdf01bbd67774",
+  "generated_at": "2026-08-28",
+  "generated_from_commit": "678cb9007e503f7a295a39a0692bcc855dab1108",
   "skills_root": "workspace/.claude/skills/",
-  "skill_count": 9,
+  "skill_count": 11,
   "versioning": {
     "scheme": "git",
     "rule": "There are no invented version numbers. A skill's 'version' is the short hash of the last commit that touched its directory, and 'updated' is that commit's date. A skill whose files have not changed keeps the same version, even when the repository moves on.",
@@ -91,6 +91,42 @@
         "workspace/tools/_s2tw.py",
         "workspace/tools/setup-api-key.sh"
       ]
+    },
+    {
+      "name": "eli5",
+      "version": "678cb90",
+      "updated": "2026-08-28",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 16,
+          "sha": "55caba3f9ddf7af17a731067ef47ec090e1b013a"
+        }
+      ],
+      "notes": "One file, and it is one sentence on purpose — no steps, no checklist, no output template. A diff that makes this skill longer is almost certainly wrong. The prompt itself is copied verbatim and is not ours."
+    },
+    {
+      "name": "explain1min",
+      "version": "678cb90",
+      "updated": "2026-08-28",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 94,
+          "sha": "79b5c0a0511efff2f9c6ac25ffa94fae5def05b7"
+        },
+        {
+          "path": "templates/skeleton.html",
+          "lines": 136,
+          "sha": "e0a2f3800fe0b82e232614952b40df33bbd970e5"
+        }
+      ],
+      "referenced_but_not_present": [
+        "shot.png — the screenshot the verification step writes at run time. It is an output, not a shipped file."
+      ],
+      "notes": "templates/skeleton.html is a fragment with no <!doctype>/<html>/<head>/<body>, deliberately: publishing surfaces add their own shell. Do not 'repair' it into a full document. Its first-line <meta charset> is load-bearing for opening the file from disk."
     },
     {
       "name": "handoff",
