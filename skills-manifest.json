@@ -3,10 +3,10 @@
   "purpose": "Lets an agent work out whether the skills on its machine differ from this repository without reading every file. Compare 'version' and each file 'sha' against the local clone. Authority is always the SKILL.md files themselves; this manifest is an index, not a contract.",
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
-  "generated_at": "2026-08-28",
-  "generated_from_commit": "f730fd5aeea75c2a21e37d2cdf9be282e1c99e10",
+  "generated_at": "2026-08-29",
+  "generated_from_commit": "aa8a8c31d0304544b683add4220ace7bf7422444",
   "skills_root": "workspace/.claude/skills/",
-  "skill_count": 11,
+  "skill_count": 12,
   "versioning": {
     "scheme": "git",
     "rule": "There are no invented version numbers. A skill's 'version' is the short hash of the last commit that touched its directory, and 'updated' is that commit's date. A skill whose files have not changed keeps the same version, even when the repository moves on.",
@@ -45,34 +45,29 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "b988a3b",
-      "updated": "2026-08-10",
+      "version": "aa8a8c3",
+      "updated": "2026-08-29",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 75,
-          "sha": "def5334f92dcd9c7c123a28fc619d6141f780752"
+          "lines": 209,
+          "sha": "75473d4659b501fb62a85f5a939d20eb5644c87a"
         },
         {
-          "path": "INSTALL.md",
-          "lines": 163,
-          "sha": "c265b8d83576f648a04bfe12440a5fb651ca3cfd"
+          "path": "references/QA.md",
+          "lines": 427,
+          "sha": "e45471d26b32104be84c7a66446819abd29068db"
         },
         {
-          "path": "QA.md",
-          "lines": 191,
-          "sha": "b47ec584d009db2ba9165b5fef37a2aaa4d5e4b7"
+          "path": "human/explain1min.zh-TW.html",
+          "lines": 237,
+          "sha": "4fc97cbd9129159f6c8bf90956d092f7d60e067a"
         },
         {
-          "path": "FLOW.md",
-          "lines": 96,
-          "sha": "4f3a804577db0877dd22a5ed23531380ed5defeb"
-        },
-        {
-          "path": "VERIFY.md",
-          "lines": 376,
-          "sha": "387a87039eaf1b9ccfdd79bb77b5c406a5097db1"
+          "path": "human/eli5.zh-TW.html",
+          "lines": 158,
+          "sha": "0a05d64f3f1a27cc62b33709870097818475b407"
         }
       ],
       "requires": [
@@ -82,13 +77,14 @@
         "Scripts live in workspace/tools/ and are reached only through tools/transcribe.sh."
       ],
       "referenced_but_not_present": [],
-      "known_inconsistency": "Resolved 2026-08-07: the Skills Index row in workspace/CLAUDE.md used to describe the pre-2026-08-04 version ('router entry point, cloud-first with local fallback, auto-compression'). It has been rewritten upstream to match the 79-line SKILL.md and to name INSTALL.md / FLOW.md / VERIFY.md. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design. An upstream change to it WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
-      "notes": "Rewritten on 2026-08-04 from 368 lines to 79. Four supporting files under references/ and templates/ were removed in the same commit. Any clone made before that date loses those four files on the next pull; that is expected, see UPDATING.md section 4.",
+      "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was rewritten upstream again on 2026-08-29, to describe the four-file shape (references/QA.md + human/), and a voiceink row was added below it. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
+      "notes": "Restructured on 2026-08-29 (aa8a8c3) into the four-file standard: INSTALL.md, FLOW.md, VERIFY.md and the old top-level QA.md folded into SKILL.md and references/QA.md, and the teaching/audio-transcribe/ pages retired in the same commit. A clone made before that date loses those eight files on its next pull; that is expected, see UPDATING.md section 4. The human/ pages are Traditional Chinese on purpose. Earlier history: rewritten 2026-08-04 from 368 lines to 79, with references/ and templates/ removed then — the same rule applied.",
       "ships_scripts": [
         "workspace/tools/transcribe.sh",
         "workspace/tools/transcribe-cloud.sh",
         "workspace/tools/km_transcribe.py",
         "workspace/tools/_s2tw.py",
+        "workspace/tools/_glossary.py",
         "workspace/tools/setup-api-key.sh"
       ]
     },
@@ -289,6 +285,40 @@
         "refs/lessons-learned.md (SKILL.md line 88) — a lessons-learned file ships at docs/lessons-learned.md, at the repository root, not under workspace/refs/. Same shape as the wrap-up entry below."
       ],
       "notes": null
+    },
+    {
+      "name": "voiceink",
+      "version": "aa8a8c3",
+      "updated": "2026-08-29",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 182,
+          "sha": "5ebe14e5da1e571e1774def855dddc21e7a267da"
+        },
+        {
+          "path": "references/QA.md",
+          "lines": 80,
+          "sha": "7d6cc574a51bfdb13dab6ced9bef60d49e0f96c6"
+        },
+        {
+          "path": "human/explain1min.zh-TW.html",
+          "lines": 257,
+          "sha": "86ce8982c3953f3ce2d3c9db29df9f16c1ff03a3"
+        },
+        {
+          "path": "human/eli5.zh-TW.html",
+          "lines": 137,
+          "sha": "4c409432e90677d8ea89d77ae7d3cae2a39f29ef"
+        }
+      ],
+      "requires": [
+        "VoiceInk itself, on Apple Silicon with macOS 14.4+. Installing it, granting the three permissions, and downloading the model are GUI steps the person does at their own screen — no script here can do them.",
+        "Nothing in this skill runs code on the person's machine. The payload is pasted into the app by the person; verification is them dictating and pasting the raw output back."
+      ],
+      "referenced_but_not_present": [],
+      "notes": "First skill born into the four-file standard (2026-08-29). The payload blocks in SKILL.md are verbatim Traditional Chinese from the field-tested source and are the point of the skill — a diff that 'tidies' them is wrong. UI positions are stated against VoiceInk v1.79 (released 2026-05-23); the file itself says the app in front of you wins."
     },
     {
       "name": "wrap-up",
