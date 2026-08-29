@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-08-29",
-  "generated_from_commit": "aa8a8c31d0304544b683add4220ace7bf7422444",
+  "generated_from_commit": "f1b096b753e263d05c30989e57e6585f58007c09",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 12,
   "versioning": {
@@ -45,7 +45,7 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "aa8a8c3",
+      "version": "f1b096b",
       "updated": "2026-08-29",
       "auto_invocable": true,
       "files": [
@@ -288,7 +288,7 @@
     },
     {
       "name": "voiceink",
-      "version": "aa8a8c3",
+      "version": "f1b096b",
       "updated": "2026-08-29",
       "auto_invocable": true,
       "files": [
