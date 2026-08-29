@@ -52,9 +52,9 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 
 | Skill | What It Does | How to Trigger |
 |---|---|---|
-| **meta-skill** | The meta-skill for building and auditing a single Skill. Three workflows: (1) an A→E flow for building a new Skill (before → build → verify → maintain → cross-platform), (2) a SKILL anatomy + boundary checklist, (3) a tiered single-Skill audit with retrofit prioritization. Enforces "entry is a map, not an encyclopedia" and the layering convention | Say **"build a skill for X"**, **"audit this skill"**, or when the secretary notices repeated manual work (N≥2) worth packaging |
+| **skill-ops** | Single front door for the whole skill ecosystem — three routes: (1) mine candidates (repeated manual work worth packaging), (2) build / fix / audit one skill (A→E build flow, anatomy checklist, 4-Tier audit), (3) sweep the whole portfolio (quantified health metrics + upstream drift) with an optional startup nudge hook when the sweep is overdue. Replaces meta-skill, absorbing its build and audit flows. Body written in Traditional Chinese by design — LLMs match intent across languages, so English requests trigger it | Say **"build a skill for X"**, **"audit this skill"**, **"run a skill sweep"**, or when the secretary notices repeated manual work (N≥2) |
 
-> **Customization tip**: meta-skill is how you build and audit your own Skills as your system grows. You can delete any Skill you don't use — the core (secretary / wrap-up / handoff) always runs on its own.
+> **Customization tip**: skill-ops is how you build, audit and sweep your own Skills as your system grows. You can delete any Skill you don't use — the core (secretary / wrap-up / handoff) always runs on its own.
 
 ## Quick Start
 
@@ -79,7 +79,7 @@ workspace/                             ← Mount this folder
 │       ├── project-setup/SKILL.md     ← Six-step project launch
 │       ├── knowledge-base/SKILL.md    ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md        ← Tool discovery + security
-│       ├── meta-skill/SKILL.md        ← Build / audit a single skill
+│       ├── skill-ops/SKILL.md         ← Build / audit / sweep skills (3 routes)
 │       ├── plan-discuss/SKILL.md      ← Multi-model plan review
 │       ├── eli5/SKILL.md             ← One-sentence ELI5 explainer
 │       ├── explain1min/SKILL.md      ← One-minute explainer diagram (+ templates/)
@@ -206,11 +206,12 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 ## Version History
 ### Unreleased (next)
 
-**Skill set — 12 Skills** (v1.0's 8 + 4):
+**Skill set — 12 Skills** (v1.0's 8, plus audio-transcribe, voiceink, eli5, explain1min and skill-ops; meta-skill merged into skill-ops):
 - **Added: audio-transcribe** — a recording, or something you'd rather say than type, into text your agent can use. Leads with the constraint people actually hit (the agent has no audio input, so a dropped recording silently does nothing), then ships the pipeline that does the work: one router command — Groq for English and Chinese, a multimodal model for Khmer — plus the checks that stop a confident wrong transcript from being believed.
 - **Added: voiceink** — VoiceInk (local Whisper dictation on macOS) comes out in Simplified Chinese for a Taiwanese Mandarin speaker. The agent walks the person through the clicks only they can make, then applies and verifies the zh-TW setup pack.
 - **Added: eli5 / explain1min** — two ways to put something in front of a person: big pictures and few words, or a one-page diagram with a decision diamond wherever the flow branches.
-- **Skill folder standard** — a shipped skill is `SKILL.md` (what problem, how to use, and a proof-it-works step at the end), `references/QA.md` (what people hit and why it is built this way), and `human/` — HTML pages the agent opens for the person it works for. The agent understands first, then teaches its user; problems go to GitHub issues. The two voice skills ship in this shape; `INSTALL.md` / `FLOW.md` / `VERIFY.md` and the `teaching/` pages folded into it.
+- **Replaced: meta-skill → skill-ops** — one front door, three routes: mine candidates for new skills, build / fix / audit one (absorbing meta-skill's A→E flow and 4-Tier audit), and sweep the whole portfolio on quantified metrics. Ships an optional SessionStart hook (`extras/claude-code/scripts/startup_skillops_nudge.sh`) that says so when the sweep is overdue — a reminder, never an auto-run.
+- **Skill folder standard** — a shipped skill is `SKILL.md` (what problem, how to use, and a proof-it-works step at the end), `references/QA.md` (what people hit and why it is built this way), and `human/` — HTML pages the agent opens for the person it works for. The agent understands first, then teaches its user; problems go to GitHub issues. The two voice skills and skill-ops ship in this shape; `INSTALL.md` / `FLOW.md` / `VERIFY.md` and the `teaching/` pages folded into it.
 
 ### v1.0 (2026-06-30)
 
@@ -423,9 +424,9 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 
 | Skill | 功能 | 觸發方式 |
 |---|---|---|
-| **meta-skill** | 建立與檢核**單一** Skill 的後設 Skill。三個工作流：(1) 建新 Skill 的 A→E 流程（背景 → 建立 → 驗證 → 維護 → 跨平台）、(2) SKILL anatomy + 邊界 checklist、(3) 4-Tier 單一 Skill audit + retrofit 排序。落實「入口是地圖不是百科」與分層慣例 | 說 **「幫我建一個 Skill」**、**「audit 這支 Skill」**，或秘書察覺重複工作（N≥2）值得封裝時 |
+| **skill-ops** | skill 生態的單一入口——三條路：(1) 找候選（挖該封裝的重複手工活）、(2) 建・改・檢一支（A→E 建立流程＋anatomy checklist＋4-Tier audit）、(3) 巡全部（量化健康指標＋官方 drift），配選用的開機提醒 hook（巡檢逾期會喊一聲）。取代 meta-skill、吸收其建立與 audit 流程 | 說 **「幫我建一個 Skill」**、**「audit 這支 Skill」**、**「跑一次 skill 體檢」**，或秘書察覺重複工作（N≥2）時 |
 
-> **自訂建議**：meta-skill 讓你隨系統成長自己建/檢 Skill。用不到的 Skill 都可以刪——核心（secretary / wrap-up / handoff）單獨也能跑。
+> **自訂建議**：skill-ops 讓你隨系統成長自己建/檢/巡 Skill。用不到的 Skill 都可以刪——核心（secretary / wrap-up / handoff）單獨也能跑。
 
 ## 快速開始
 
@@ -450,7 +451,7 @@ workspace/                             ← 掛載這個資料夾
 │       ├── project-setup/SKILL.md     ← 六步開案流程
 │       ├── knowledge-base/SKILL.md    ← 知識庫管線
 │       ├── tool-scout/SKILL.md        ← 工具探索 + 資安
-│       ├── meta-skill/SKILL.md        ← 建 / 檢核單一 Skill
+│       ├── skill-ops/SKILL.md         ← 建/檢/巡 Skill（三條路）
 │       ├── plan-discuss/SKILL.md      ← 多模型計畫審閱
 │       ├── eli5/SKILL.md              ← 一句話 ELI5 解釋器
 │       ├── explain1min/SKILL.md       ← 一分鐘解釋圖（+ templates/）

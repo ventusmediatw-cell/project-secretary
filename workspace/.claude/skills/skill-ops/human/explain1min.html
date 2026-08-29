@@ -1,0 +1,313 @@
+<meta charset="utf-8">
+<title>skill-ops 一分鐘圖</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#d5d4cd;
+ --warn:#fab219;--crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+.en{display:none}
+:root[data-lang="en"] .en{display:revert}
+:root[data-lang="en"] .zh{display:none}
+.langbar{position:sticky;top:14px;display:flex;justify-content:flex-end;z-index:9;padding-top:14px}
+.langbar div{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:3px;gap:2px}
+.langbar button{border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:600;
+ padding:5px 14px;border-radius:99px;cursor:pointer;font-family:inherit}
+:root:not([data-lang="en"]) button[data-setlang="zh"],
+:root[data-lang="en"] button[data-setlang="en"]{background:var(--s1);color:#fff}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child{border:0}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
+.sub{font-size:16px;color:var(--muted);margin:0 0 20px}
+p{font-size:17px;color:var(--ink2);margin:0 0 10px}
+.lede{font-size:clamp(18px,2.7vw,22px);color:var(--ink2)}
+.tag{font-size:13px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:18px;display:block}
+figure{margin:20px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 16px 16px;overflow-x:auto}
+figure svg{min-width:620px}
+figcaption{font-size:15px;color:var(--ink2);margin-bottom:14px;font-weight:600}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.n-lab{font-size:14px;fill:var(--ink)}
+.n-sub{font-size:12px;fill:var(--muted)}
+.e-lab{font-size:12px;fill:var(--muted)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.note{border-left:3px solid var(--warn);padding-left:16px;margin-top:20px}
+.note b{font-size:14px;letter-spacing:.06em;color:var(--warn)}
+.note p{color:var(--ink);font-size:17px;margin:5px 0 0}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
+.box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+</style>
+
+<div class="wrap">
+
+<nav class="langbar"><div>
+  <button data-setlang="zh">中文</button><button data-setlang="en">EN</button>
+</div></nav>
+
+<section style="padding-top:20px">
+  <span class="tag"><span class="zh">AI Secretary · Skill 生態</span><span class="en">AI Secretary · Skill Ecosystem</span></span>
+  <h1><span class="zh">skill-ops<br>怎麼跑起來的</span><span class="en">How skill-ops<br>runs</span></h1>
+  <p class="lede">
+    <span class="zh">一句話：<b style="color:var(--ink)">skill 生態只有一個門——進門先分三條路，所有產出都停在「請你拍板」。</b><br>三條路 · 五份 SOP。下面 3 張圖就是全部機制。</span>
+    <span class="en">One sentence: <b style="color:var(--ink)">the skill ecosystem has a single door — three routes branch inside it, and every outcome stops at "your call".</b><br>3 routes · 5 SOPs. The 3 diagrams below are the whole machine.</span>
+  </p>
+</section>
+
+<section>
+  <h2><span class="zh">圖一 · 進門先分路</span><span class="en">Fig 1 · Route at the door</span></h2>
+  <p class="sub"><span class="zh">一進來就分路；不確定走哪條，它會問你、不自行認定。</span><span class="en">Routing happens first; when unsure, it asks you — it never guesses.</span></p>
+  <figure>
+    <figcaption><span class="zh">藍＝做事　橘＝要判斷</span><span class="en">Blue = do &nbsp; Orange = decide</span></figcaption>
+    <svg viewBox="0 0 700 440" role="img" aria-label="skill-ops main line: one call, three routes, all ending at user sign-off">
+      <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1)">
+        <path d="M350 76 L350 104"/>
+        <path d="M245 138 L130 138 L130 232"/>
+        <path d="M350 170 L350 232"/>
+        <path d="M455 138 L570 138 L570 232"/>
+        <path d="M130 302 L130 400 L223 400"/>
+        <path d="M350 302 L350 370"/>
+        <path d="M570 302 L570 400 L477 400"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="190" y="20" width="320" height="56" rx="9"/>
+        <rect x="30" y="234" width="200" height="68" rx="9"/>
+        <rect x="250" y="234" width="200" height="68" rx="9"/>
+        <rect x="470" y="234" width="200" height="68" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2.5">
+        <rect x="225" y="372" width="250" height="56" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M350 106 L455 138 L350 170 L245 138 z"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab zh" x="350" y="53">你呼叫 skill-ops</text>
+        <text class="n-lab en" x="350" y="53">You call skill-ops</text>
+        <text class="n-lab zh" x="350" y="143">分路：要做哪件事？</text>
+        <text class="n-lab en" x="350" y="143">Which job is it?</text>
+        <text class="n-lab zh" x="130" y="260">建技能</text>
+        <text class="n-lab en" x="130" y="260">Build one</text>
+        <text class="n-sub zh" x="130" y="280">掃既有＋挖候選才動工</text>
+        <text class="n-sub en" x="130" y="280">scan + mine first</text>
+        <text class="n-lab zh" x="350" y="260">改技能</text>
+        <text class="n-lab en" x="350" y="260">Fix one</text>
+        <text class="n-sub zh" x="350" y="280">修一支・深檢一支</text>
+        <text class="n-sub en" x="350" y="280">repair or deep-audit</text>
+        <text class="n-lab zh" x="570" y="260">檢查全技能</text>
+        <text class="n-lab en" x="570" y="260">Audit them all</text>
+        <text class="n-sub zh" x="570" y="280">六項指標＋官方 drift</text>
+        <text class="n-sub en" x="570" y="280">6 metrics + drift</text>
+        <text class="n-lab zh" x="350" y="396">停在這裡：一切等你拍板</text>
+        <text class="n-lab en" x="350" y="396">Everything stops here for you</text>
+        <text class="n-sub zh" x="350" y="416">AI 只提案，不代你動手</text>
+        <text class="n-sub en" x="350" y="416">AI proposes — never acts alone</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i><span class="zh">做事</span><span class="en">do</span></span>
+      <span><i style="background:var(--s2)"></i><span class="zh">判斷</span><span class="en">decide</span></span>
+    </div>
+  </figure>
+  <div class="note"><b><span class="zh">為什麼要這樣設計</span><span class="en">Why it's built this way</span></b>
+    <p><span class="zh">三條路終點相同：模型有「想做點事證明有用」的偏見，所以拍板權永遠留在你手上。</span>
+       <span class="en">All three routes share one endpoint: models are biased toward doing something to prove useful, so the final call always stays with you.</span></p></div>
+</section>
+
+<section>
+  <h2><span class="zh">圖二 · 想建新的？先過兩道閘</span><span class="en">Fig 2 · New skill? Two gates first</span></h2>
+  <p class="sub"><span class="zh">掃兩層才准動手：本地既有 skill ＋ 官方現成的（同一次只掃一遍）。</span><span class="en">Two scans before any work: local skills + official offerings (scanned once per visit).</span></p>
+  <figure>
+    <figcaption><span class="zh">藍＝做事　橘＝要判斷　紅＝擋下來</span><span class="en">Blue = do &nbsp; Orange = decide &nbsp; Red = stopped</span></figcaption>
+    <svg viewBox="0 0 700 390" role="img" aria-label="anti over-build: existing coverage rejects, single occurrence waits, only repeats get built">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2)">
+        <path d="M350 76 L350 102"/>
+        <path d="M350 172 L350 202"/>
+        <path d="M350 272 L350 302"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#ar2)" stroke-dasharray="6 5">
+        <path d="M460 138 L580 138 L580 164"/>
+        <path d="M460 238 L580 238 L580 264"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="200" y="20" width="300" height="56" rx="9"/>
+        <rect x="215" y="304" width="270" height="60" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M350 104 L460 138 L350 172 L240 138 z"/>
+        <path d="M350 204 L460 238 L350 272 L240 238 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="490" y="166" width="180" height="56" rx="9"/>
+        <rect x="490" y="266" width="180" height="56" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab zh" x="350" y="44">想抽一支新 skill</text>
+        <text class="n-lab en" x="350" y="44">Want to mint a new skill</text>
+        <text class="n-sub zh" x="350" y="63">先質疑前提：這真的需要嗎？</text>
+        <text class="n-sub en" x="350" y="63">first ask: is this really needed?</text>
+        <text class="n-lab zh" x="350" y="143">既有的蓋得住八成？</text>
+        <text class="n-lab en" x="350" y="143">Existing covers ~80%?</text>
+        <text class="n-lab zh" x="580" y="190" fill="var(--crit)">不建</text>
+        <text class="n-lab en" x="580" y="190" fill="var(--crit)">Don't build</text>
+        <text class="n-sub zh" x="580" y="210">走既有／裝官方的</text>
+        <text class="n-sub en" x="580" y="210">use existing or official</text>
+        <text class="n-lab zh" x="350" y="243">同樣的活出現 ≥2 次？</text>
+        <text class="n-lab en" x="350" y="243">Happened ≥2 times?</text>
+        <text class="n-lab zh" x="580" y="290" fill="var(--crit)">先不建</text>
+        <text class="n-lab en" x="580" y="290" fill="var(--crit)">Not yet</text>
+        <text class="n-sub zh" x="580" y="310">寫觀察，4 週觀察期</text>
+        <text class="n-sub en" x="580" y="310">log it; 4-week watch</text>
+        <text class="n-lab zh" x="350" y="328">開工建（A→E 五階段）</text>
+        <text class="n-lab en" x="350" y="328">Build it (stages A→E)</text>
+        <text class="n-sub zh" x="350" y="348">建完真跑一次＋跨家族 review</text>
+        <text class="n-sub en" x="350" y="348">run it for real + cross-family review</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text class="zh" x="508" y="130">蓋得住</text><text class="en" x="508" y="130">covered</text>
+        <text class="zh" x="387" y="194">蓋不住</text><text class="en" x="390" y="194">not covered</text>
+        <text class="zh" x="505" y="257">才 1 次</text><text class="en" x="505" y="257">only once</text>
+        <text class="zh" x="388" y="294">≥2 次</text><text class="en" x="382" y="294">≥2×</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i><span class="zh">做事</span><span class="en">do</span></span>
+      <span><i style="background:var(--s2)"></i><span class="zh">判斷</span><span class="en">decide</span></span>
+      <span><i style="background:var(--crit)"></i><span class="zh">擋下／退回</span><span class="en">stopped</span></span>
+    </div>
+  </figure>
+  <div class="note"><b><span class="zh">為什麼要這樣設計</span><span class="en">Why it's built this way</span></b>
+    <p><span class="zh">多數想抽的其實不該抽——兩道閘先擋掉重造輪子和一時衝動，擋剩的才值得花工建。</span>
+       <span class="en">Most skill ideas shouldn't become skills — two gates stop wheel-reinventing and impulse-building; what survives is worth the work.</span></p></div>
+</section>
+
+<section>
+  <h2><span class="zh">圖三 · 兩條反向的路</span><span class="en">Fig 3 · Two roads, opposite directions</span></h2>
+  <p class="sub"><span class="zh">你找它，或它自己跳出來提醒你——最後都走進同一顆菱形。</span><span class="en">You call it, or it nudges you — both roads end at the same diamond.</span></p>
+  <figure>
+    <figcaption><span class="zh">藍＝做事　橘＝要判斷　灰＝不吭聲</span><span class="en">Blue = do &nbsp; Orange = decide &nbsp; Gray = silent</span></figcaption>
+    <svg viewBox="0 0 700 410" role="img" aria-label="two triggers: you speak up, or the startup hook nudges after seven days; both enter the router">
+      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
+        <path d="M170 100 L170 354 L223 354"/>
+        <path d="M530 88 L530 112"/>
+        <path d="M530 174 L530 200"/>
+        <path d="M530 258 L530 354 L477 354"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
+        <path d="M442 144 L370 144 L370 168"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="55" y="24" width="230" height="76" rx="9"/>
+        <rect x="415" y="24" width="230" height="64" rx="9"/>
+        <rect x="415" y="202" width="230" height="56" rx="9"/>
+        <rect x="225" y="326" width="250" height="56" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M530 114 L618 144 L530 174 L442 144 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="320" y="170" width="100" height="40" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab zh" x="170" y="48">你開口</text>
+        <text class="n-lab en" x="170" y="48">You ask</text>
+        <text class="n-sub zh" x="170" y="68">跑 skill-ops／建 skill／體檢</text>
+        <text class="n-sub en" x="170" y="68">run skill-ops · build · check-up</text>
+        <text class="n-sub zh" x="170" y="86">或秘書看你重複做第 2 次</text>
+        <text class="n-sub en" x="170" y="86">or the secretary spots a repeat</text>
+        <text class="n-lab zh" x="530" y="50">開機 hook 自己查水位</text>
+        <text class="n-lab en" x="530" y="50">Startup hook checks the clock</text>
+        <text class="n-sub zh" x="530" y="70">上次巡檢隔了幾天？</text>
+        <text class="n-sub en" x="530" y="70">days since the last sweep?</text>
+        <text class="n-lab zh" x="530" y="149">≥7 天？</text>
+        <text class="n-lab en" x="530" y="149">≥7 days?</text>
+        <text class="n-lab zh" x="530" y="226">跳提醒：該體檢了</text>
+        <text class="n-lab en" x="530" y="226">Nudge: check-up time</text>
+        <text class="n-sub zh" x="530" y="246">只提醒，不自動跑</text>
+        <text class="n-sub en" x="530" y="246">reminds only — never auto-runs</text>
+        <text class="n-sub zh" x="370" y="194">不吭聲</text>
+        <text class="n-sub en" x="370" y="194">silent</text>
+        <text class="n-lab zh" x="350" y="350">進門分路</text>
+        <text class="n-lab en" x="350" y="350">Into the router</text>
+        <text class="n-sub zh" x="350" y="370">就是圖一那顆菱形</text>
+        <text class="n-sub en" x="350" y="370">the diamond in Fig 1</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text class="zh" x="404" y="136">還早</text><text class="en" x="400" y="136">too soon</text>
+        <text class="zh" x="566" y="192">該巡了</text><text class="en" x="560" y="192">due</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i><span class="zh">做事</span><span class="en">do</span></span>
+      <span><i style="background:var(--s2)"></i><span class="zh">判斷</span><span class="en">decide</span></span>
+      <span><i style="background:var(--deemph)"></i><span class="zh">去強調</span><span class="en">de-emphasized</span></span>
+    </div>
+  </figure>
+  <div class="note"><b><span class="zh">為什麼要這樣設計</span><span class="en">Why it's built this way</span></b>
+    <p><span class="zh">人會忘、hook 不會；但 hook 只負責喊，跑不跑仍由你拍板——主動面與決定權分開。</span>
+       <span class="en">People forget; hooks don't. But the hook only shouts — whether to run is still your call. Initiative and authority stay separate.</span></p></div>
+</section>
+
+<section>
+  <h2><span class="zh">整台機器的設計原則</span><span class="en">Design principles of the whole machine</span></h2>
+  <div class="two">
+    <div class="box"><b><span class="zh">反過度封裝</span><span class="en">Anti over-build</span></b><ul>
+      <li><span class="zh">出現 2 次才建，1 次只記觀察</span><span class="en">build on the 2nd occurrence; log the 1st</span></li>
+      <li><span class="zh">先找既有的，找不到才自製</span><span class="en">search existing first; build only if none</span></li></ul></div>
+    <div class="box"><b><span class="zh">拍板權在人</span><span class="en">Humans hold the pen</span></b><ul>
+      <li><span class="zh">AI 只能提案，不能自己改檔</span><span class="en">AI proposes, never edits on its own</span></li>
+      <li><span class="zh">連加「豁免標記」都要你點頭</span><span class="en">even exemption tags need your nod</span></li></ul></div>
+    <div class="box"><b><span class="zh">入口 ≠ 說明書</span><span class="en">Entry ≠ manual</span></b><ul>
+      <li><span class="zh">SKILL.md 本體限 500 行內</span><span class="en">SKILL.md body stays under 500 lines</span></li>
+      <li><span class="zh">細節拆進 references／templates</span><span class="en">details split into references / templates</span></li></ul></div>
+    <div class="box"><b><span class="zh">一支只解一件事</span><span class="en">One skill, one job</span></b><ul>
+      <li><span class="zh">多階段用檔案傳棒串下一支</span><span class="en">multi-stage work passes a file baton</span></li>
+      <li><span class="zh">不寫萬能 skill</span><span class="en">no god-skills</span></li></ul></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var d=document.documentElement,saved=null;
+  try{saved=localStorage.getItem('lang')}catch(e){}
+  var lang=saved||(((navigator.language||'').toLowerCase().indexOf('zh')===0)?'zh':'en');
+  d.dataset.lang=lang;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-setlang]');if(!b)return;
+    d.dataset.lang=b.dataset.setlang;
+    try{localStorage.setItem('lang',b.dataset.setlang)}catch(e){}
+  });
+})();
+</script>

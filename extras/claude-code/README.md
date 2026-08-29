@@ -9,6 +9,8 @@ This directory contains tooling **specific to Claude Code** (the CLI tool). If y
   - `impact_check.md` — Documentation for impact_check.sh
   - `startup_link_check.sh` — SessionStart hook wrapper (runs impact_check once per day)
   - `startup_link_check.md` — Documentation for startup_link_check.sh
+  - `startup_skillops_nudge.sh` — SessionStart hook: one daily line when the skill-ops portfolio sweep is overdue (7/30-day thresholds); a reminder, never an auto-run
+  - `startup_skillops_nudge.md` — Documentation for startup_skillops_nudge.sh
 - `settings.json.example` — Example Claude Code settings with SessionStart hook
 
 ## Setup
@@ -38,6 +40,8 @@ This directory contains tooling **specific to Claude Code** (the CLI tool). If y
      }
    }
    ```
+
+   To also enable the skill-ops sweep reminder, add a second entry under the same `hooks` array with `"command": "bash .claude/scripts/startup_skillops_nudge.sh"`.
 
    **Warning**: `settings.json.example` is a reference only. Merging into your existing settings is recommended — directly replacing your `workspace/.claude/settings.local.json` will overwrite your current configuration.
 

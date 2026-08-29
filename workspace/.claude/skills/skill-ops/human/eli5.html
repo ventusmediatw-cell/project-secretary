@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+<title>skill-ops ELI5</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --line:#e3e2dc;--blue:#2a78d6;--orange:#eb6834;--red:#d03b3b;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --line:#2c2c2a;--blue:#3987e5;--orange:#d95926;--red:#e05252;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --line:#2c2c2a;--blue:#3987e5;--orange:#d95926;--red:#e05252;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 100px;text-align:center}
+.en{display:none}
+:root[data-lang="en"] .en{display:revert}
+:root[data-lang="en"] .zh{display:none}
+.langbar{position:sticky;top:14px;display:flex;justify-content:flex-end;z-index:9;padding-top:14px}
+.langbar div{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:3px;gap:2px}
+.langbar button{border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:600;
+ padding:5px 14px;border-radius:99px;cursor:pointer;font-family:inherit}
+:root:not([data-lang="en"]) button[data-setlang="zh"],
+:root[data-lang="en"] button[data-setlang="en"]{background:var(--blue);color:#fff}
+.hero{padding:56px 0 40px}
+.hero .big{font-size:110px;line-height:1;display:block}
+h1{font-size:clamp(40px,8vw,64px);margin:18px 0 8px;letter-spacing:-.02em}
+.one{font-size:clamp(20px,3.6vw,28px);color:var(--ink2);margin:0}
+.one b{color:var(--ink)}
+.story{display:flex;justify-content:center;align-items:stretch;gap:6px;flex-wrap:wrap;margin:56px 0 0}
+.step{flex:1 1 170px;max-width:225px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 14px}
+.step .pic{font-size:60px;display:block;line-height:1.15}
+.step p{font-size:17px;color:var(--ink2);margin:13px 0 0}
+.step p b{color:var(--ink)}
+.arrow{align-self:center;font-size:30px;color:var(--muted);padding:0 2px}
+h2{font-size:clamp(24px,4.5vw,34px);margin:90px 0 10px;letter-spacing:-.01em}
+.branch{margin:26px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:34px 18px 28px;border-top:5px solid var(--blue)}
+.branch .bpic{font-size:72px;display:block;line-height:1.15}
+.branch b.bt{display:block;font-size:24px;margin:12px 0 0}
+.branch .story{margin-top:24px}
+.branch .step{background:var(--plane);padding:22px 12px}
+.branch .step .pic{font-size:50px}
+.branch .step p{font-size:16px;margin:11px 0 0}
+.rules{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:8px}
+.rule{border-radius:20px;padding:34px 22px;background:var(--surface);border:1px solid var(--line)}
+.rule.r1{border-top:5px solid var(--orange)}
+.rule.r2{border-top:5px solid var(--red)}
+.rule .pic{font-size:64px;display:block;line-height:1.15}
+.rule p{font-size:clamp(18px,3vw,22px);margin:14px 0 0;color:var(--ink)}
+.foot{margin-top:80px;font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+
+  <nav class="langbar"><div>
+    <button data-setlang="zh">中文</button><button data-setlang="en">EN</button>
+  </div></nav>
+
+  <div class="hero">
+    <span class="big">🗂️</span>
+    <h1>skill-ops</h1>
+    <p class="one">
+      <span class="zh">幫你管「<b>做法卡片盒</b>」的管家</span>
+      <span class="en">The butler who keeps your <b>recipe-card box</b></span>
+    </p>
+  </div>
+
+  <div class="story">
+    <div class="step"><span class="pic">🔁</span><p><span class="zh">有些事你<b>一直重複做</b></span><span class="en">Some things you <b>do over and over</b></span></p></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="pic">📇</span><p><span class="zh">把做法<b>寫成一張卡</b>（skill）</span><span class="en"><b>Write the method on a card</b> (a skill)</span></p></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="pic">⚡</span><p><span class="zh">下次照卡做，<b>又快又不出錯</b></span><span class="en">Next time follow the card — <b>fast and error-free</b></span></p></div>
+  </div>
+
+  <h2><span class="zh">管家只做三件事</span><span class="en">The butler does three things</span></h2>
+
+  <div class="branch">
+    <span class="bpic">✍️</span><b class="bt"><span class="zh">① 寫新卡</span><span class="en">① Write a new card</span></b>
+    <div class="story">
+      <div class="step"><span class="pic">🔁</span><p><span class="zh">同一件事<br>你<b>做到第 2 次</b></span><span class="en">Same thing,<br><b>second time around</b></span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">🗂️</span><p><span class="zh">先翻盒子，<br><b>有現成就用現成</b></span><span class="en">Check the box first —<br><b>reuse what exists</b></span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">📇</span><p><span class="zh">真的沒有，<br><b>才寫一張新卡</b></span><span class="en">Only if there's none,<br><b>write a new card</b></span></p></div>
+    </div>
+  </div>
+
+  <div class="branch">
+    <span class="bpic">🩹</span><b class="bt"><span class="zh">② 修舊卡</span><span class="en">② Fix an old card</span></b>
+    <div class="story">
+      <div class="step"><span class="pic">💥</span><p><span class="zh">卡<b>過時了</b>，<br>照著做會出錯</span><span class="en">The card <b>went stale</b> —<br>following it fails</span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">🔧</span><p><span class="zh"><b>修好它</b>，<br>該補的補、該刪的刪</span><span class="en"><b>Repair it</b> —<br>add and trim as needed</span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">🧪</span><p><span class="zh">照卡<b>實做一次</b>，<br>確認真的能用</span><span class="en"><b>Cook from the card once</b><br>to prove it works</span></p></div>
+    </div>
+  </div>
+
+  <div class="branch">
+    <span class="bpic">🧹</span><b class="bt"><span class="zh">③ 大掃除</span><span class="en">③ Spring-cleaning</span></b>
+    <div class="story">
+      <div class="step"><span class="pic">🗓️</span><p><span class="zh">定期把<b>整盒</b><br>倒出來翻一遍</span><span class="en">Regularly <b>dump the whole box</b><br>and go through it</span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">🕵️</span><p><span class="zh">揪出<b>沒人用的、<br>過期的</b></span><span class="en">Catch the <b>unused<br>and the expired</b></span></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="pic">📋</span><p><span class="zh"><b>開一張清單</b>，<br>給你勾要處理哪些</span><span class="en"><b>Draw up a list</b><br>for you to tick</span></p></div>
+    </div>
+  </div>
+
+
+  <h2><span class="zh">兩條家規</span><span class="en">Two house rules</span></h2>
+  <div class="rules">
+    <div class="rule r1"><span class="pic">🙋</span><p><span class="zh">管家只出主意，<br>動手前一定<b>先問你</b></span><span class="en">The butler only suggests —<br>and always <b>asks before acting</b></span></p></div>
+    <div class="rule r2"><span class="pic">🛑</span><p><span class="zh">先翻盒子——<br><b>有現成的卡，就不寫新的</b></span><span class="en">Check the box first —<br><b>never write a card that already exists</b></span></p></div>
+  </div>
+
+  <p class="foot">skill-ops · 2026-08-29</p>
+
+</div>
+
+<script>
+(function(){
+  var d=document.documentElement,saved=null;
+  try{saved=localStorage.getItem('lang')}catch(e){}
+  var lang=saved||(((navigator.language||'').toLowerCase().indexOf('zh')===0)?'zh':'en');
+  d.dataset.lang=lang;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-setlang]');if(!b)return;
+    d.dataset.lang=b.dataset.setlang;
+    try{localStorage.setItem('lang',b.dataset.setlang)}catch(e){}
+  });
+})();
+</script>

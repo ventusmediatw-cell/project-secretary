@@ -41,6 +41,11 @@ workspace/handoff/pending/*
 workspace/handoff/done/*
 !workspace/handoff/done/.gitkeep
 
+# Skill-private glossaries and skill-ops local state — never ship these.
+workspace/.claude/skills/*/references/_private-*.md
+workspace/.claude/.last-skillops-sweep
+workspace/.claude/.last-skillops-nudge-run
+
 # Transcripts are verbatim records of real meetings, and this repo is public.
 # The audio buffer underneath them is the recordings themselves.
 workspace/transcripts/*

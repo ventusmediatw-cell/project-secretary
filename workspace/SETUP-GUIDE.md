@@ -39,7 +39,7 @@ workspace/                          ← User mounts this folder
 │       ├── project-setup/SKILL.md  ← Project launch flow
 │       ├── knowledge-base/SKILL.md ← Knowledge base pipeline
 │       ├── tool-scout/SKILL.md     ← Tool discovery + security
-│       ├── meta-skill/SKILL.md     ← Build / audit a single skill
+│       ├── skill-ops/SKILL.md      ← Build / audit / sweep skills (3 routes)
 │       ├── plan-discuss/SKILL.md   ← Multi-model plan review
 │       └── audio-transcribe/SKILL.md ← Meeting / voice-note transcription
 ├── INDEX.md                        ← Main index (project list, to-dos)
