@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>一段錄音怎麼變成你能用的文字</title>
+<title>一段錄音怎麼變成你能用的文字 · How a Recording Becomes Text You Can Use</title>
 <style>
 :root{
  --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
@@ -20,7 +20,7 @@
 body{margin:0;background:var(--plane);color:var(--ink);
  font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
 .wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
-section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child{border:0}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child,section:nth-last-child(2){border:0}
 h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
 h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
 .sub{font-size:16px;color:var(--muted);margin:0 0 20px}
@@ -45,17 +45,30 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 .box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
  background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
 </style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
 
 <div class="wrap">
 
-<section>
+<section lang="zh-TW">
   <span class="tag">audio → text</span>
   <h1>一段錄音<br>怎麼變成你能用的文字</h1>
   <p class="lede">一句話：<b style="color:var(--ink)">AI 讀不到聲音，錄音要先被另一支程式轉成文字，才輪得到它。</b><br>下面三張圖就是全部的機制。</p>
 </section>
 
-<section>
+<section lang="en">
+  <span class="tag">audio → text</span>
+  <h1>How a recording<br>becomes text you can use</h1>
+  <p class="lede">In one line: <b style="color:var(--ink)">AI cannot hear. A recording has to be turned into text by another program first, before AI gets a turn.</b><br>The three diagrams below are the whole mechanism.</p>
+</section>
+
+<section lang="zh-TW">
   <h2>圖一 · 從檔案到那一條命令</h2>
   <p class="sub">兩個判斷點都在動手之前。跳過它們，失敗是安靜的。</p>
   <figure>
@@ -114,7 +127,66 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
   <div class="note"><b>為什麼要這樣設計</b><p>走英文／中文那條時，白名單外的檔案，錯誤是服務端丟回來的 HTTP 碼，不會寫「格式不對」——而 Mac 預設錄音是 <code>.aiff</code>、手機錄影是 <code>.mov</code>，正好兩個都不在（高棉語那條會先自己重新編碼，不受這個限制）。多人對話則是另一種安靜：這條管線不做講者分離，誰講了什麼重要的話，就得換能「聽」的多模態模型。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 1 · From a file to the one command</h2>
+  <p class="sub">Both decision points come before you start. Skip them and the failure is silent.</p>
+  <figure>
+    <figcaption>Blue = do it　Orange = decide / one extra step, then back to the main line</figcaption>
+    <svg viewBox="0 0 700 370" role="img" aria-label="Flowchart: check whether the file extension is on the allowlist, and convert the file first if it is not; then decide how many people are speaking, because with several you only get a wall of text; finally run one transcription command.">
+      <defs><marker id="ar1e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="ar1oe" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1e)">
+        <path d="M300 60 L300 82"/>
+        <path d="M300 134 L300 182"/>
+        <path d="M300 234 L300 282"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar1oe)">
+        <path d="M400 110 L466 110"/>
+        <path d="M580 134 L580 160 L308 160"/>
+        <path d="M400 210 L466 210"/>
+        <path d="M580 242 L580 266 L308 266"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="150" y="20" width="300" height="40" rx="9"/>
+        <rect x="150" y="282" width="300" height="54" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 86 L400 110 L300 134 L200 110 z"/>
+        <path d="M300 186 L400 210 L300 234 L200 210 z"/>
+        <rect x="470" y="84" width="220" height="50" rx="9"/>
+        <rect x="470" y="182" width="220" height="60" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="45">You have a recording file</text>
+        <text class="n-lab" x="300" y="115">Extension allowed?</text>
+        <text class="n-lab" x="300" y="215">How many people?</text>
+        <text class="n-lab" x="300" y="305">One command</text>
+        <text class="n-sub" x="300" y="324">bash tools/transcribe.sh &lt;file&gt; &lt;lang&gt;</text>
+        <text class="n-lab" x="580" y="105" fill="var(--s2)">Convert to .m4a first</text>
+        <text class="n-sub" x="580" y="123">afconvert (Mac) / ffmpeg</text>
+        <text class="n-lab" x="580" y="205" fill="var(--s2)">It still transcribes</text>
+        <text class="n-sub" x="580" y="223">but you get a wall of text</text>
+        <text class="n-sub" x="580" y="238">with no idea who is who</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="433" y="102">No</text><text x="284" y="152">Yes</text>
+        <text x="433" y="202">Several</text><text x="284" y="258">One</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>On the English and Chinese route, a file outside the allowlist comes back as an HTTP code from the server, never as "wrong format" — and a Mac records to <code>.aiff</code> by default while a phone films to <code>.mov</code>, so both miss the list (the Khmer route re-encodes on its own and is not bound by this). A multi-person conversation is silent in a different way: this pipeline does not separate speakers. If it matters who said the important line, you need a multimodal model that can actually listen.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>圖二 · 語言要你自己講</h2>
   <p class="sub">進去什麼語言，出來就是什麼語言。</p>
   <figure>
@@ -156,7 +228,49 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
   <div class="note"><b>為什麼要這樣設計</b><p>這不是翻譯器。要換一種語言，是拿到逐字稿之後的另一步——這樣「他到底說了什麼」和「誰把它翻成什麼」才不會混成同一份檔案。高棉語那條也因此要小心：兩次跑出來的字不同，不代表誰記錯了。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 2 · You name the language yourself</h2>
+  <p class="sub">Whatever language goes in is the language that comes out.</p>
+  <figure>
+    <figcaption>Blue = do it　Orange = decide / watch out</figcaption>
+    <svg viewBox="0 0 700 250" role="img" aria-label="Flowchart: name the language when you run the command — English, Chinese or Khmer; the Khmer route gives a different result each run.">
+      <defs><marker id="ar2e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2e)">
+        <path d="M350 56 L350 76"/>
+        <path d="M258 104 L110 104 L110 142"/>
+        <path d="M350 128 L350 142"/>
+        <path d="M442 104 L590 104 L590 142"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="200" y="16" width="300" height="40" rx="9"/>
+        <rect x="20" y="142" width="180" height="62" rx="9"/>
+        <rect x="260" y="142" width="180" height="62" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M350 80 L442 104 L350 128 L258 104 z"/>
+        <rect x="500" y="142" width="180" height="80" rx="9"/>
+      </g>
+      <g text-anchor="middle">
+        <text class="n-lab" x="350" y="41">Name the language in the command</text>
+        <text class="n-lab" x="350" y="109">Which one?</text>
+        <text class="n-lab" x="110" y="168">en</text><text class="n-sub" x="110" y="188">English in, English out</text>
+        <text class="n-lab" x="350" y="168">zh</text><text class="n-sub" x="350" y="188">Chinese in, Traditional out</text>
+        <text class="n-lab" x="590" y="166" fill="var(--s2)">km</text>
+        <text class="n-sub" x="590" y="186">Khmer. Run the same file</text>
+        <text class="n-sub" x="590" y="202">twice, the text differs</text>
+        <text class="n-sub" x="590" y="218">(English does not)</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Watch out</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>This is not a translator. Changing language is a separate step after the transcript exists — that way "what he actually said" and "how someone translated it" never end up in the same file. The Khmer route needs the same care: two runs that come out differently are not a sign that anyone misremembered.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>圖三 · 拿到字之後</h2>
   <p class="sub">逐字稿不是任何人要的東西，它是原料。</p>
   <figure>
@@ -220,7 +334,71 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
   <div class="note"><b>為什麼要這樣設計</b><p>改正文會毀掉唯一的紀錄：模型到底聽成什麼。留著它，日後才有辦法用更好的模型重新對一次。高棉語沒有固定原稿可以重對，能回頭對的只有錄音檔本身。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 3 · After you have the text</h2>
+  <p class="sub">Nobody wants a transcript. It is raw material.</p>
+  <figure>
+    <figcaption>Blue = do it　Orange = decide / extra step　Grey = stop here</figcaption>
+    <svg viewBox="0 0 700 460" role="img" aria-label="Flowchart: attach a recap to the transcript; if it goes to someone else, check names, numbers and dates; if something is wrong, add a correction table above the text; if not, send it.">
+      <defs><marker id="ar3e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="ar3oe" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3e)">
+        <path d="M300 58 L300 78"/>
+        <path d="M300 140 L300 164"/>
+        <path d="M300 216 L300 248"/>
+        <path d="M300 300 L300 320"/>
+        <path d="M300 376 L300 398"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar3oe)">
+        <path d="M392 348 L466 348"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#ar3e)">
+        <path d="M392 190 L488 190"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="170" y="18" width="260" height="40" rx="9"/>
+        <rect x="110" y="78" width="380" height="62" rx="9"/>
+        <rect x="140" y="248" width="320" height="52" rx="9"/>
+        <rect x="200" y="398" width="200" height="44" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 164 L392 190 L300 216 L208 190 z"/>
+        <path d="M300 320 L392 348 L300 376 L208 348 z"/>
+        <rect x="470" y="322" width="215" height="52" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="492" y="168" width="180" height="44" rx="9"/>
+      </g>
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="43">The transcript is out</text>
+        <text class="n-lab" x="300" y="105">Attach a recap in the same message</text>
+        <text class="n-sub" x="300" y="125">said · decided · who does what · still open</text>
+        <text class="n-lab" x="300" y="195">Sending it out?</text>
+        <text class="n-sub" x="582" y="196" fill="var(--muted)">Stop here</text>
+        <text class="n-lab" x="300" y="272">Check names, numbers, dates</text>
+        <text class="n-sub" x="300" y="291">the least reliable — wrong ones look right</text>
+        <text class="n-lab" x="300" y="354">Anything wrong?</text>
+        <text class="n-lab" x="578" y="343" fill="var(--s2)">A correction table on top</text>
+        <text class="n-sub" x="578" y="362">the text itself stays untouched</text>
+        <text class="n-lab" x="300" y="426">Ready to send</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="437" y="182">No</text><text x="278" y="238">Yes</text>
+        <text x="429" y="340">Yes</text><text x="278" y="392">No</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--deemph)"></i>Stop here</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>Editing the text destroys the only record there is of what the model actually heard. Keep it, and a better model can be run against it later. Khmer has no fixed reference version to check against — the only thing to go back to is the recording itself.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>整台機器的兩條原則</h2>
   <div class="two">
     <div class="box"><b>判斷點都在前面</b><ul>
@@ -234,4 +412,22 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
   </div>
 </section>
 
+<section lang="en">
+  <h2>Two rules for the whole machine</h2>
+  <div class="two">
+    <div class="box"><b>The decisions all come first</b><ul>
+      <li>Format, number of speakers, language: all three are settled before you start</li>
+      <li>When they go wrong nothing errors out — you just get something that looks perfectly normal</li>
+    </ul></div>
+    <div class="box"><b>Say plainly what it does not do</b><ul>
+      <li>No speaker separation, no translation</li>
+      <li>Names and numbers are yours to check before you hand the file over</li>
+    </ul></div>
+  </div>
+</section>
+
 </div>
+
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>

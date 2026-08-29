@@ -52,7 +52,7 @@
         {
           "path": "SKILL.md",
           "lines": 209,
-          "sha": "75473d4659b501fb62a85f5a939d20eb5644c87a"
+          "sha": "e556a6b59b01f58bfae640ebb46f3b86800e313d"
         },
         {
           "path": "references/QA.md",
@@ -60,14 +60,14 @@
           "sha": "e45471d26b32104be84c7a66446819abd29068db"
         },
         {
-          "path": "human/explain1min.zh-TW.html",
-          "lines": 237,
-          "sha": "4fc97cbd9129159f6c8bf90956d092f7d60e067a"
+          "path": "human/explain1min.html",
+          "lines": 433,
+          "sha": "d3d8df2b70bb03147af5ca03ade04f9dee29cfd5"
         },
         {
-          "path": "human/eli5.zh-TW.html",
-          "lines": 158,
-          "sha": "0a05d64f3f1a27cc62b33709870097818475b407"
+          "path": "human/eli5.html",
+          "lines": 286,
+          "sha": "54acbdc2f6ecb7c76fdaacb80b939d9e47773323"
         }
       ],
       "requires": [
@@ -78,7 +78,7 @@
       ],
       "referenced_but_not_present": [],
       "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was rewritten upstream again on 2026-08-29, to describe the four-file shape (references/QA.md + human/), and a voiceink row was added below it. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
-      "notes": "Restructured on 2026-08-29 (aa8a8c3) into the four-file standard: INSTALL.md, FLOW.md, VERIFY.md and the old top-level QA.md folded into SKILL.md and references/QA.md, and the teaching/audio-transcribe/ pages retired in the same commit. A clone made before that date loses those eight files on its next pull; that is expected, see UPDATING.md section 4. The human/ pages are Traditional Chinese on purpose. Earlier history: rewritten 2026-08-04 from 368 lines to 79, with references/ and templates/ removed then — the same rule applied.",
+      "notes": "Restructured on 2026-08-29 (aa8a8c3) into the four-file standard: INSTALL.md, FLOW.md, VERIFY.md and the old top-level QA.md folded into SKILL.md and references/QA.md, and the teaching/audio-transcribe/ pages retired in the same commit. A clone made before that date loses those eight files on its next pull; that is expected, see UPDATING.md section 4. The human/ pages carry Chinese and English in one file with a ZH/EN toggle — one link, both languages always at the same version. Earlier history: rewritten 2026-08-04 from 368 lines to 79, with references/ and templates/ removed then — the same rule applied.",
       "ships_scripts": [
         "workspace/tools/transcribe.sh",
         "workspace/tools/transcribe-cloud.sh",
@@ -295,7 +295,7 @@
         {
           "path": "SKILL.md",
           "lines": 182,
-          "sha": "5ebe14e5da1e571e1774def855dddc21e7a267da"
+          "sha": "80bbbcfdbf27d59874d3a6de36a84b642fed786b"
         },
         {
           "path": "references/QA.md",
@@ -303,14 +303,14 @@
           "sha": "7d6cc574a51bfdb13dab6ced9bef60d49e0f96c6"
         },
         {
-          "path": "human/explain1min.zh-TW.html",
-          "lines": 257,
-          "sha": "86ce8982c3953f3ce2d3c9db29df9f16c1ff03a3"
+          "path": "human/explain1min.html",
+          "lines": 475,
+          "sha": "09e1cdf7c143279f5194b480890771788e1d5bad"
         },
         {
-          "path": "human/eli5.zh-TW.html",
-          "lines": 137,
-          "sha": "4c409432e90677d8ea89d77ae7d3cae2a39f29ef"
+          "path": "human/eli5.html",
+          "lines": 251,
+          "sha": "29e50e91747e9ad88b55c7f1333e7ad7cfc1bc68"
         }
       ],
       "requires": [

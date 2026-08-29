@@ -1,0 +1,251 @@
+<meta charset="utf-8">
+<title>對著電腦講話 · Talking to Your Computer</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#d5d4cd;
+ --crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.5}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px 100px}
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+section:last-child,section:nth-last-child(2){border:0}
+h1{font-size:clamp(38px,7.5vw,72px);line-height:1.06;margin:0;letter-spacing:-.03em}
+h2{font-size:clamp(30px,5.6vw,54px);line-height:1.12;margin:0;letter-spacing:-.02em;font-weight:700}
+.small{font-size:clamp(17px,2.4vw,21px);color:var(--muted);margin:14px 0 0}
+svg{width:100%;height:auto;display:block;margin-top:34px}
+.s-big{font-size:44px;font-weight:700}
+.s-mid{font-size:26px;font-weight:700;fill:var(--ink)}
+.s-lab{font-size:19px;fill:var(--muted)}
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
+</style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
+
+<div class="wrap">
+
+<section lang="zh-TW">
+  <h1>對著電腦講話，<br>它幫你打字。</h1>
+  <svg viewBox="0 0 800 300" role="img" aria-label="一個人對著筆電講話，字就出現在螢幕上">
+    <defs><marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="var(--axis)"/></marker></defs>
+    <circle cx="108" cy="112" r="48" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <circle cx="92" cy="102" r="5" fill="var(--ink)"/><circle cx="126" cy="102" r="5" fill="var(--ink)"/>
+    <ellipse cx="110" cy="130" rx="15" ry="11" fill="var(--s1)"/>
+    <path d="M46 246 a62 62 0 0 1 124 0" fill="none" stroke="var(--s1)" stroke-width="5"/>
+    <g fill="none" stroke="var(--s2)" stroke-width="5" stroke-linecap="round">
+      <path d="M186 96 a44 44 0 0 1 0 62"/>
+      <path d="M216 78 a68 68 0 0 1 0 98"/>
+      <path d="M246 60 a92 92 0 0 1 0 134"/>
+    </g>
+    <path d="M282 127 L352 127" stroke="var(--axis)" stroke-width="4" fill="none" marker-end="url(#a1)"/>
+    <rect x="390" y="46" width="360" height="212" rx="16" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="368" y="262" width="404" height="16" rx="8" fill="var(--deemph)"/>
+    <g fill="var(--deemph)">
+      <rect x="422" y="90" width="240" height="16" rx="8"/>
+      <rect x="422" y="126" width="284" height="16" rx="8"/>
+      <rect x="422" y="162" width="180" height="16" rx="8"/>
+    </g>
+    <rect x="614" y="158" width="6" height="26" rx="3" fill="var(--s2)"/>
+  </svg>
+</section>
+
+<section lang="en">
+  <h1>You talk to your computer.<br>It types for you.</h1>
+  <svg viewBox="0 0 800 300" role="img" aria-label="A person speaks at a laptop and the words appear on the screen">
+    <defs><marker id="a1en" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="var(--axis)"/></marker></defs>
+    <circle cx="108" cy="112" r="48" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <circle cx="92" cy="102" r="5" fill="var(--ink)"/><circle cx="126" cy="102" r="5" fill="var(--ink)"/>
+    <ellipse cx="110" cy="130" rx="15" ry="11" fill="var(--s1)"/>
+    <path d="M46 246 a62 62 0 0 1 124 0" fill="none" stroke="var(--s1)" stroke-width="5"/>
+    <g fill="none" stroke="var(--s2)" stroke-width="5" stroke-linecap="round">
+      <path d="M186 96 a44 44 0 0 1 0 62"/>
+      <path d="M216 78 a68 68 0 0 1 0 98"/>
+      <path d="M246 60 a92 92 0 0 1 0 134"/>
+    </g>
+    <path d="M282 127 L352 127" stroke="var(--axis)" stroke-width="4" fill="none" marker-end="url(#a1en)"/>
+    <rect x="390" y="46" width="360" height="212" rx="16" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="368" y="262" width="404" height="16" rx="8" fill="var(--deemph)"/>
+    <g fill="var(--deemph)">
+      <rect x="422" y="90" width="240" height="16" rx="8"/>
+      <rect x="422" y="126" width="284" height="16" rx="8"/>
+      <rect x="422" y="162" width="180" height="16" rx="8"/>
+    </g>
+    <rect x="614" y="158" width="6" height="26" rx="3" fill="var(--s2)"/>
+  </svg>
+</section>
+
+<section lang="zh-TW">
+  <h2>而且不用上網。<br>整件事就在你的桌上發生。</h2>
+  <svg viewBox="0 0 800 320" role="img" aria-label="筆電和雲端之間的線被打上叉，聲音沒有離開這台電腦">
+    <path d="M296 78 a44 44 0 0 1 84 -20 a38 38 0 0 1 66 12 a40 40 0 0 1 8 78 L318 148 a36 36 0 0 1 -22 -70 z"
+          fill="var(--surface)" stroke="var(--deemph)" stroke-width="5"/>
+    <text class="s-lab" x="500" y="120">雲端</text>
+    <g stroke="var(--deemph)" stroke-width="5" stroke-dasharray="10 12" fill="none">
+      <path d="M380 152 L380 208"/>
+    </g>
+    <g stroke="var(--crit)" stroke-width="8" stroke-linecap="round">
+      <path d="M364 166 L396 198"/><path d="M396 166 L364 198"/>
+    </g>
+    <rect x="240" y="212" width="280" height="66" rx="14" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="222" y="282" width="316" height="14" rx="7" fill="var(--deemph)"/>
+    <text class="s-mid" x="380" y="253" text-anchor="middle">你的 Mac</text>
+    <text class="s-lab" x="562" y="253">聲音只到這裡</text>
+  </svg>
+</section>
+
+<section lang="en">
+  <h2>It never goes online.<br>The whole thing happens on your desk.</h2>
+  <svg viewBox="0 0 800 320" role="img" aria-label="The line between the laptop and the cloud is crossed out; the audio never leaves this computer">
+    <path d="M296 78 a44 44 0 0 1 84 -20 a38 38 0 0 1 66 12 a40 40 0 0 1 8 78 L318 148 a36 36 0 0 1 -22 -70 z"
+          fill="var(--surface)" stroke="var(--deemph)" stroke-width="5"/>
+    <text class="s-lab" x="500" y="120">The cloud</text>
+    <g stroke="var(--deemph)" stroke-width="5" stroke-dasharray="10 12" fill="none">
+      <path d="M380 152 L380 208"/>
+    </g>
+    <g stroke="var(--crit)" stroke-width="8" stroke-linecap="round">
+      <path d="M364 166 L396 198"/><path d="M396 166 L364 198"/>
+    </g>
+    <rect x="240" y="212" width="280" height="66" rx="14" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="222" y="282" width="316" height="14" rx="7" fill="var(--deemph)"/>
+    <text class="s-mid" x="380" y="253" text-anchor="middle">Your Mac</text>
+    <text class="s-lab" x="562" y="253">Voice stops here</text>
+  </svg>
+</section>
+
+<section lang="zh-TW">
+  <h2>只有一個麻煩：<br>它學中文的時候，學到的是簡體。</h2>
+  <svg viewBox="0 0 800 260" role="img" aria-label="你說影片，它打出簡體的视频">
+    <defs><marker id="a3" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="var(--axis)"/></marker></defs>
+    <text class="s-lab" x="60" y="46">你說</text>
+    <rect x="40" y="62" width="290" height="130" rx="26" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <path d="M96 192 L96 226 L134 192 z" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <text class="s-big" x="185" y="146" text-anchor="middle" fill="var(--s1)">影片</text>
+    <path d="M370 127 L440 127" stroke="var(--axis)" stroke-width="4" fill="none" marker-end="url(#a3)"/>
+    <text class="s-lab" x="480" y="46">它打</text>
+    <rect x="460" y="62" width="290" height="130" rx="26" fill="var(--nodebg)" stroke="var(--crit)" stroke-width="5"/>
+    <path d="M516 192 L516 226 L554 192 z" fill="var(--nodebg)" stroke="var(--crit)" stroke-width="5"/>
+    <text class="s-big" x="605" y="146" text-anchor="middle" fill="var(--crit)">视频</text>
+  </svg>
+  <p class="small">字是對的意思，但不是台灣人講話的樣子。</p>
+</section>
+
+<section lang="en">
+  <h2>One catch:<br>the Chinese it learned is simplified.</h2>
+  <svg viewBox="0 0 800 260" role="img" aria-label="You say the traditional word for video, it types the simplified one">
+    <defs><marker id="a3en" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="var(--axis)"/></marker></defs>
+    <text class="s-lab" x="60" y="46">You say</text>
+    <rect x="40" y="62" width="290" height="130" rx="26" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <path d="M96 192 L96 226 L134 192 z" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <text class="s-big" x="185" y="138" text-anchor="middle" fill="var(--s1)">影片</text>
+    <text class="s-lab" x="185" y="176" text-anchor="middle">traditional</text>
+    <path d="M370 127 L440 127" stroke="var(--axis)" stroke-width="4" fill="none" marker-end="url(#a3en)"/>
+    <text class="s-lab" x="480" y="46">It types</text>
+    <rect x="460" y="62" width="290" height="130" rx="26" fill="var(--nodebg)" stroke="var(--crit)" stroke-width="5"/>
+    <path d="M516 192 L516 226 L554 192 z" fill="var(--nodebg)" stroke="var(--crit)" stroke-width="5"/>
+    <text class="s-big" x="605" y="138" text-anchor="middle" fill="var(--crit)">视频</text>
+    <text class="s-lab" x="605" y="176" text-anchor="middle">simplified</text>
+  </svg>
+  <p class="small">The meaning is right. It is just not how people write in Taiwan.</p>
+</section>
+
+<section lang="zh-TW">
+  <h2>解法：<br>給它一張台灣話小抄。</h2>
+  <svg viewBox="0 0 800 320" role="img" aria-label="小抄有兩張，一張是台灣日常的示範文，一張是中國用語換成台灣用語的對照表">
+    <rect x="20" y="30" width="360" height="266" rx="20" fill="var(--surface)" stroke="var(--s1)" stroke-width="5"/>
+    <text class="s-mid" x="200" y="86" text-anchor="middle">一張示範文</text>
+    <g fill="var(--deemph)">
+      <rect x="62" y="120" width="276" height="14" rx="7"/>
+      <rect x="62" y="152" width="252" height="14" rx="7"/>
+      <rect x="62" y="184" width="276" height="14" rx="7"/>
+      <rect x="62" y="216" width="170" height="14" rx="7"/>
+    </g>
+    <text class="s-lab" x="200" y="268" text-anchor="middle">一段台灣人的日常話</text>
+
+    <rect x="420" y="30" width="360" height="266" rx="20" fill="var(--surface)" stroke="var(--s2)" stroke-width="5"/>
+    <text class="s-mid" x="600" y="86" text-anchor="middle">一張對照表</text>
+    <g class="s-lab" fill="var(--ink)" font-size="22">
+      <text x="470" y="140">視頻</text><text x="580" y="140" fill="var(--s2)">→</text><text x="640" y="140">影片</text>
+      <text x="470" y="186">軟件</text><text x="580" y="186" fill="var(--s2)">→</text><text x="640" y="186">軟體</text>
+      <text x="470" y="232">鼠標</text><text x="580" y="232" fill="var(--s2)">→</text><text x="640" y="232">滑鼠</text>
+    </g>
+    <text class="s-lab" x="600" y="272" text-anchor="middle">看到左邊就換成右邊</text>
+  </svg>
+  <p class="small">兩張都是複製、貼上、存檔。不用寫程式，也還是不用上網。</p>
+</section>
+
+<section lang="en">
+  <h2>The fix:<br>give it a Taiwan cheat sheet.</h2>
+  <svg viewBox="0 0 800 320" role="img" aria-label="Two cheat sheets: one a sample of everyday Taiwan writing, one a list that swaps mainland words for Taiwan words">
+    <rect x="20" y="30" width="360" height="266" rx="20" fill="var(--surface)" stroke="var(--s1)" stroke-width="5"/>
+    <text class="s-mid" x="200" y="86" text-anchor="middle">A sample paragraph</text>
+    <g fill="var(--deemph)">
+      <rect x="62" y="120" width="276" height="14" rx="7"/>
+      <rect x="62" y="152" width="252" height="14" rx="7"/>
+      <rect x="62" y="184" width="276" height="14" rx="7"/>
+      <rect x="62" y="216" width="170" height="14" rx="7"/>
+    </g>
+    <text class="s-lab" x="200" y="268" text-anchor="middle">Everyday Taiwan writing</text>
+
+    <rect x="420" y="30" width="360" height="266" rx="20" fill="var(--surface)" stroke="var(--s2)" stroke-width="5"/>
+    <text class="s-mid" x="600" y="86" text-anchor="middle">A swap list</text>
+    <g class="s-lab" fill="var(--ink)" font-size="22">
+      <text x="470" y="140">視頻</text><text x="580" y="140" fill="var(--s2)">→</text><text x="640" y="140">影片</text>
+      <text x="470" y="186">軟件</text><text x="580" y="186" fill="var(--s2)">→</text><text x="640" y="186">軟體</text>
+      <text x="470" y="232">鼠標</text><text x="580" y="232" fill="var(--s2)">→</text><text x="640" y="232">滑鼠</text>
+    </g>
+    <text class="s-lab" x="600" y="272" text-anchor="middle">See the left, write the right</text>
+  </svg>
+  <p class="small">Both are copy, paste, save. No code, and still no internet.</p>
+</section>
+
+<section lang="zh-TW">
+  <h2>貼完之後，<br>它就開始講台灣話。</h2>
+  <svg viewBox="0 0 800 250" role="img" aria-label="貼上小抄之後，螢幕上出現影片、軟體、滑鼠、資料夾">
+    <rect x="120" y="20" width="560" height="180" rx="18" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="98" y="204" width="604" height="16" rx="8" fill="var(--deemph)"/>
+    <g class="s-big" fill="var(--s1)" text-anchor="middle">
+      <text x="250" y="95">影片</text><text x="550" y="95">軟體</text>
+      <text x="250" y="168">滑鼠</text><text x="550" y="168">資料夾</text>
+    </g>
+  </svg>
+  <p class="small">不會百分之百完美——偶爾還是會漏一兩個簡體字，自己改掉就好。</p>
+</section>
+
+<section lang="en">
+  <h2>Paste those in,<br>and it starts writing like Taiwan.</h2>
+  <svg viewBox="0 0 800 250" role="img" aria-label="After the cheat sheets are pasted in, the screen shows the Taiwan forms of the words">
+    <rect x="120" y="20" width="560" height="180" rx="18" fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5"/>
+    <rect x="98" y="204" width="604" height="16" rx="8" fill="var(--deemph)"/>
+    <g class="s-big" fill="var(--s1)" text-anchor="middle">
+      <text x="250" y="95">影片</text><text x="550" y="95">軟體</text>
+      <text x="250" y="168">滑鼠</text><text x="550" y="168">資料夾</text>
+    </g>
+  </svg>
+  <p class="small">It will not be perfect. A simplified character slips through now and then, and you fix it by hand.</p>
+</section>
+
+</div>
+
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>

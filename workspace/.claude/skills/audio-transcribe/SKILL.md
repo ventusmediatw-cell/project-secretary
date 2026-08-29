@@ -204,6 +204,6 @@ Hand that path to your **file-reading tool** — not a shell command. The name i
 | File | What it is | Read it when |
 |---|---|---|
 | **`references/QA.md`** | Every trap we hit, in the words people used when they hit it, with the reason underneath | Something behaves oddly — before you start debugging, and on first setup |
-| **`human/`** | Two pages for the person rather than for you, in Traditional Chinese: why the agent cannot hear, and how a recording becomes text | They want the shape at a glance, or you are explaining what this is |
+| **`human/`** | Two pages for the person rather than for you — Chinese and English in one file, with a ZH/EN toggle: why the agent cannot hear, and how a recording becomes text | They want the shape at a glance, or you are explaining what this is |
 
 **If something on this machine disagrees with this file, the machine is right.** Say so before you act on it, then follow `UPDATING.md` §7.

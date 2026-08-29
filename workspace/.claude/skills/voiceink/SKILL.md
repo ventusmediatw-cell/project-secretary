@@ -177,6 +177,6 @@ If a test fails and `references/QA.md` does not explain it, open an issue with: 
 | File | What it is | Read it when |
 |---|---|---|
 | **`references/QA.md`** | Symptom → cause → fix for the things that actually went wrong | Something behaves oddly, or a verification says "nothing found" |
-| **`human/`** | Two explainer pages for the person, in Traditional Chinese — a one-minute diagram and an ELI5 version of why this works. They explain; the payload to paste lives above, not in there | They ask what this is all for, or you want them to understand it before the pasting starts |
+| **`human/`** | Two explainer pages for the person — Chinese and English in one file, with a ZH/EN toggle: a one-minute diagram and an ELI5 version of why this works. They explain; the payload to paste lives above, not in there | They ask what this is all for, or you want them to understand it before the pasting starts |
 
 The UI positions in this file are based on VoiceInk v1.79 (released 2026-05-23). If the app in front of you disagrees, the app is right — say so before you act on it.

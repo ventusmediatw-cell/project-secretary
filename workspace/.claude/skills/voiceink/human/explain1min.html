@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>讓 Mac 聽寫講台灣話</title>
+<title>讓 Mac 聽寫講台灣話 · Mac Dictation in Taiwan Chinese</title>
 <style>
 :root{
  --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
@@ -20,7 +20,7 @@
 body{margin:0;background:var(--plane);color:var(--ink);
  font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
 .wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
-section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child{border:0}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child,section:nth-last-child(2){border:0}
 h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
 h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
 .sub{font-size:16px;color:var(--muted);margin:0 0 20px}
@@ -43,17 +43,30 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
 .box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
 .box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
 </style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
 
 <div class="wrap">
 
-<section>
+<section lang="zh-TW">
   <span class="tag">VoiceInk · 語音輸入</span>
   <h1>讓 Mac 聽寫<br>講台灣話</h1>
   <p class="lede">一句話：<b style="color:var(--ink)">你講話，Whisper 在你的 Mac 上把它變成字（不上網）；出來的字偏簡體與中國用語，所以要貼兩件套把它掰回台灣話。</b><br>下面三張圖就是全部的機制。</p>
 </section>
 
-<section>
+<section lang="en">
+  <span class="tag">VoiceInk · Dictation</span>
+  <h1>Make your Mac<br>type Taiwan Chinese</h1>
+  <p class="lede">In one line: <b style="color:var(--ink)">you speak, Whisper turns it into text on your Mac (nothing goes online); the text leans simplified and mainland-style, so you paste in two pieces to pull it back to Taiwan Chinese.</b><br>The three diagrams below are the whole mechanism.</p>
+</section>
+
+<section lang="zh-TW">
   <h2>圖一 · 兩件套怎麼把字掰回來</h2>
   <p class="sub">示範文在轉字「之前」讀，字典在轉字「之後」換</p>
   <figure>
@@ -112,7 +125,66 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   <div class="note"><b>為什麼要兩件一起貼</b><p>示範文負責把整體拉到繁體字形，字典才抓得到；只貼字典，簡體那條路直接漏網。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 1 · How the two pieces pull the text back</h2>
+  <p class="sub">The sample text is read before transcription; the dictionary swaps words after it</p>
+  <figure>
+    <figcaption>Blue = action　Orange = decision　Red = dead end</figcaption>
+    <svg viewBox="0 0 760 460" role="img" aria-label="Flow from speech to text: local Whisper reads the sample text first and then transcribes; if the output is in traditional characters the dictionary swaps each word into Taiwan wording; if it comes out simplified the dictionary finds no match and the word slips through">
+      <defs><marker id="ar1e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR1e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1e)">
+        <path d="M300 62 L300 92"/>
+        <path d="M300 154 L300 184"/>
+        <path d="M300 250 L300 288"/>
+        <path d="M300 350 L300 382"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR1e)" stroke-dasharray="6 5">
+        <path d="M432 219 L620 219 L620 286"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="120" y="18" width="360" height="44" rx="9"/>
+        <rect x="120" y="92" width="360" height="62" rx="9"/>
+        <rect x="120" y="288" width="360" height="62" rx="9"/>
+        <rect x="120" y="382" width="360" height="44" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 184 L432 219 L300 250 L168 219 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="520" y="286" width="230" height="62" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="45">You speak to your Mac</text>
+        <text class="n-lab" x="300" y="117">Whisper transcribes on your Mac</text>
+        <text class="n-sub" x="300" y="139">It reads the sample text first; prose, not a command</text>
+        <text class="n-lab" x="300" y="224">Are the characters traditional?</text>
+        <text class="n-lab" x="300" y="313">The dictionary swaps in Taiwan wording</text>
+        <text class="n-sub" x="300" y="335">視頻 → 影片, 軟件 → 軟體, 39 pairs</text>
+        <text class="n-lab" x="300" y="410">Taiwan Chinese lands at your cursor</text>
+        <text class="n-lab" x="635" y="311" fill="var(--crit)">That word slips through</text>
+        <text class="n-sub" x="635" y="333">Wrong character form, no match</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="316" y="276">Yes</text>
+        <text x="524" y="211">No — 视频 comes out simplified</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Action</span>
+      <span><i style="background:var(--s2)"></i>Decision</span>
+      <span><i style="background:var(--crit)"></i>Dead end</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why you paste both</b><p>The sample text pulls the whole output into traditional characters, which is the only way the dictionary can match. Paste the dictionary alone and the simplified path slips straight through.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>圖二 · 要不要再請一個本機 AI</h2>
   <p class="sub">三條建議路線都在你的 Mac 上跑完，差別只在品質、速度、安裝門檻</p>
   <figure>
@@ -181,7 +253,76 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   <div class="note"><b>怎麼選</b><p>夠用就停在路線一；要最好的品質、也願意每句多等一下本機 AI，才裝 Ollama。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 2 · Do you also need a local AI?</h2>
+  <p class="sub">All three recommended routes finish on your Mac; they differ only in quality, speed, and setup effort</p>
+  <figure>
+    <figcaption>Blue = action / endpoint　Orange = decision　Red = content leaves this Mac</figcaption>
+    <svg viewBox="0 0 760 440" role="img" aria-label="Decision diagram: if the two pieces are good enough you stop at Route 1; if not, turn on AI Enhancement and pick a provider — local Ollama is Route 2, Local CLI with opencc is Route 3, and picking a cloud provider sends your text off the Mac">
+      <defs><marker id="ar2e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR2e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2e)">
+        <path d="M300 58 L300 86"/>
+        <path d="M430 116 L516 116"/>
+        <path d="M300 146 L300 176"/>
+        <path d="M300 226 L300 252"/>
+        <path d="M170 286 L60 286 L60 336"/>
+        <path d="M300 318 L300 350"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR2e)" stroke-dasharray="6 5">
+        <path d="M430 286 L640 286 L640 336"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="140" y="14" width="320" height="44" rx="9"/>
+        <rect x="120" y="176" width="360" height="50" rx="9"/>
+        <rect x="518" y="88" width="232" height="58" rx="9"/>
+        <rect x="8" y="336" width="232" height="64" rx="9"/>
+        <rect x="258" y="350" width="248" height="64" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 86 L430 116 L300 146 L170 116 z"/>
+        <path d="M300 252 L430 286 L300 318 L170 286 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="522" y="336" width="228" height="64" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="41">Sample text and dictionary in place</text>
+        <text class="n-lab" x="300" y="121">Is the output clean enough?</text>
+        <text class="n-lab" x="300" y="206">Turn on AI Enhancement, pick a provider</text>
+        <text class="n-lab" x="300" y="291">Which provider?</text>
+        <text class="n-lab" x="634" y="112">Route 1: settings only</text>
+        <text class="n-sub" x="634" y="134">Fastest; where most people stop</text>
+        <text class="n-lab" x="124" y="362">Route 2: local Ollama</text>
+        <text class="n-sub" x="124" y="384">Best quality, a short wait per line</text>
+        <text class="n-lab" x="382" y="376">Route 3: opencc s2twp</text>
+        <text class="n-sub" x="382" y="398">Fixed and light; characters and words only</text>
+        <text class="n-lab" x="636" y="362" fill="var(--crit)">Cloud enhancement</text>
+        <text class="n-sub" x="636" y="384">Text leaves your Mac. Not advised.</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="472" y="108">Yes</text>
+        <text x="316" y="168">No</text>
+        <text x="112" y="278">Local Ollama</text>
+        <text x="340" y="340">Local CLI</text>
+        <text x="500" y="278">Cloud service</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Action / endpoint</span>
+      <span><i style="background:var(--s2)"></i>Decision</span>
+      <span><i style="background:var(--crit)"></i>Content leaves the Mac</span>
+    </div>
+  </figure>
+  <div class="note"><b>How to choose</b><p>If it is good enough, stop at Route 1. Install Ollama only when you want the best quality and accept a short wait on every line.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>圖三 · 中英夾雜的陷阱</h2>
   <p class="sub">示範文的引導力強到會把整句英文翻成中文</p>
   <figure>
@@ -233,7 +374,59 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   <div class="note"><b>實測</b><p>唸「I think this application is very elegant」，語言鎖定中文時輸出的是「我覺得這個應用程式很優雅。」；同一段錄音改 Auto-detect 就保留英文（實測記錄日期 2026-06-27）。改 Auto-detect 是緩解、不是根治——要根治就把繁體化整個交給路線二的本機 Ollama。</p></div>
 </section>
 
-<section>
+<section lang="en">
+  <h2>Diagram 3 · The trap when you mix in English</h2>
+  <p class="sub">The sample text steers so hard that a whole English sentence comes back in Chinese</p>
+  <figure>
+    <figcaption>Blue = action　Orange = decision　Red = dead end</figcaption>
+    <svg viewBox="0 0 760 300" role="img" aria-label="Decision diagram: when you say a whole sentence in English, locking the language to Chinese gets the English translated into Chinese; setting it to Auto-detect keeps the English as spoken">
+      <defs><marker id="ar3e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR3e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3e)">
+        <path d="M300 58 L300 88"/>
+        <path d="M300 150 L300 186"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR3e)" stroke-dasharray="6 5">
+        <path d="M432 119 L636 119 L636 152"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="140" y="14" width="320" height="44" rx="9"/>
+        <rect x="120" y="186" width="360" height="62" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 88 L432 119 L300 150 L168 119 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="518" y="152" width="232" height="62" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="41">You say a whole sentence in English</text>
+        <text class="n-lab" x="300" y="124">What is the Language setting?</text>
+        <text class="n-lab" x="300" y="211">English mostly stays as English</text>
+        <text class="n-sub" x="300" y="233">Chinese still takes the sample text and dictionary path</text>
+        <text class="n-lab" x="634" y="177" fill="var(--crit)">The line comes back in Chinese</text>
+        <text class="n-sub" x="634" y="199">「我覺得這個應用程式很優雅。」</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="330" y="176">Auto-detect</text>
+        <text x="520" y="111">Locked to Chinese</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Action</span>
+      <span><i style="background:var(--s2)"></i>Decision</span>
+      <span><i style="background:var(--crit)"></i>Dead end</span>
+    </div>
+  </figure>
+  <div class="note"><b>Measured</b><p>Say “I think this application is very elegant” with the language locked to Chinese and what lands is 「我覺得這個應用程式很優雅。」 — the Chinese translation. The same recording under Auto-detect keeps the English (tested 2026-06-27). Auto-detect eases the symptom rather than fixing it; the real fix is to hand the whole traditional-character job to the local Ollama in Route 2.</p></div>
+</section>
+
+<section lang="zh-TW">
   <h2>三個要先知道的事</h2>
   <div class="two">
     <div class="box"><b>順序不能反</b>
@@ -254,4 +447,29 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   </div>
 </section>
 
+<section lang="en">
+  <h2>Three things to know first</h2>
+  <div class="two">
+    <div class="box"><b>The order cannot be reversed</b>
+      <ul>
+        <li>The sample text is a sample, not a command. Writing “please output traditional Chinese” inside it does nothing.</li>
+        <li>It is read before transcription; the dictionary only swaps words afterwards.</li>
+      </ul></div>
+    <div class="box"><b>A fair expectation: mostly traditional is enough</b>
+      <ul>
+        <li>Nearly all output is Taiwan Chinese. One or two simplified characters slipping through is normal.</li>
+        <li>The settings tune the model; they do not swap in a different brain.</li>
+      </ul></div>
+    <div class="box"><b>What this pipeline does not do</b>
+      <ul>
+        <li>No translation: English coming back as Chinese is a side effect, not a feature.</li>
+        <li>No going online by itself: all three recommended routes stay offline. The only thing that sends text off the Mac is cloud enhancement, and it is off by default (audit, 2026-06).</li>
+      </ul></div>
+  </div>
+</section>
+
 </div>
+
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>
