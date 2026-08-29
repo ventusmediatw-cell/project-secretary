@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-08-29",
-  "generated_from_commit": "f1b096b753e263d05c30989e57e6585f58007c09",
+  "generated_from_commit": "8767cca45487f2950e13e12b664a3a30fc02c2ee",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 12,
   "versioning": {
@@ -176,31 +176,6 @@
       "notes": "No knowledge-base/scripts/ directory ships at all — the seven scripts above are invoked by SKILL.md and none of them exist. The two _TEMPLATE.md files are named in the paths table at the end of SKILL.md; their directories ship containing only a .gitkeep. knowledge-base/refs/ does not exist. Any step that calls these cannot run as written. Do not write substitutes during an update — tell the person the step is unavailable and let them decide. This is the largest gap in the repository; it is known, not newly discovered by you."
     },
     {
-      "name": "meta-skill",
-      "version": "ad422b8",
-      "updated": "2026-06-30",
-      "auto_invocable": true,
-      "files": [
-        {
-          "path": "SKILL.md",
-          "lines": 208,
-          "sha": "2d4d9bf41d93410ce811aa6939718302bac405a0"
-        },
-        {
-          "path": "references/build-checklist.md",
-          "lines": 281,
-          "sha": "02d1a83e5dd7ab184f49e47fe84d7b951671aae7"
-        }
-      ],
-      "requires": [
-        "The upstream-scan step assumes a harness that can search a plugin marketplace or an MCP registry. Without one, do the scan by hand and say that you did."
-      ],
-      "referenced_but_not_present": [
-        "references/audit-checklist.md (SKILL.md line 128; that line already says the inline summary is the executable version, so the audit still runs)"
-      ],
-      "notes": "One of only two skills here with a references/ subdirectory; build-checklist.md is the only file in it. If a clone has files under meta-skill/ that are not listed above, do not assume they are local additions — check whether this manifest is simply stale first (see versioning.unlisted_files_on_disk). Either way: surface them, do not delete them."
-    },
-    {
       "name": "plan-discuss",
       "version": "ad422b8",
       "updated": "2026-06-30",
@@ -264,6 +239,84 @@
         "extras/claude-code/scripts/impact_check.sh (as written, relative to workspace/) — refs/index-mgmt-sop.md lines 153 and 178 give it repo-root-relative, and extras/ ships one level above workspace/, so it does not resolve from a session started inside workspace/. Same shape as the wrap-up entry below. The script itself does ship; the step is explicitly optional."
       ],
       "notes": "This is the skill the whole system loads from. It is also the one whose setup wizard rewrites the two tracked files listed under locally_modified_by_design. Treat any difference here as high-consequence: confirm with the person before changing anything."
+    },
+    {
+      "name": "skill-ops",
+      "version": "8767cca",
+      "updated": "2026-08-29",
+      "auto_invocable": true,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "lines": 247,
+          "sha": "c9a8e7f012be26dbe0bcdedf40a81bc5c61a6368"
+        },
+        {
+          "path": "references/mining-checklist.md",
+          "lines": 111,
+          "sha": "453b6d4b28218d0463a6cb6205193a18937179d3"
+        },
+        {
+          "path": "references/build-checklist.md",
+          "lines": 327,
+          "sha": "e68c2cccc762d64c292ef300f4eede567170c943"
+        },
+        {
+          "path": "references/audit-checklist.md",
+          "lines": 138,
+          "sha": "1b0e7a99df2ddd3b466d83d7ea1429bd4d98f29f"
+        },
+        {
+          "path": "references/refresh-checklist.md",
+          "lines": 134,
+          "sha": "94c9c433b959da335b6664f4a8266e5a19199543"
+        },
+        {
+          "path": "references/QA.md",
+          "lines": 51,
+          "sha": "d8997612cb74d29858352e465b825a5d075e8623"
+        },
+        {
+          "path": "templates/anatomy-checklist.md",
+          "lines": 91,
+          "sha": "09e808cd3bc981013dca8b3c43cdc0503f06ba30"
+        },
+        {
+          "path": "templates/audit-report.md",
+          "lines": 80,
+          "sha": "455af949ff0125a51f654c15e2de25a8d5f20b76"
+        },
+        {
+          "path": "templates/shortlist-format.md",
+          "lines": 50,
+          "sha": "0a20ddaa916acf9118c6d2b17df72cd8cdbed04e"
+        },
+        {
+          "path": "scripts/check_entry_superset.py",
+          "lines": 81,
+          "sha": "5bdac98a5bd60f57efd05cd491a178d33d8c63f1"
+        },
+        {
+          "path": "human/eli5.html",
+          "lines": 138,
+          "sha": "d8ad35656dec5bca5ba7785227f0d9395b591b98"
+        },
+        {
+          "path": "human/explain1min.html",
+          "lines": 313,
+          "sha": "760909e0d6a6f8dbc70d98d8cd8fa486e997d1f6"
+        }
+      ],
+      "requires": [
+        "Nothing to install: plain markdown, one optional python3 script, and one optional SessionStart hook that ships at extras/claude-code/scripts/startup_skillops_nudge.sh (install steps in that directory's README).",
+        "The upstream-scan steps assume a harness with web search / marketplace lookup; without one, scan by hand and say that you did (same caveat the old meta-skill carried).",
+        "The sweep's trigger-frequency metric reads Claude Code transcripts under ~/.claude/projects/; on other harnesses substitute your own usage evidence and say which."
+      ],
+      "referenced_but_not_present": [],
+      "notes": "Replaces meta-skill: its build/audit flows are absorbed as routes 2-4 of a single entry point, alongside candidate-mining and a quantified portfolio sweep; the two old meta-skill files are removed in the same change. Clones made before this date lose workspace/.claude/skills/meta-skill/ on the next pull; that is expected - see UPDATING.md section 4. Body is Traditional Chinese by design: LLMs match intent across languages, so English requests still trigger it (references/QA.md Q6 records the ruling). scripts/check_entry_superset.py should exit 0 in a fresh clone - any reported violation means drift; see QA.md Q5. human/ holds two bilingual (ZH/EN toggle, light/dark) visual explainers rendered with this repository's own eli5 and explain1min skills. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md's Skills Index swaps its meta-skill row for a skill-ops row upstream, and workspace/SETUP-GUIDE.md's file tree changes too; CLAUDE.md is listed under locally_modified_by_design, so this WILL collide with a person's own edits - follow UPDATING.md section 5, never overwrite their file.",
+      "ships_scripts": [
+        "extras/claude-code/scripts/startup_skillops_nudge.sh"
+      ]
     },
     {
       "name": "tool-scout",
