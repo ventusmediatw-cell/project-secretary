@@ -122,7 +122,10 @@ BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" = "429" ]; then
   echo "Rate limited (429). The free tier allows about 2 hours of audio per hour."
-  echo "Nothing is broken. Wait 60 seconds and run the same command again."
+  echo "The response below names its own wait ('try again in Ns') — trust that"
+  echo "number. When we measured this (2026-08) the real wait was about four"
+  echo "minutes; 60 seconds was never enough. Wait what it asks, then run the"
+  echo "same command again. Nothing is broken."
   echo ""
   echo "$BODY"
   exit 1

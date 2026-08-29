@@ -161,7 +161,8 @@ def call_model(mp3_path, prompt, key, max_tokens=65536):
             return txt, (f"finishReason={fr}" if fr and fr != "STOP" else None)
         if r.status_code == 429 or "RESOURCE_EXHAUSTED" in r.text:
             wait = 10 * (attempt + 1)
-            last = "429 rate limited"
+            last = ("429 rate limited (if every retry hit this, it is likely a daily "
+                    "free-tier cap that backoff cannot clear — try tomorrow, or a different key)")
             print(f"  rate limited, waiting {wait}s...", file=sys.stderr)
             time.sleep(wait)
             continue

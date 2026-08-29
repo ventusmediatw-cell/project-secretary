@@ -15,6 +15,29 @@ If someone drops a recording into the chat, you will not get an error. At worst 
 
 ---
 
+## How many people are talking?
+
+Ask this before you run anything, because the answer decides whether this pipeline is the right tool at all.
+
+A recording with one voice — a note to self, a dictated draft, a lecture — is what this is built for. A recording with several voices is not. A two-hour meeting comes back as two thousand lines of undivided text that never say who was speaking, and no amount of reading fixes that afterwards.
+
+**The `en` / `zh` route does not tell speakers apart.** No speaker labels, no turn boundaries, no tone. That is what the model behind it does — plain speech to plain text — not a setting somebody forgot to switch on. Say that plainly rather than handing over the wall of text and letting the person discover it.
+
+**When you cannot tell how many people are in it**, the filename will not save you: a file named after one person turned out to be a three-person meeting. Run the cheap route once as a *speaker-count probe* — a few minutes of audio costs seconds. What you are reading for:
+
+- pronouns switching between "you" and "we"
+- question-and-answer turn taking
+- politeness formulas — thanks, no problem, go ahead
+- two or more distinct speaking styles
+
+**Read the probe for its shape, not its content.** The same rough text that tells you there are three people has also mangled the company names and the numbers — that mangling is the reason you are changing route, not a detail to work around.
+
+**If who-said-what matters, the honest route is a model that can genuinely listen** to the audio, followed by checking every name and number one at a time against something outside the recording. The `km` route here does send the audio to such a model — but it labels speakers on some runs and not on others (see below), which is not something anyone can stand behind. **Neither route in this repo gives you attribution you can defend.** Sending someone away with that sentence is a better outcome than a transcript nobody can attribute.
+
+One thing not to decide on your own: **do not transcribe half of it** because the first stretch sounds like a low-value monologue. Reactions, interruptions and the numbers people say in passing tend to live exactly there. Narrowing the scope is the person's call, not the transcriber's.
+
+---
+
 ## The command
 
 ```sh
@@ -75,9 +98,30 @@ Keep `.MOV` in mind as a *trigger*, not as a supported input: when someone hands
 
 ### First time on this machine
 
-`tools/transcribe.sh` needs an API key and will tell you so, with the exact command, if one is missing. Do not go looking for the key or ask the person to paste it to you — **`INSTALL.md` in this folder explains why the key must never pass through this conversation**. `tools/setup-api-key.sh` is how it gets in: **give the person that command and let them run it themselves, at their own terminal.** It opens no window and there is nothing for you to wait for — it reads the key with the screen blank, prints back a length and the last four characters, and the person tells you when it is done.
+`tools/transcribe.sh` needs an API key and will tell you so, with the exact command, if one is missing. Do not go looking for the key or ask the person to paste it to you — **`references/QA.md` explains why the key must never pass through this conversation, and why running the setup script inside a tool call of your own does not work either**. `tools/setup-api-key.sh` is how it gets in: **give the person that command and let them run it themselves, at their own terminal.** It opens no window and there is nothing for you to wait for — it reads the key with the screen blank, prints back a length and the last four characters, and the person tells you when it is done.
 
-For `km` there are three prerequisites beyond the key: `ffmpeg` and `ffprobe` (`brew install ffmpeg` gives both) and the Python package `requests` (`pip3 install requests`). A recording under 25 MB on the `en` / `zh` route needs none of them — which is why a machine set up and tested on English looks finished and then stops on the first Khmer file. `INSTALL.md` §4 has the whole sequence.
+For `km` there are three prerequisites beyond the key: `ffmpeg` and `ffprobe` (`brew install ffmpeg` gives both) and the Python package `requests` (`pip3 install requests`). A recording under 25 MB on the `en` / `zh` route needs none of them — which is why a machine set up and tested on English looks finished and then stops on the first Khmer file. `references/QA.md` has the whole sequence, and the four things to say out loud before you install anything.
+
+---
+
+## Khmer output is not deterministic. English is.
+
+Same file, same command, same session, run again:
+
+| Route | What a re-run gives you | Measured |
+|---|---|---|
+| **`km`** (multimodal) | **A different transcript.** Not a check of the first one — a second document | Four plain runs of one recording produced three readings of the same phrase (`ត្រី ចៀន` fried fish / `សាច់ ជៀន` fried meat / `តែ គុជ` pearl tea); one pair of Khmer words swapped places with each other between runs; speaker labels appeared on every turn in some runs and nowhere at all in others |
+| **`en`** (Groq Whisper) | **Byte-identical.** | Three consecutive plain runs came back the same, down to the same two misspellings of one name in the same two places |
+
+Measured 2026-08-13, on the same Khmer recordings as the `--prompt` table above.
+
+Three consequences, and they are the reason this section exists:
+
+1. **You cannot verify a Khmer transcript by re-running it and comparing.** The comparison has no fixed point. Tell the person this *before* the recording matters — a client meeting, anything with prices in it — not after somebody disputes a line.
+2. **One run is not evidence, and a single A/B on `km` proves nothing.** `--prompt` on versus off, one model versus another: two runs differ anyway. Only a difference that survives repeated runs at the same settings is real.
+3. **The glossary matters more here, not less.** "I checked the names" describes one run. The correction table above the text is the only part that carries.
+
+The argument in **Never edit the transcript body** that you keep the body so you can re-check it later against a better model holds for `en`. On `km` there is no fixed original to re-check against — which makes the audio file itself the only thing you can go back to.
 
 ---
 
@@ -111,14 +155,47 @@ The table also flags a name spelled **both ways in the same transcript**. That i
 If something needs correcting, put a table above it — the same shape the glossary writes:
 
 ```markdown
-| Heard as | Should be |
-|---|---|
-| <what the transcript says> | <the correct term> |
+| Heard as | Should be | Status |
+|---|---|---|
+| <what the transcript says> | <the correct term> | ✅ verified by <person>, <date> |
+| <what the transcript says> | <your best guess>? | ⏳ pending |
+| <what the transcript says> | — | ⏸ deliberately left |
 ```
 
 Editing the body destroys the only record of what was actually heard. After that you cannot tell an accurate transcription from a confident guess, and you cannot re-check it later against a better model.
 
+**The three statuses are not decoration, and they are not interchangeable:**
+
+- **`✅` goes on only after that person has actually answered that row.** Filling it in because the correction looks obvious to you is fabrication — it turns your guess into their confirmation, and nobody downstream can tell the difference. Until they reply, the row stays `⏳`.
+- **`⏸` has to be separate from `⏳`.** "They looked at it and decided to leave it" and "nobody has looked yet" are different facts, and collapsing them means the next session asks again about something already settled.
+- **Note the line-number shift.** Inserting this block pushes every line of the body down by however many lines you added, so the line numbers inside the table stop pointing at what they describe. Write the shift into the block's own header — *line numbers are from the original transcript; this block added N lines* — or every reference in it quietly aims at the wrong passage.
+
 **The corrections are for what you build next**, not for the transcript. The recap, the reply, the document that leaves the building — those use the corrected names. The transcript keeps saying what the model said.
+
+---
+
+## Before you say it works
+
+Reading the scripts and finding them sensible is not evidence. There are three honest statuses: **PASS with pasted output**, **FAIL with pasted output**, **NOT RUN**.
+
+**1. The round trip, on a sentence whose answer you already know.** Ask the person for about ten seconds in the target language containing **one name and one number**. Run the command. Compare word by word against what they said they said. This is the only check that separates *the API answered* from *the API answered correctly* — a confident wrong transcript exits zero exactly like a right one.
+
+*`km` exception:* compare meaning, not wording. Re-running gives different words on that route (see above), so a Khmer round trip shows the route works, never that it repeats.
+
+**2. The negative control — prove you cannot hear.** This is the one check that is supposed to come back empty:
+
+```sh
+mkdir -p "${TMPDIR:-/tmp}/transcribe-verify"
+say -o "${TMPDIR:-/tmp}/transcribe-verify/2026-01-01-quarterly-budget-meeting.m4a" \
+    --data-format=aac "Purple elephant seventeen. Purple elephant seventeen."
+```
+
+Hand that path to your **file-reading tool** — not a shell command. The name is bait for guessing; the phrase is nonsense so no model can produce it from context. Not on macOS? Record five seconds yourself and give the file a name with nothing to do with what you said.
+
+**PASS** — a refusal, and nothing resembling speech comes back. *Purple elephant seventeen* must not appear anywhere in your answer.
+**FAIL** — anything about a budget, a quarter, or a January meeting. None of that is in the audio. That is the invention at the top of this file, now demonstrated on your own machine. Falling back to `strings` and reporting the container header is the same failure in a technical costume.
+
+**If a check fails**: say the mismatch *before* you act on it, assume your machine is right and this file is stale, then open a GitHub issue with the exact command and its real output pasted in — the text, not a description of it. Issues need no special access. **Do not open a pull request and do not try to push**; see `UPDATING.md` §7.
 
 ---
 
@@ -126,9 +203,7 @@ Editing the body destroys the only record of what was actually heard. After that
 
 | File | What it is | Read it when |
 |---|---|---|
-| **`INSTALL.md`** | Why this is built the way it is, what we broke getting here, and how to set it up | Before changing anything, and on first setup |
-| **`QA.md`** | Questions people actually asked, and what turned out to be wrong | Something behaves oddly — check here before debugging |
-| **`FLOW.md`** | Diagrams: how setup runs, how a recording becomes text | You want the shape at a glance |
-| **`VERIFY.md`** | Checks that produce evidence rather than claims | Before telling anyone this works |
+| **`references/QA.md`** | Every trap we hit, in the words people used when they hit it, with the reason underneath | Something behaves oddly — before you start debugging, and on first setup |
+| **`human/`** | Two pages for the person rather than for you, in Traditional Chinese: why the agent cannot hear, and how a recording becomes text | They want the shape at a glance, or you are explaining what this is |
 
-**If something on this machine disagrees with this file, the machine is right.** Say so before you act on it, then follow the instructions at the end of `INSTALL.md`.
+**If something on this machine disagrees with this file, the machine is right.** Say so before you act on it, then follow `UPDATING.md` §7.

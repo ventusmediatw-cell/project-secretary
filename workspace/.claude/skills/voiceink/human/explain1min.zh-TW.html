@@ -1,0 +1,257 @@
+<meta charset="utf-8">
+<title>讓 Mac 聽寫講台灣話</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#d5d4cd;
+ --warn:#fab219;--crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child{border:0}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
+.sub{font-size:16px;color:var(--muted);margin:0 0 20px}
+p{font-size:17px;color:var(--ink2);margin:0 0 10px}
+.lede{font-size:clamp(18px,2.7vw,22px);color:var(--ink2)}
+.tag{font-size:13px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:18px;display:block}
+figure{margin:20px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 16px 16px;overflow-x:auto}
+figure svg{min-width:620px}
+figcaption{font-size:15px;color:var(--ink2);margin-bottom:14px;font-weight:600}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.n-lab{font-size:14px;fill:var(--ink)}
+.n-sub{font-size:12px;fill:var(--muted)}
+.e-lab{font-size:12px;fill:var(--muted)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.note{border-left:3px solid var(--warn);padding-left:16px;margin-top:20px}
+.note b{font-size:14px;letter-spacing:.06em;color:var(--warn)}
+.note p{color:var(--ink);font-size:17px;margin:5px 0 0}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
+.box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+</style>
+
+<div class="wrap">
+
+<section>
+  <span class="tag">VoiceInk · 語音輸入</span>
+  <h1>讓 Mac 聽寫<br>講台灣話</h1>
+  <p class="lede">一句話：<b style="color:var(--ink)">你講話，Whisper 在你的 Mac 上把它變成字（不上網）；出來的字偏簡體與中國用語，所以要貼兩件套把它掰回台灣話。</b><br>下面三張圖就是全部的機制。</p>
+</section>
+
+<section>
+  <h2>圖一 · 兩件套怎麼把字掰回來</h2>
+  <p class="sub">示範文在轉字「之前」讀，字典在轉字「之後」換</p>
+  <figure>
+    <figcaption>藍＝做事　橘＝要判斷　紅＝到此為止</figcaption>
+    <svg viewBox="0 0 760 460" role="img" aria-label="從講話到出字的流程：本機 Whisper 先讀示範文再轉字，若輸出是繁體字形則由字典逐詞替換成台灣用語，若直接吐簡體則字典比對不中、該詞漏網">
+      <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1)">
+        <path d="M300 62 L300 92"/>
+        <path d="M300 154 L300 184"/>
+        <path d="M300 250 L300 288"/>
+        <path d="M300 350 L300 382"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR1)" stroke-dasharray="6 5">
+        <path d="M432 219 L620 219 L620 286"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="120" y="18" width="360" height="44" rx="9"/>
+        <rect x="120" y="92" width="360" height="62" rx="9"/>
+        <rect x="120" y="288" width="360" height="62" rx="9"/>
+        <rect x="120" y="382" width="360" height="44" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 184 L432 219 L300 250 L168 219 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="520" y="286" width="230" height="62" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="45">你對著 Mac 講話</text>
+        <text class="n-lab" x="300" y="117">本機 Whisper 先讀示範文再轉字</text>
+        <text class="n-sub" x="300" y="139">示範文＝一段台灣日常敘述，不是指令</text>
+        <text class="n-lab" x="300" y="224">吐出來的是繁體字形嗎？</text>
+        <text class="n-lab" x="300" y="313">字典逐詞替換成台灣用語</text>
+        <text class="n-sub" x="300" y="335">視頻→影片、軟件→軟體，共 39 組</text>
+        <text class="n-lab" x="300" y="410">台灣話出現在游標處</text>
+        <text class="n-lab" x="635" y="311" fill="var(--crit)">這個詞漏網</text>
+        <text class="n-sub" x="635" y="333">字形不同、字典比對不中</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="316" y="276">是</text>
+        <text x="524" y="211">否，直接吐簡體「视频」</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事</span>
+      <span><i style="background:var(--s2)"></i>判斷</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+    </div>
+  </figure>
+  <div class="note"><b>為什麼要兩件一起貼</b><p>示範文負責把整體拉到繁體字形，字典才抓得到；只貼字典，簡體那條路直接漏網。</p></div>
+</section>
+
+<section>
+  <h2>圖二 · 要不要再請一個本機 AI</h2>
+  <p class="sub">三條建議路線都在你的 Mac 上跑完，差別只在品質、速度、安裝門檻</p>
+  <figure>
+    <figcaption>藍＝做事／終點　橘＝要判斷　紅＝內容離開這台 Mac</figcaption>
+    <svg viewBox="0 0 760 440" role="img" aria-label="決策圖：兩件套夠用就停在路線一；不夠用則開啟 AI Enhancement 並選 provider，本機 Ollama 是路線二、Local CLI 掛 opencc 是路線三，選雲端則內容會離開 Mac">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2)">
+        <path d="M300 58 L300 86"/>
+        <path d="M430 116 L516 116"/>
+        <path d="M300 146 L300 176"/>
+        <path d="M300 226 L300 252"/>
+        <path d="M170 286 L60 286 L60 336"/>
+        <path d="M300 318 L300 350"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR2)" stroke-dasharray="6 5">
+        <path d="M430 286 L640 286 L640 336"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="140" y="14" width="320" height="44" rx="9"/>
+        <rect x="120" y="176" width="360" height="50" rx="9"/>
+        <rect x="518" y="88" width="232" height="58" rx="9"/>
+        <rect x="8" y="336" width="232" height="64" rx="9"/>
+        <rect x="258" y="350" width="248" height="64" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 86 L430 116 L300 146 L170 116 z"/>
+        <path d="M300 252 L430 286 L300 318 L170 286 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="522" y="336" width="228" height="64" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="41">示範文＋字典已經貼齊</text>
+        <text class="n-lab" x="300" y="121">輸出的乾淨度夠用嗎？</text>
+        <text class="n-lab" x="300" y="206">開 AI Enhancement，選 provider</text>
+        <text class="n-lab" x="300" y="291">選哪一個 provider？</text>
+        <text class="n-lab" x="634" y="112">路線一：純設定包</text>
+        <text class="n-sub" x="634" y="134">最省最快，多數人的終點</text>
+        <text class="n-lab" x="124" y="362">路線二：本機 Ollama</text>
+        <text class="n-sub" x="124" y="384">品質最佳，每句多等一下</text>
+        <text class="n-lab" x="382" y="376">路線三：opencc s2twp</text>
+        <text class="n-sub" x="382" y="398">結果固定、輕快，只轉字與詞</text>
+        <text class="n-lab" x="636" y="362" fill="var(--crit)">雲端 enhancement</text>
+        <text class="n-sub" x="636" y="384">文字離開你的 Mac、不建議</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="472" y="108">是</text>
+        <text x="316" y="168">否</text>
+        <text x="112" y="278">本機 Ollama</text>
+        <text x="340" y="340">Local CLI</text>
+        <text x="500" y="278">雲端服務</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事／終點</span>
+      <span><i style="background:var(--s2)"></i>判斷</span>
+      <span><i style="background:var(--crit)"></i>內容離開 Mac</span>
+    </div>
+  </figure>
+  <div class="note"><b>怎麼選</b><p>夠用就停在路線一；要最好的品質、也願意每句多等一下本機 AI，才裝 Ollama。</p></div>
+</section>
+
+<section>
+  <h2>圖三 · 中英夾雜的陷阱</h2>
+  <p class="sub">示範文的引導力強到會把整句英文翻成中文</p>
+  <figure>
+    <figcaption>藍＝做事　橘＝要判斷　紅＝到此為止</figcaption>
+    <svg viewBox="0 0 760 300" role="img" aria-label="決策圖：唸一整句英文時，語言鎖定中文會讓英文被翻成中文，設成 Auto-detect 才會保留英文原文">
+      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="arR3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
+        <path d="M300 58 L300 88"/>
+        <path d="M300 150 L300 186"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#arR3)" stroke-dasharray="6 5">
+        <path d="M432 119 L636 119 L636 152"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="140" y="14" width="320" height="44" rx="9"/>
+        <rect x="120" y="186" width="360" height="62" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M300 88 L432 119 L300 150 L168 119 z"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="518" y="152" width="232" height="62" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="300" y="41">你唸一整句英文</text>
+        <text class="n-lab" x="300" y="124">Language 設定是哪一個？</text>
+        <text class="n-lab" x="300" y="211">英文多半原樣留著</text>
+        <text class="n-sub" x="300" y="233">中文照樣走示範文＋字典那條路</text>
+        <text class="n-lab" x="634" y="177" fill="var(--crit)">整句被翻成中文</text>
+        <text class="n-sub" x="634" y="199">「我覺得這個應用程式很優雅。」</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="330" y="176">Auto-detect</text>
+        <text x="520" y="111">鎖定中文</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事</span>
+      <span><i style="background:var(--s2)"></i>判斷</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+    </div>
+  </figure>
+  <div class="note"><b>實測</b><p>唸「I think this application is very elegant」，語言鎖定中文時輸出的是「我覺得這個應用程式很優雅。」；同一段錄音改 Auto-detect 就保留英文（實測記錄日期 2026-06-27）。改 Auto-detect 是緩解、不是根治——要根治就把繁體化整個交給路線二的本機 Ollama。</p></div>
+</section>
+
+<section>
+  <h2>三個要先知道的事</h2>
+  <div class="two">
+    <div class="box"><b>順序不能反</b>
+      <ul>
+        <li>示範文是「示範」不是命令，在裡面寫「請輸出繁體中文」沒有用。</li>
+        <li>它在轉字之前被讀，字典在轉字之後才換。</li>
+      </ul></div>
+    <div class="box"><b>合理期望：大致繁體＝夠用</b>
+      <ul>
+        <li>絕大多數輸出是台灣中文，偶爾漏一兩個簡體字屬正常。</li>
+        <li>設定包是調教，不是換一顆腦。</li>
+      </ul></div>
+    <div class="box"><b>這條管線不做什麼</b>
+      <ul>
+        <li>不做翻譯：英文被翻成中文是副作用，不是功能。</li>
+        <li>不會自己上網：三條建議路線全部離線；唯一會把文字送出 Mac 的是雲端 enhancement，而它預設是關的（2026-06 稽核結論）。</li>
+      </ul></div>
+  </div>
+</section>
+
+</div>

@@ -41,6 +41,13 @@ Skills are modular behavior packages that the secretary loads on demand. They li
 | **eli5** | Explain something to someone who knows nothing about it, as an HTML page with big pictures and few words. One sentence long on purpose — no steps, no checklist | Say **"eli5 this"** or **"explain like I'm 5"** |
 | **explain1min** | One-minute explainer diagram: a system or process as a self-contained HTML page — at most 3 flow diagrams, under 1000 words, a decision diamond wherever the flow branches. Narrow on purpose: a single function or term gets an answer in words | Say **"explain how this works"** or **"draw me a diagram"** |
 
+### Voice Skills (speak instead of type)
+
+| Skill | What It Does | How to Trigger |
+|---|---|---|
+| **audio-transcribe** | Recording → text. Opens with the hard limit — the agent cannot hear audio — then the one command that does the work (English / Chinese / Khmer) and the checks that stop a confident wrong transcript from being believed. `references/QA.md` holds what broke and why it is built this way; `human/` holds two pages to show the person | Say **"transcribe this"** or drop an audio file path |
+| **voiceink** | VoiceInk — local Whisper dictation on macOS — comes out in Simplified Chinese for a Taiwanese Mandarin speaker. The agent walks the person through the clicks only they can make, then applies and verifies the Traditional-Chinese (Taiwan) setup pack | Say **"my dictation comes out Simplified"** or **"set up VoiceInk"** |
+
 ### Meta Skill (extend the system)
 
 | Skill | What It Does | How to Trigger |
@@ -75,7 +82,9 @@ workspace/                             ← Mount this folder
 │       ├── meta-skill/SKILL.md        ← Build / audit a single skill
 │       ├── plan-discuss/SKILL.md      ← Multi-model plan review
 │       ├── eli5/SKILL.md             ← One-sentence ELI5 explainer
-│       └── explain1min/SKILL.md      ← One-minute explainer diagram (+ templates/)
+│       ├── explain1min/SKILL.md      ← One-minute explainer diagram (+ templates/)
+│       ├── audio-transcribe/          ← Recording → text (SKILL.md + references/QA.md + human/)
+│       └── voiceink/                  ← zh-TW dictation setup pack (same four-file shape)
 ├── INDEX.md                           ← Main index (project list, to-dos)
 ├── BEGINNER-TIPS.md                   ← Beginner tips
 ├── inbox/                             ← Daily journals (auto-created)
@@ -98,8 +107,10 @@ workspace/                             ← Mount this folder
 ├── summaries/
 │   ├── weekly/                        ← Weekly reports
 │   └── monthly/                       ← Monthly reports
+├── tools/                             ← Scripts the voice skills call (transcribe.sh + helpers)
 └── refs/
     ├── debate-agents/                 ← Debate protocol + personas
+    ├── transcribe-glossary.md         ← This machine's known-wrong names (heard → correct)
     └── security-checklist.md          ← Tool security checklist
 ```
 
@@ -195,8 +206,11 @@ High-stakes business decisions can trigger a Debate — inviting an Advocate and
 ## Version History
 ### Unreleased (next)
 
-**Skill set — 9 Skills** (v1.0's 8 + 1):
-- **Added: audio-transcribe** — getting a recording, or something you'd rather say than type, into text your agent can use. Leads with the constraint people actually hit (Claude Code has no audio input, so a dropped recording silently does nothing), then the two routes that work: system dictation where your language is supported, and a multimodal model with the language explicitly named where it isn't. Pairs with the `transcribe-101` course.
+**Skill set — 12 Skills** (v1.0's 8 + 4):
+- **Added: audio-transcribe** — a recording, or something you'd rather say than type, into text your agent can use. Leads with the constraint people actually hit (the agent has no audio input, so a dropped recording silently does nothing), then ships the pipeline that does the work: one router command — Groq for English and Chinese, a multimodal model for Khmer — plus the checks that stop a confident wrong transcript from being believed.
+- **Added: voiceink** — VoiceInk (local Whisper dictation on macOS) comes out in Simplified Chinese for a Taiwanese Mandarin speaker. The agent walks the person through the clicks only they can make, then applies and verifies the zh-TW setup pack.
+- **Added: eli5 / explain1min** — two ways to put something in front of a person: big pictures and few words, or a one-page diagram with a decision diamond wherever the flow branches.
+- **Skill folder standard** — a shipped skill is `SKILL.md` (what problem, how to use, and a proof-it-works step at the end), `references/QA.md` (what people hit and why it is built this way), and `human/` — HTML pages the agent opens for the person it works for. The agent understands first, then teaches its user; problems go to GitHub issues. The two voice skills ship in this shape; `INSTALL.md` / `FLOW.md` / `VERIFY.md` and the `teaching/` pages folded into it.
 
 ### v1.0 (2026-06-30)
 
@@ -398,6 +412,13 @@ Skills 是模組化的行為套件，秘書按需載入。放在 `.claude/skills
 | **eli5** | 把一件事解釋給完全不懂的人：HTML 頁、大圖少字。整支只有一句話，刻意不給步驟與檢查清單 | 說 **「eli5」** 或 **「解釋得像我五歲」** |
 | **explain1min** | 一分鐘解釋圖：一個系統或流程做成 self-contained HTML — 最多 3 張流程圖、1000 字以內、有分支就畫決策菱形。刻意收窄：單一函式或名詞用講的就好 | 說 **「解釋一下這怎麼跑」** 或 **「畫個流程圖」** |
 
+### 語音 Skills（用講的、不用打字）
+
+| Skill | 功能 | 觸發方式 |
+|---|---|---|
+| **audio-transcribe** | 錄音 → 文字。開頭先講死限制——agent 聽不見音訊——再給做事的那一條指令（英／中／高棉），和把「講得很有自信但其實錯了」的逐字稿攔下來的檢查。`references/QA.md` 收踩過的坑與設計理由；`human/` 收兩張給人看的頁面 | 說 **「幫我轉錄」** 或丟音檔路徑 |
+| **voiceink** | 台灣使用者用 VoiceInk（macOS 本地 Whisper 聽寫）口述、出來卻是簡體。agent 引導本人完成只有本人能點的步驟，再套用並驗證繁中設定包 | 說 **「聽寫出來是簡體」** 或 **「幫我設定 VoiceInk」** |
+
 ### Meta Skill（擴充系統用）
 
 | Skill | 功能 | 觸發方式 |
@@ -430,7 +451,11 @@ workspace/                             ← 掛載這個資料夾
 │       ├── knowledge-base/SKILL.md    ← 知識庫管線
 │       ├── tool-scout/SKILL.md        ← 工具探索 + 資安
 │       ├── meta-skill/SKILL.md        ← 建 / 檢核單一 Skill
-│       └── plan-discuss/SKILL.md      ← 多模型計畫審閱
+│       ├── plan-discuss/SKILL.md      ← 多模型計畫審閱
+│       ├── eli5/SKILL.md              ← 一句話 ELI5 解釋器
+│       ├── explain1min/SKILL.md       ← 一分鐘解釋圖（+ templates/）
+│       ├── audio-transcribe/          ← 錄音 → 文字（SKILL.md + references/QA.md + human/）
+│       └── voiceink/                  ← 繁中聽寫設定包（同一套四檔形）
 ├── INDEX.md                           ← 主索引（專案清單、待辦）
 ├── BEGINNER-TIPS.md                   ← 新手提示
 ├── inbox/                             ← 每日日記（自動建立）
@@ -453,8 +478,10 @@ workspace/                             ← 掛載這個資料夾
 ├── summaries/
 │   ├── weekly/                        ← 週報
 │   └── monthly/                       ← 月報
+├── tools/                             ← 語音 skill 呼叫的腳本（transcribe.sh 等）
 └── refs/
     ├── debate-agents/                 ← Debate 協議 + 人設
+    ├── transcribe-glossary.md         ← 這台機器的已知錯名對照（heard → correct）
     └── security-checklist.md          ← 工具資安清單
 ```
 
@@ -527,8 +554,11 @@ workspace/                             ← 掛載這個資料夾
 ## 版本歷史
 ### 未發布（下一版）
 
-**Skill 集——9 支**（v1.0 的 8 支 + 1）：
-- **新增 audio-transcribe**——把錄音、或不想打字的內容變成 agent 用得了的文字。開頭先講真正會踩到的限制（Claude Code 沒有音訊輸入，丟錄音進去會安靜地不作用），再給兩條可行路線：系統聽寫支援你的語言時走聽寫，不支援時走多模態模型並**明確指定語言**。對應課程 `transcribe-101`。
+**Skill 集——12 支**（v1.0 的 8 支 + 4）：
+- **新增 audio-transcribe**——把錄音、或不想打字的內容變成 agent 用得了的文字。開頭先講真正會踩到的限制（agent 沒有音訊輸入，丟錄音進去會安靜地不作用），接著直接 ship 做事的管線：一條 router 指令——英文中文走 Groq、高棉語走多模態模型——加上讓「講得很有自信但其實錯了」的逐字稿被攔下來的檢查。
+- **新增 voiceink**——台灣使用者用 VoiceInk（macOS 本地 Whisper 聽寫）口述、出來卻是簡體。agent 引導本人完成只有本人能點的步驟，再套用並驗證繁中設定包。
+- **新增 eli5 / explain1min**——把東西講給人聽的兩種形態：大圖少字，或一頁流程圖、有分支就畫決策菱形。
+- **Skill 資料夾標準**——一支出貨的 skill 是 `SKILL.md`（解決什麼問題、怎麼用、結尾附自證步驟）、`references/QA.md`（大家踩過什麼、為什麼長這樣）、加上 `human/`——agent 可以直接開給服務對象看的 HTML 頁。agent 先讀懂、再去教它的使用者；出問題開 GitHub issue。兩支語音 skill 以此形態出貨；`INSTALL.md` / `FLOW.md` / `VERIFY.md` 與 `teaching/` 頁面併入此結構。
 
 ### v1.0 (2026-06-30)
 
