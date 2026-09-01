@@ -3,8 +3,8 @@
   "purpose": "Lets an agent work out whether the skills on its machine differ from this repository without reading every file. Compare 'version' and each file 'sha' against the local clone. Authority is always the SKILL.md files themselves; this manifest is an index, not a contract.",
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
-  "generated_at": "2026-08-29",
-  "generated_from_commit": "8767cca45487f2950e13e12b664a3a30fc02c2ee",
+  "generated_at": "2026-09-01",
+  "generated_from_commit": "12da9d2",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 12,
   "versioning": {
@@ -45,40 +45,50 @@
   "skills": [
     {
       "name": "audio-transcribe",
-      "version": "f1b096b",
-      "updated": "2026-08-29",
+      "version": "12da9d2",
+      "updated": "2026-09-01",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 209,
-          "sha": "e556a6b59b01f58bfae640ebb46f3b86800e313d"
+          "lines": 292,
+          "sha": "a370e8acadbec541c38529dd6f05ecf42f84f554"
         },
         {
           "path": "references/QA.md",
-          "lines": 427,
-          "sha": "e45471d26b32104be84c7a66446819abd29068db"
+          "lines": 584,
+          "sha": "c1be50e55ec30f0cdc5fc1f4044aa221d54c7d53"
+        },
+        {
+          "path": "templates/agy-prompt.md",
+          "lines": 51,
+          "sha": "b6dec5266dd2beba37107e57e03f852542f18182"
+        },
+        {
+          "path": "templates/entity-correction-block.md",
+          "lines": 30,
+          "sha": "dd2aa0173a854a9261a9955d30a157364abbb031"
         },
         {
           "path": "human/explain1min.html",
-          "lines": 433,
-          "sha": "d3d8df2b70bb03147af5ca03ade04f9dee29cfd5"
+          "lines": 629,
+          "sha": "ac1f28d53634bb1eda5ee35f1a337bca39a7d984"
         },
         {
           "path": "human/eli5.html",
-          "lines": 286,
-          "sha": "54acbdc2f6ecb7c76fdaacb80b939d9e47773323"
+          "lines": 406,
+          "sha": "7f5b5048d501211d645e9eb2ec66acdbd085b621"
         }
       ],
       "requires": [
         "A recording. Nothing here produces audio.",
-        "An API key on a free tier, in the person's own account: Groq for en/zh, Gemini for km. tools/setup-api-key.sh takes it without the value passing through the conversation.",
-        "ffmpeg, for recordings over 25 MB and for the Khmer route.",
-        "Scripts live in workspace/tools/ and are reached only through tools/transcribe.sh."
+        "Antigravity CLI (`agy`) installed and signed in on this machine — `curl -fsSL https://antigravity.google/cli/install.sh | bash`, then `agy --version`. The agent cannot hear; agy does the listening. Not brew-managed; `agy update` if it hangs.",
+        "ffmpeg (and ffprobe): every recording is re-wrapped to mp4 and cut into 5–8 minute segments before it goes to agy.",
+        "Optional backup lane only: a Groq API key for Whisper via tools/transcribe.sh (tools/setup-api-key.sh takes it without the value passing through the conversation)."
       ],
       "referenced_but_not_present": [],
-      "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was rewritten upstream again on 2026-08-29, to describe the four-file shape (references/QA.md + human/), and a voiceink row was added below it. CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the difference, keep their lines.",
-      "notes": "Restructured on 2026-08-29 (aa8a8c3) into the four-file standard: INSTALL.md, FLOW.md, VERIFY.md and the old top-level QA.md folded into SKILL.md and references/QA.md, and the teaching/audio-transcribe/ pages retired in the same commit. A clone made before that date loses those eight files on its next pull; that is expected, see UPDATING.md section 4. The human/ pages carry Chinese and English in one file with a ZH/EN toggle — one link, both languages always at the same version. Earlier history: rewritten 2026-08-04 from 368 lines to 79, with references/ and templates/ removed then — the same rule applied.",
+      "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was rewritten upstream again on 2026-09-01 (agy default, prerequisite line). CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the diff, let them decide.",
+      "notes": "Rewritten 2026-09-01 (12da9d2): the default route is now the Antigravity CLI (agy, multimodal, four-layer output with an acoustic layer); Whisper via Groq is an optional backup lane. The skill now ends at the file contract (transcript + original audio side by side) and hands routing of the content to whatever layer does that in your system; templates/ carries the agy prompt and the correction-table shape. Earlier: restructured 2026-08-29 (aa8a8c3) into the four-file standard with human/ pages carrying both languages in one file; rewritten 2026-08-04 from 368 lines to 79.",
       "ships_scripts": [
         "workspace/tools/transcribe.sh",
         "workspace/tools/transcribe-cloud.sh",
