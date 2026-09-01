@@ -4,7 +4,7 @@
   "repository": "ventusmediatw-cell/project-secretary",
   "branch": "main",
   "generated_at": "2026-09-01",
-  "generated_from_commit": "12da9d2",
+  "generated_from_commit": "68527dd",
   "skills_root": "workspace/.claude/skills/",
   "skill_count": 12,
   "versioning": {
@@ -100,39 +100,71 @@
     },
     {
       "name": "eli5",
-      "version": "678cb90",
-      "updated": "2026-08-28",
+      "version": "68527dd",
+      "updated": "2026-09-01",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 16,
-          "sha": "55caba3f9ddf7af17a731067ef47ec090e1b013a"
+          "lines": 40,
+          "sha": "cc9055064b7b37e81ba538edfbde5653c4ad6042"
+        },
+        {
+          "path": "references/QA.md",
+          "lines": 221,
+          "sha": "9db1813bc440b31f771027c39db3354830f471fb"
+        },
+        {
+          "path": "human/eli5.html",
+          "lines": 369,
+          "sha": "7e945ce2c5bd97e4489928d959dd56e67bff77eb"
+        },
+        {
+          "path": "human/explain1min.html",
+          "lines": 633,
+          "sha": "f5f88704279e431b1edd3fbcc6b931f6b1dd2254"
         }
       ],
-      "notes": "One file, and it is one sentence on purpose — no steps, no checklist, no output template. A diff that makes this skill longer is almost certainly wrong. The prompt itself is copied verbatim and is not ours."
+      "notes": "The prompt in SKILL.md is one sentence on purpose — no steps, no checklist, no output template — and it is copied verbatim, not ours. A diff that makes that sentence longer is almost certainly wrong. Since 68527dd (2026-09-01) the folder also carries a short routing note under the sentence, references/QA.md (what people hit and why one sentence is the design) and human/ (two bilingual pages for the person). Those explain the skill; they do not extend the prompt.",
+      "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was extended upstream on 2026-09-01 (folder now lists references/QA.md and human/). CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the diff, let them decide."
     },
     {
       "name": "explain1min",
-      "version": "678cb90",
-      "updated": "2026-08-28",
+      "version": "68527dd",
+      "updated": "2026-09-01",
       "auto_invocable": true,
       "files": [
         {
           "path": "SKILL.md",
-          "lines": 94,
-          "sha": "79b5c0a0511efff2f9c6ac25ffa94fae5def05b7"
+          "lines": 117,
+          "sha": "bd1af8835e546508c6c93e169b51325ed8093b62"
         },
         {
           "path": "templates/skeleton.html",
-          "lines": 136,
-          "sha": "e0a2f3800fe0b82e232614952b40df33bbd970e5"
+          "lines": 152,
+          "sha": "2021377f4555a121ad1330a2bc6d508deac9d4c1"
+        },
+        {
+          "path": "references/QA.md",
+          "lines": 304,
+          "sha": "2bf50037209fd5eecae21e0917e3a09e1dd2c7ab"
+        },
+        {
+          "path": "human/eli5.html",
+          "lines": 560,
+          "sha": "0f7e5f4333e582a1893cb81cadf7b53d4e5e1ae6"
+        },
+        {
+          "path": "human/explain1min.html",
+          "lines": 605,
+          "sha": "c8dad9e796f34f7608f7ba70c141284b4787402a"
         }
       ],
       "referenced_but_not_present": [
         "shot.png — the screenshot the verification step writes at run time. It is an output, not a shipped file."
       ],
-      "notes": "templates/skeleton.html is a fragment with no <!doctype>/<html>/<head>/<body>, deliberately: publishing surfaces add their own shell. Do not 'repair' it into a full document. Its first-line <meta charset> is load-bearing for opening the file from disk."
+      "notes": "templates/skeleton.html is a fragment with no <!doctype>/<html>/<head>/<body>, deliberately: publishing surfaces add their own shell. Do not \"repair\" it into a full document. Its first-line <meta charset> is load-bearing for opening the file from disk. Since 68527dd (2026-09-01) SKILL.md carries an explicit what-it-does / when-not block and a folder table, and the folder ships references/QA.md (what people hit, why the rules are shaped that way) and human/ (two bilingual pages for the person).",
+      "known_inconsistency": "The Skills Index row for this skill in workspace/CLAUDE.md was extended upstream on 2026-09-01 (folder now lists references/QA.md and human/). CONSEQUENCE FOR EXISTING CLONES: workspace/CLAUDE.md is listed under locally_modified_by_design, so this upstream change WILL collide with a person's own edits. Do NOT resolve that by overwriting their file — follow UPDATING.md section 5: fetch first, back up, show the person the diff, let them decide."
     },
     {
       "name": "handoff",
