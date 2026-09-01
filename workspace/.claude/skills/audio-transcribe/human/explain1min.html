@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>一段錄音怎麼變成你能用的文字 · How a Recording Becomes Text You Can Use</title>
+<title>一段錄音怎麼變成能用的文字 · How a Recording Becomes Text You Can Use</title>
 <style>
 :root{
  --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
@@ -8,12 +8,12 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
  --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
- --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
  --line:#2c2c2a;--nodebg:#22221f;
 }}
 :root[data-theme="dark"]{
  --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
- --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
  --line:#2c2c2a;--nodebg:#22221f;
 }
 *{box-sizing:border-box}
@@ -57,373 +57,569 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
 <div class="wrap">
 
 <section lang="zh-TW">
-  <span class="tag">audio → text</span>
-  <h1>一段錄音<br>怎麼變成你能用的文字</h1>
-  <p class="lede">一句話：<b style="color:var(--ink)">AI 讀不到聲音，錄音要先被另一支程式轉成文字，才輪得到它。</b><br>下面三張圖就是全部的機制。</p>
+  <span class="tag">recording → transcript</span>
+  <h1>一段錄音<br>怎麼變成能用的文字</h1>
+  <p class="lede">一句話：<b style="color:var(--ink)">AI 聽不到聲音。錄音得先交給另一個真的能聽的程式，才輪得到它。</b><br>三張圖就是全部。</p>
 </section>
 
 <section lang="en">
-  <span class="tag">audio → text</span>
+  <span class="tag">recording → transcript</span>
   <h1>How a recording<br>becomes text you can use</h1>
-  <p class="lede">In one line: <b style="color:var(--ink)">AI cannot hear. A recording has to be turned into text by another program first, before AI gets a turn.</b><br>The three diagrams below are the whole mechanism.</p>
+  <p class="lede">In one line: <b style="color:var(--ink)">The agent cannot hear. The audio goes to a separate program that genuinely listens, and only then does the agent get a turn.</b><br>The three diagrams below are the whole mechanism.</p>
 </section>
 
 <section lang="zh-TW">
-  <h2>圖一 · 從檔案到那一條命令</h2>
-  <p class="sub">兩個判斷點都在動手之前。跳過它們，失敗是安靜的。</p>
+  <h2>圖一 · 從一個檔案到兩個檔</h2>
+  <p class="sub">閘門卡在合併之後。這條線上的錯全都是安靜的。</p>
   <figure>
-    <figcaption>藍＝做事　橘＝要判斷／多一步再回主線</figcaption>
-    <svg viewBox="0 0 700 370" role="img" aria-label="流程圖：錄音檔先檢查副檔名是否在白名單，不在就先轉檔；再判斷幾個人在講，多人只會得到一面文字牆；最後跑一條轉錄命令">
-      <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+    <figcaption>檔案 → 四層 → 四道閘 → 兩個檔</figcaption>
+    <svg viewBox="0 0 700 640" role="img" aria-label="流程圖：錄音檔先轉封裝成 mp4，切成 5 到 8 分鐘、彼此重疊的小段，逐段交給 agy 聽出四層內容；推論那層不進檔案；合併之後過四道閘，沒過的段落自己重跑，全過才落成逐字稿與原始音檔兩個同名同層的檔。">
+      <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
         <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
-        <marker id="ar1o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
+        <marker id="a1o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="a1g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
 
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1)">
-        <path d="M300 60 L300 82"/>
-        <path d="M300 134 L300 182"/>
-        <path d="M300 234 L300 282"/>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a1)">
+        <path d="M300 60 L300 84"/>
+        <path d="M300 140 L300 168"/>
+        <path d="M300 234 L300 262"/>
+        <path d="M300 352 L300 380"/>
+        <path d="M300 428 L300 456"/>
+        <path d="M300 524 L300 552"/>
       </g>
-      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar1o)">
-        <path d="M400 110 L466 110"/>
-        <path d="M580 134 L580 160 L308 160"/>
-        <path d="M400 210 L466 210"/>
-        <path d="M580 242 L580 266 L308 266"/>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#a1o)">
+        <path d="M405 490 L466 490"/>
+        <path d="M580 462 L580 366 L308 366"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#a1g)">
+        <path d="M440 308 L466 308"/>
       </g>
 
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="150" y="20" width="300" height="40" rx="9"/>
-        <rect x="150" y="282" width="300" height="54" rx="9"/>
+        <rect x="160" y="16" width="280" height="44" rx="9"/>
+        <rect x="160" y="84" width="280" height="56" rx="9"/>
+        <rect x="160" y="168" width="280" height="66" rx="9"/>
+        <rect x="160" y="262" width="280" height="90" rx="9"/>
+        <rect x="160" y="380" width="280" height="48" rx="9"/>
+        <rect x="130" y="552" width="340" height="70" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M300 86 L400 110 L300 134 L200 110 z"/>
-        <path d="M300 186 L400 210 L300 234 L200 210 z"/>
-        <rect x="470" y="84" width="220" height="50" rx="9"/>
-        <rect x="470" y="182" width="220" height="60" rx="9"/>
+        <path d="M300 456 L405 490 L300 524 L195 490 z"/>
+        <rect x="470" y="462" width="220" height="72" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="470" y="272" width="220" height="72" rx="9"/>
       </g>
 
       <g text-anchor="middle">
-        <text class="n-lab" x="300" y="45">手上有一個錄音檔</text>
-        <text class="n-lab" x="300" y="115">副檔名在白名單裡嗎？</text>
-        <text class="n-lab" x="300" y="215">幾個人在講？</text>
-        <text class="n-lab" x="300" y="305">一條命令</text>
-        <text class="n-sub" x="300" y="324">bash tools/transcribe.sh &lt;檔案&gt; &lt;語言&gt;</text>
-        <text class="n-lab" x="580" y="105" fill="var(--s2)">先轉成 .m4a 再跑</text>
-        <text class="n-sub" x="580" y="123">afconvert（Mac）／ffmpeg</text>
-        <text class="n-lab" x="580" y="205" fill="var(--s2)">仍然能轉</text>
-        <text class="n-sub" x="580" y="223">但拿到的是一面文字牆</text>
-        <text class="n-sub" x="580" y="238">分不出誰是誰</text>
+        <text class="n-lab" x="300" y="38">手上有一個錄音檔</text>
+        <text class="n-sub" x="300" y="54">你的讀檔工具打不開</text>
+        <text class="n-lab" x="300" y="108">先轉封裝成 mp4</text>
+        <text class="n-sub" x="300" y="126">ffmpeg 一行；其他容器會被退回</text>
+        <text class="n-lab" x="300" y="192">切成 5–8 分鐘一段</text>
+        <text class="n-sub" x="300" y="210">每段重疊 5–10 秒、一次只送一段</text>
+        <text class="n-sub" x="300" y="227">第三道閘要比對的就是這裡</text>
+        <text class="n-lab" x="300" y="284">agy 負責聽，吐回四層</text>
+        <text class="n-sub" x="300" y="303">① 誰在講</text>
+        <text class="n-sub" x="300" y="320">② 帶時間碼的逐字</text>
+        <text class="n-sub" x="300" y="337">③ 聽得見的事實　④ 推論</text>
+        <text class="n-lab" x="300" y="402">合併</text>
+        <text class="n-sub" x="300" y="419">取最後完整的四層，不是第一份</text>
+        <text class="n-lab" x="300" y="495">四道閘全過了嗎？</text>
+        <text class="n-lab" x="580" y="296" fill="var(--muted)">④ 不進檔案</text>
+        <text class="n-sub" x="580" y="314">留著它，日後會被當成</text>
+        <text class="n-sub" x="580" y="331">某人說過的話引用</text>
+        <text class="n-lab" x="580" y="486" fill="var(--s2)">那一段自己重跑</text>
+        <text class="n-sub" x="580" y="504">最多五輪</text>
+        <text class="n-sub" x="580" y="521">還是失敗就切成兩半</text>
+        <text class="n-lab" x="300" y="576">兩個檔才算做完</text>
+        <text class="n-sub" x="300" y="595">逐字稿，加上它的原始音檔</text>
+        <text class="n-sub" x="300" y="612">同名、同層</text>
+      </g>
+      <g class="n-sub" text-anchor="start">
+        <text x="18" y="452">四道閘</text>
+        <text x="18" y="470">1 · 每段貢獻幾行</text>
+        <text x="18" y="488">2 · 時間軸有沒有斷</text>
+        <text x="18" y="506">3 · 重疊處對不對得上</text>
+        <text x="18" y="524">4 · 人工抽查</text>
       </g>
       <g class="e-lab" text-anchor="middle">
-        <text x="433" y="102">否</text><text x="284" y="152">是</text>
-        <text x="433" y="202">多人</text><text x="284" y="258">單人</text>
+        <text x="435" y="482">否</text><text x="318" y="546">是</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>做事</span>
       <span><i style="background:var(--s2)"></i>判斷／多一步</span>
+      <span><i style="background:var(--deemph)"></i>不用做</span>
     </div>
   </figure>
-  <div class="note"><b>為什麼要這樣設計</b><p>走英文／中文那條時，白名單外的檔案，錯誤是服務端丟回來的 HTTP 碼，不會寫「格式不對」——而 Mac 預設錄音是 <code>.aiff</code>、手機錄影是 <code>.mov</code>，正好兩個都不在（高棉語那條會先自己重新編碼，不受這個限制）。多人對話則是另一種安靜：這條管線不做講者分離，誰講了什麼重要的話，就得換能「聽」的多模態模型。</p></div>
+  <div class="note"><b>為什麼要這樣設計</b><p>切段是它聽得完的原因，也是它會壞的原因：整段消失、尾巴被吃掉、接縫處標籤對調。四道閘存在，是因為這些都不報錯——合併後的檔一樣讀得順。</p></div>
 </section>
 
 <section lang="en">
-  <h2>Diagram 1 · From a file to the one command</h2>
-  <p class="sub">Both decision points come before you start. Skip them and the failure is silent.</p>
+  <h2>Diagram 1 · From one file to two files</h2>
+  <p class="sub">The gate sits in the middle, after the merge. Every failure on this line is silent.</p>
   <figure>
-    <figcaption>Blue = do it　Orange = decide / one extra step, then back to the main line</figcaption>
-    <svg viewBox="0 0 700 370" role="img" aria-label="Flowchart: check whether the file extension is on the allowlist, and convert the file first if it is not; then decide how many people are speaking, because with several you only get a wall of text; finally run one transcription command.">
-      <defs><marker id="ar1e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+    <figcaption>File → four layers → four gates → two files</figcaption>
+    <svg viewBox="0 0 700 640" role="img" aria-label="Flowchart: the recording is re-wrapped as mp4, cut into overlapping five to eight minute segments, and each segment is sent to agy, which returns four layers; the inference layer stays out of the file; after the merge four gates run, failed segments are re-run on their own, and only when all four pass do the transcript and the original audio land together under the same name.">
+      <defs><marker id="b1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
         <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
-        <marker id="ar1oe" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
+        <marker id="b1o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="b1g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
 
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar1e)">
-        <path d="M300 60 L300 82"/>
-        <path d="M300 134 L300 182"/>
-        <path d="M300 234 L300 282"/>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b1)">
+        <path d="M300 60 L300 84"/>
+        <path d="M300 140 L300 168"/>
+        <path d="M300 234 L300 262"/>
+        <path d="M300 352 L300 380"/>
+        <path d="M300 428 L300 456"/>
+        <path d="M300 524 L300 552"/>
       </g>
-      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar1oe)">
-        <path d="M400 110 L466 110"/>
-        <path d="M580 134 L580 160 L308 160"/>
-        <path d="M400 210 L466 210"/>
-        <path d="M580 242 L580 266 L308 266"/>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#b1o)">
+        <path d="M405 490 L466 490"/>
+        <path d="M580 462 L580 366 L308 366"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#b1g)">
+        <path d="M440 308 L466 308"/>
       </g>
 
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="150" y="20" width="300" height="40" rx="9"/>
-        <rect x="150" y="282" width="300" height="54" rx="9"/>
+        <rect x="160" y="16" width="280" height="44" rx="9"/>
+        <rect x="160" y="84" width="280" height="56" rx="9"/>
+        <rect x="160" y="168" width="280" height="66" rx="9"/>
+        <rect x="160" y="262" width="280" height="90" rx="9"/>
+        <rect x="160" y="380" width="280" height="48" rx="9"/>
+        <rect x="130" y="552" width="340" height="70" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M300 86 L400 110 L300 134 L200 110 z"/>
-        <path d="M300 186 L400 210 L300 234 L200 210 z"/>
-        <rect x="470" y="84" width="220" height="50" rx="9"/>
-        <rect x="470" y="182" width="220" height="60" rx="9"/>
+        <path d="M300 456 L405 490 L300 524 L195 490 z"/>
+        <rect x="470" y="462" width="220" height="72" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="470" y="272" width="220" height="72" rx="9"/>
       </g>
 
       <g text-anchor="middle">
-        <text class="n-lab" x="300" y="45">You have a recording file</text>
-        <text class="n-lab" x="300" y="115">Extension allowed?</text>
-        <text class="n-lab" x="300" y="215">How many people?</text>
-        <text class="n-lab" x="300" y="305">One command</text>
-        <text class="n-sub" x="300" y="324">bash tools/transcribe.sh &lt;file&gt; &lt;lang&gt;</text>
-        <text class="n-lab" x="580" y="105" fill="var(--s2)">Convert to .m4a first</text>
-        <text class="n-sub" x="580" y="123">afconvert (Mac) / ffmpeg</text>
-        <text class="n-lab" x="580" y="205" fill="var(--s2)">It still transcribes</text>
-        <text class="n-sub" x="580" y="223">but you get a wall of text</text>
-        <text class="n-sub" x="580" y="238">with no idea who is who</text>
+        <text class="n-lab" x="300" y="38">A recording file</text>
+        <text class="n-sub" x="300" y="54">your file-reading tool cannot open it</text>
+        <text class="n-lab" x="300" y="108">Re-wrap it as mp4</text>
+        <text class="n-sub" x="300" y="126">one ffmpeg line; other containers are refused</text>
+        <text class="n-lab" x="300" y="192">Cut it into 5–8 minute segments</text>
+        <text class="n-sub" x="300" y="210">5–10 seconds of overlap, one per call</text>
+        <text class="n-sub" x="300" y="227">the overlap is what gate 3 compares</text>
+        <text class="n-lab" x="300" y="284">agy listens, four layers come back</text>
+        <text class="n-sub" x="300" y="303">① who spoke</text>
+        <text class="n-sub" x="300" y="320">② timestamped verbatim</text>
+        <text class="n-sub" x="300" y="337">③ what is audible　④ inference</text>
+        <text class="n-lab" x="300" y="402">Merge the segments</text>
+        <text class="n-sub" x="300" y="419">take the last complete set of four layers</text>
+        <text class="n-lab" x="300" y="495">All four gates pass?</text>
+        <text class="n-lab" x="580" y="296" fill="var(--muted)">④ never goes in the file</text>
+        <text class="n-sub" x="580" y="314">left in, it gets quoted later</text>
+        <text class="n-sub" x="580" y="331">as if someone had said it</text>
+        <text class="n-lab" x="580" y="486" fill="var(--s2)">Re-run that segment alone</text>
+        <text class="n-sub" x="580" y="504">up to five rounds</text>
+        <text class="n-sub" x="580" y="521">still failing → split it in half</text>
+        <text class="n-lab" x="300" y="576">Two files, not one</text>
+        <text class="n-sub" x="300" y="595">the transcript and the audio it came from</text>
+        <text class="n-sub" x="300" y="612">same name, same folder</text>
+      </g>
+      <g class="n-sub" text-anchor="start">
+        <text x="18" y="452">the four gates</text>
+        <text x="18" y="470">1 · lines per segment</text>
+        <text x="18" y="488">2 · timeline continuity</text>
+        <text x="18" y="506">3 · overlap agreement</text>
+        <text x="18" y="524">4 · manual spot-check</text>
       </g>
       <g class="e-lab" text-anchor="middle">
-        <text x="433" y="102">No</text><text x="284" y="152">Yes</text>
-        <text x="433" y="202">Several</text><text x="284" y="258">One</text>
+        <text x="435" y="482">no</text><text x="320" y="546">yes</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>Do it</span>
       <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--deemph)"></i>Nothing to do</span>
     </div>
   </figure>
-  <div class="note"><b>Why it works this way</b><p>On the English and Chinese route, a file outside the allowlist comes back as an HTTP code from the server, never as "wrong format" — and a Mac records to <code>.aiff</code> by default while a phone films to <code>.mov</code>, so both miss the list (the Khmer route re-encodes on its own and is not bound by this). A multi-person conversation is silent in a different way: this pipeline does not separate speakers. If it matters who said the important line, you need a multimodal model that can actually listen.</p></div>
+  <div class="note"><b>Why it works this way</b><p>Cutting the audio up is what makes it listenable at all, and also what breaks it: segments come back empty, tails go missing, labels flip at the seams. The gates exist because none of that reports an error — the merged file reads continuous either way.</p></div>
 </section>
 
 <section lang="zh-TW">
-  <h2>圖二 · 語言要你自己講</h2>
-  <p class="sub">進去什麼語言，出來就是什麼語言。</p>
+  <h2>圖二 · 三個要先問、不要猜的決定</h2>
+  <p class="sub">「幾個人在講」不改變怎麼轉錄，只決定要不要分離講者。</p>
   <figure>
-    <figcaption>藍＝做事　橘＝要判斷／要留意</figcaption>
-    <svg viewBox="0 0 700 250" role="img" aria-label="流程圖：轉錄時指定語言，分成英文、中文、高棉語三條，高棉語重跑結果會不同">
-      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2)">
-        <path d="M350 56 L350 76"/>
-        <path d="M258 104 L110 104 L110 142"/>
-        <path d="M350 128 L350 142"/>
-        <path d="M442 104 L590 104 L590 142"/>
+    <figcaption>三個問題，兩個在開跑之前</figcaption>
+    <svg viewBox="0 0 700 545" role="img" aria-label="流程圖：開跑前先問幾個人在講，單人就不必做講者分離；名單與每人兩三個只有他會說的線索齊了才開跑，不齊就先問；事後要核對名字時，重跑不算複核，唯一的做法是在正文上方加一張更正表。">
+      <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="a2o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="a2r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker>
+        <marker id="a2g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a2)">
+        <path d="M280 54 L280 74"/>
+        <path d="M280 142 L280 172"/>
+        <path d="M280 240 L280 276"/>
+        <path d="M280 344 L280 372"/>
+        <path d="M280 440 L280 470"/>
       </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#a2o)">
+        <path d="M405 206 L466 206"/>
+        <path d="M580 246 L580 266 L288 266"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#a2r)">
+        <path d="M410 406 L466 406"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#a2g)">
+        <path d="M400 108 L466 108"/>
+      </g>
+
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="200" y="16" width="300" height="40" rx="9"/>
-        <rect x="20" y="142" width="180" height="62" rx="9"/>
-        <rect x="260" y="142" width="180" height="62" rx="9"/>
+        <rect x="140" y="10" width="280" height="44" rx="9"/>
+        <rect x="110" y="276" width="340" height="68" rx="9"/>
+        <rect x="110" y="470" width="340" height="62" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M350 80 L442 104 L350 128 L258 104 z"/>
-        <rect x="500" y="142" width="180" height="80" rx="9"/>
+        <path d="M280 74 L400 108 L280 142 L160 108 z"/>
+        <path d="M280 172 L405 206 L280 240 L155 206 z"/>
+        <path d="M280 372 L410 406 L280 440 L150 406 z"/>
+        <rect x="470" y="176" width="220" height="70" rx="9"/>
       </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="470" y="376" width="220" height="68" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="470" y="82" width="220" height="54" rx="9"/>
+      </g>
+
       <g text-anchor="middle">
-        <text class="n-lab" x="350" y="41">跑命令時指定語言</text>
-        <text class="n-lab" x="350" y="109">哪一種？</text>
-        <text class="n-lab" x="110" y="168">en</text><text class="n-sub" x="110" y="188">英文進、英文出</text>
-        <text class="n-lab" x="350" y="168">zh</text><text class="n-sub" x="350" y="188">中文進、繁體出</text>
-        <text class="n-lab" x="590" y="166" fill="var(--s2)">km</text>
-        <text class="n-sub" x="590" y="186">高棉語。同一個檔重跑，</text>
-        <text class="n-sub" x="590" y="202">結果會不一樣</text>
-        <text class="n-sub" x="590" y="218">（英文不會）</text>
+        <text class="n-lab" x="280" y="30">開跑前，問一次</text>
+        <text class="n-sub" x="280" y="46">一則訊息、兩個問題</text>
+        <text class="n-lab" x="280" y="113">幾個人在講？</text>
+        <text class="n-lab" x="580" y="104" fill="var(--muted)">只有一個人</text>
+        <text class="n-sub" x="580" y="122">沒有東西要分離</text>
+        <text class="n-lab" x="280" y="204">名單齊了嗎？</text>
+        <text class="n-sub" x="280" y="221">每人 2–3 個線索</text>
+        <text class="n-lab" x="580" y="198" fill="var(--s2)">先問，再開跑</text>
+        <text class="n-sub" x="580" y="216">不是等二十段跑完</text>
+        <text class="n-sub" x="580" y="233">全都標著 [?]</text>
+        <text class="n-lab" x="280" y="300">指紋寫進每一段的 prompt</text>
+        <text class="n-sub" x="280" y="318">照他說了什麼認人，</text>
+        <text class="n-sub" x="280" y="335">不是照誰講得多</text>
+        <text class="n-lab" x="280" y="411">要核一個名字？</text>
+        <text class="n-lab" x="580" y="400" fill="var(--crit)">那不叫複核</text>
+        <text class="n-sub" x="580" y="418">重跑一次得到的是新文件，</text>
+        <text class="n-sub" x="580" y="435">不是第二個意見</text>
+        <text class="n-lab" x="280" y="494">正文上方加一張更正表</text>
+        <text class="n-sub" x="280" y="512">本人回答了，那一列才打勾</text>
+        <text class="n-sub" x="280" y="529">正文一個字都不改</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="433" y="100">一人</text><text x="312" y="162">多人</text>
+        <text x="435" y="198">否</text><text x="254" y="252">是</text>
+        <text x="437" y="396">重跑</text><text x="342" y="462">唯一的做法</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>做事</span>
-      <span><i style="background:var(--s2)"></i>要留意</span>
+      <span><i style="background:var(--s2)"></i>判斷／多一步</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+      <span><i style="background:var(--deemph)"></i>不用做</span>
     </div>
   </figure>
-  <div class="note"><b>為什麼要這樣設計</b><p>這不是翻譯器。要換一種語言，是拿到逐字稿之後的另一步——這樣「他到底說了什麼」和「誰把它翻成什麼」才不會混成同一份檔案。高棉語那條也因此要小心：兩次跑出來的字不同，不代表誰記錯了。</p></div>
+  <div class="note"><b>為什麼要這樣設計</b><p>指紋——只有他會講的那兩三句話——是你有、模型沒有的唯一東西，所以名單要在開跑前補齊。同一個檔跑兩次是兩份文件，重跑證明不了名字，只有本人可以。</p></div>
 </section>
 
 <section lang="en">
-  <h2>Diagram 2 · You name the language yourself</h2>
-  <p class="sub">Whatever language goes in is the language that comes out.</p>
+  <h2>Diagram 2 · Three things to ask, not guess</h2>
+  <p class="sub">"How many people" does not change how the audio is transcribed. It decides whether speaker separation is worth doing.</p>
   <figure>
-    <figcaption>Blue = do it　Orange = decide / watch out</figcaption>
-    <svg viewBox="0 0 700 250" role="img" aria-label="Flowchart: name the language when you run the command — English, Chinese or Khmer; the Khmer route gives a different result each run.">
-      <defs><marker id="ar2e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker></defs>
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar2e)">
-        <path d="M350 56 L350 76"/>
-        <path d="M258 104 L110 104 L110 142"/>
-        <path d="M350 128 L350 142"/>
-        <path d="M442 104 L590 104 L590 142"/>
+    <figcaption>Three questions, two of them before you start</figcaption>
+    <svg viewBox="0 0 700 545" role="img" aria-label="Flowchart: before the run, ask how many people are talking — with one voice there is nothing to separate; the roster and two or three clues per person must be complete before starting, otherwise ask first; and when a name needs checking, a re-run is not a check, the only route is a correction table above the body.">
+      <defs><marker id="b2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="b2o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="b2r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker>
+        <marker id="b2g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b2)">
+        <path d="M280 54 L280 74"/>
+        <path d="M280 142 L280 172"/>
+        <path d="M280 240 L280 276"/>
+        <path d="M280 344 L280 372"/>
+        <path d="M280 440 L280 470"/>
       </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#b2o)">
+        <path d="M405 206 L466 206"/>
+        <path d="M580 246 L580 266 L288 266"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#b2r)">
+        <path d="M410 406 L466 406"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#b2g)">
+        <path d="M400 108 L466 108"/>
+      </g>
+
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="200" y="16" width="300" height="40" rx="9"/>
-        <rect x="20" y="142" width="180" height="62" rx="9"/>
-        <rect x="260" y="142" width="180" height="62" rx="9"/>
+        <rect x="140" y="10" width="280" height="44" rx="9"/>
+        <rect x="110" y="276" width="340" height="68" rx="9"/>
+        <rect x="110" y="470" width="340" height="62" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M350 80 L442 104 L350 128 L258 104 z"/>
-        <rect x="500" y="142" width="180" height="80" rx="9"/>
+        <path d="M280 74 L400 108 L280 142 L160 108 z"/>
+        <path d="M280 172 L405 206 L280 240 L155 206 z"/>
+        <path d="M280 372 L410 406 L280 440 L150 406 z"/>
+        <rect x="470" y="176" width="220" height="70" rx="9"/>
       </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="470" y="376" width="220" height="68" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
+        <rect x="470" y="82" width="220" height="54" rx="9"/>
+      </g>
+
       <g text-anchor="middle">
-        <text class="n-lab" x="350" y="41">Name the language in the command</text>
-        <text class="n-lab" x="350" y="109">Which one?</text>
-        <text class="n-lab" x="110" y="168">en</text><text class="n-sub" x="110" y="188">English in, English out</text>
-        <text class="n-lab" x="350" y="168">zh</text><text class="n-sub" x="350" y="188">Chinese in, Traditional out</text>
-        <text class="n-lab" x="590" y="166" fill="var(--s2)">km</text>
-        <text class="n-sub" x="590" y="186">Khmer. Run the same file</text>
-        <text class="n-sub" x="590" y="202">twice, the text differs</text>
-        <text class="n-sub" x="590" y="218">(English does not)</text>
+        <text class="n-lab" x="280" y="30">Before you run, ask once</text>
+        <text class="n-sub" x="280" y="46">one message, two questions</text>
+        <text class="n-lab" x="280" y="113">How many people?</text>
+        <text class="n-lab" x="580" y="104" fill="var(--muted)">One voice</text>
+        <text class="n-sub" x="580" y="122">nothing to separate</text>
+        <text class="n-lab" x="280" y="204">Roster complete?</text>
+        <text class="n-sub" x="280" y="221">2–3 clues each</text>
+        <text class="n-lab" x="580" y="198" fill="var(--s2)">Ask before you run</text>
+        <text class="n-sub" x="580" y="216">not after twenty segments</text>
+        <text class="n-sub" x="580" y="233">come back marked [?]</text>
+        <text class="n-lab" x="280" y="300">Fingerprints go in every prompt</text>
+        <text class="n-sub" x="280" y="318">identify people by what they say,</text>
+        <text class="n-sub" x="280" y="335">not by who talks more</text>
+        <text class="n-lab" x="280" y="411">Checking a name?</text>
+        <text class="n-lab" x="580" y="400" fill="var(--crit)">That is not a check</text>
+        <text class="n-sub" x="580" y="418">a re-run is a new document,</text>
+        <text class="n-sub" x="580" y="435">not a second opinion</text>
+        <text class="n-lab" x="280" y="494">A correction table above the body</text>
+        <text class="n-sub" x="280" y="512">a row is ticked once that person answered</text>
+        <text class="n-sub" x="280" y="529">the body itself is never edited</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="433" y="100">one</text><text x="314" y="162">several</text>
+        <text x="435" y="198">no</text><text x="254" y="252">yes</text>
+        <text x="437" y="396">re-run</text><text x="344" y="462">the only way</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>Do it</span>
-      <span><i style="background:var(--s2)"></i>Watch out</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--crit)"></i>Stop here</span>
+      <span><i style="background:var(--deemph)"></i>Nothing to do</span>
     </div>
   </figure>
-  <div class="note"><b>Why it works this way</b><p>This is not a translator. Changing language is a separate step after the transcript exists — that way "what he actually said" and "how someone translated it" never end up in the same file. The Khmer route needs the same care: two runs that come out differently are not a sign that anyone misremembered.</p></div>
+  <div class="note"><b>Why it works this way</b><p>The fingerprints — the two or three things only that person would say — are the one thing you have that the model does not, which is why an incomplete roster gets fixed before the run. And because two runs of one file are two different documents, a re-run can never settle a name; only the person can.</p></div>
 </section>
 
 <section lang="zh-TW">
-  <h2>圖三 · 拿到字之後</h2>
+  <h2>圖三 · 拿到之後</h2>
   <p class="sub">逐字稿不是任何人要的東西，它是原料。</p>
   <figure>
-    <figcaption>藍＝做事　橘＝要判斷／多一步　灰＝到這裡就好</figcaption>
-    <svg viewBox="0 0 700 460" role="img" aria-label="流程圖：逐字稿先附一份 recap，要交給別人就先核名字數字日期，有錯就在正文上方加對照表，沒錯就送出">
-      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+    <figcaption>兩個檔之後，三條路各走各的</figcaption>
+    <svg viewBox="0 0 700 445" role="img" aria-label="流程圖：兩個檔一起落地才算做完；沒有交出去就會在暫存區過期；交出去之後分三條路——歸位與分流、寫這批的摘要、給外面的人看之前的四道核對——三條都在下游，這支到兩個檔就停。">
+      <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
         <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
-        <marker id="ar3o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
-        <path d="M300 58 L300 78"/>
-        <path d="M300 140 L300 164"/>
-        <path d="M300 216 L300 248"/>
-        <path d="M300 300 L300 320"/>
-        <path d="M300 376 L300 398"/>
+        <marker id="a3r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker>
+        <marker id="a3g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a3)">
+        <path d="M350 62 L350 88"/>
+        <path d="M350 156 L350 226"/>
+        <path d="M110 196 L110 226"/>
+        <path d="M590 196 L590 226"/>
       </g>
-      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar3o)">
-        <path d="M392 348 L466 348"/>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none">
+        <path d="M110 196 L590 196"/>
       </g>
-      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#ar3)">
-        <path d="M392 190 L488 190"/>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#a3r)">
+        <path d="M470 122 L526 122"/>
       </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none">
+        <path d="M110 320 L110 346 L350 346"/>
+        <path d="M590 320 L590 346 L350 346"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#a3g)">
+        <path d="M350 320 L350 372"/>
+      </g>
+
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="170" y="18" width="260" height="40" rx="9"/>
-        <rect x="110" y="78" width="380" height="62" rx="9"/>
-        <rect x="140" y="248" width="320" height="52" rx="9"/>
-        <rect x="200" y="398" width="200" height="44" rx="9"/>
+        <rect x="170" y="10" width="360" height="52" rx="9"/>
+        <rect x="10" y="226" width="200" height="94" rx="9"/>
+        <rect x="250" y="226" width="200" height="94" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M300 164 L392 190 L300 216 L208 190 z"/>
-        <path d="M300 320 L392 348 L300 376 L208 348 z"/>
-        <rect x="470" y="322" width="215" height="52" rx="9"/>
+        <path d="M350 88 L470 122 L350 156 L230 122 z"/>
+        <rect x="490" y="226" width="200" height="94" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="530" y="96" width="160" height="52" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
-        <rect x="492" y="168" width="180" height="44" rx="9"/>
+        <rect x="170" y="372" width="360" height="58" rx="9"/>
       </g>
+
       <g text-anchor="middle">
-        <text class="n-lab" x="300" y="43">逐字稿出來了</text>
-        <text class="n-lab" x="300" y="105">同一則訊息就附一份 recap</text>
-        <text class="n-sub" x="300" y="125">講了什麼・決定了什麼・誰要做什麼・還沒解的</text>
-        <text class="n-lab" x="300" y="195">要拿給別人嗎？</text>
-        <text class="n-sub" x="582" y="196" fill="var(--muted)">到這裡就好</text>
-        <text class="n-lab" x="300" y="272">核名字、數字、日期</text>
-        <text class="n-sub" x="300" y="291">這三種最不可信，錯的長得跟對的一樣</text>
-        <text class="n-lab" x="300" y="354">有錯？</text>
-        <text class="n-lab" x="578" y="343" fill="var(--s2)">正文上方加一張對照表</text>
-        <text class="n-sub" x="578" y="362">正文一個字都不改</text>
-        <text class="n-lab" x="300" y="426">可以送出</text>
+        <text class="n-lab" x="350" y="34">做完＝兩個檔一起落地</text>
+        <text class="n-sub" x="350" y="52">逐字稿與原始音檔，同名、同層</text>
+        <text class="n-lab" x="350" y="120">交出去了嗎？</text>
+        <text class="n-sub" x="350" y="137">暫存區會過期</text>
+        <text class="n-lab" x="610" y="118" fill="var(--crit)">沒人接就過期</text>
+        <text class="n-sub" x="610" y="136">30 天，然後就沒了</text>
+        <text class="n-lab" x="110" y="250">歸位與分流</text>
+        <text class="n-sub" x="110" y="268">屬於哪個專案、搬過去</text>
+        <text class="n-sub" x="110" y="285">更新狀態</text>
+        <text class="n-lab" x="350" y="250">這一批的摘要</text>
+        <text class="n-sub" x="350" y="268">只從逐字那層寫</text>
+        <text class="n-sub" x="350" y="285">聽不清楚的地方要點名</text>
+        <text class="n-lab" x="590" y="248" fill="var(--s2)">要給外面的人看</text>
+        <text class="n-sub" x="590" y="266">出門前核四件：名字與數字、</text>
+        <text class="n-sub" x="590" y="283">敏感內容、每個檔的覆蓋、</text>
+        <text class="n-sub" x="590" y="300">還有口頭承諾</text>
+        <text class="n-lab" x="350" y="396" fill="var(--muted)">三條都在下游</text>
+        <text class="n-sub" x="350" y="414">到兩個檔就停，但總得有人接手</text>
       </g>
       <g class="e-lab" text-anchor="middle">
-        <text x="437" y="182">否</text><text x="284" y="238">是</text>
-        <text x="429" y="340">是</text><text x="284" y="392">否</text>
+        <text x="498" y="114">否</text><text x="326" y="180">是</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>做事</span>
       <span><i style="background:var(--s2)"></i>判斷／多一步</span>
-      <span><i style="background:var(--deemph)"></i>到這裡就好</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+      <span><i style="background:var(--deemph)"></i>背景</span>
     </div>
   </figure>
-  <div class="note"><b>為什麼要這樣設計</b><p>改正文會毀掉唯一的紀錄：模型到底聽成什麼。留著它，日後才有辦法用更好的模型重新對一次。高棉語沒有固定原稿可以重對，能回頭對的只有錄音檔本身。</p></div>
+  <div class="note"><b>為什麼要這樣設計</b><p>音檔留在旁邊，是因為轉錄不可重現——錄音是唯一還能回頭對的東西。而那是 30 天的暫存區：做完、正確、沒人接的逐字稿，一樣是弄丟了。</p></div>
 </section>
 
 <section lang="en">
-  <h2>Diagram 3 · After you have the text</h2>
+  <h2>Diagram 3 · Once you have it</h2>
   <p class="sub">Nobody wants a transcript. It is raw material.</p>
   <figure>
-    <figcaption>Blue = do it　Orange = decide / extra step　Grey = stop here</figcaption>
-    <svg viewBox="0 0 700 460" role="img" aria-label="Flowchart: attach a recap to the transcript; if it goes to someone else, check names, numbers and dates; if something is wrong, add a correction table above the text; if not, send it.">
-      <defs><marker id="ar3e" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+    <figcaption>After the two files, three ways out</figcaption>
+    <svg viewBox="0 0 700 445" role="img" aria-label="Flowchart: done means two files landing together; unhanded-on, the transcript expires in staging; once handed on it fans out three ways — filing and routing, a recap of the batch, and four checks before anything goes to a third party — all three downstream of where this skill stops.">
+      <defs><marker id="b3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
         <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
-        <marker id="ar3oe" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
-        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker></defs>
-      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#ar3e)">
-        <path d="M300 58 L300 78"/>
-        <path d="M300 140 L300 164"/>
-        <path d="M300 216 L300 248"/>
-        <path d="M300 300 L300 320"/>
-        <path d="M300 376 L300 398"/>
+        <marker id="b3r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker>
+        <marker id="b3g" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--deemph)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b3)">
+        <path d="M350 62 L350 88"/>
+        <path d="M350 156 L350 226"/>
+        <path d="M110 196 L110 226"/>
+        <path d="M590 196 L590 226"/>
       </g>
-      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#ar3oe)">
-        <path d="M392 348 L466 348"/>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none">
+        <path d="M110 196 L590 196"/>
       </g>
-      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#ar3e)">
-        <path d="M392 190 L488 190"/>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#b3r)">
+        <path d="M470 122 L526 122"/>
       </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none">
+        <path d="M110 320 L110 346 L350 346"/>
+        <path d="M590 320 L590 346 L350 346"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="1.8" fill="none" marker-end="url(#b3g)">
+        <path d="M350 320 L350 372"/>
+      </g>
+
       <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
-        <rect x="170" y="18" width="260" height="40" rx="9"/>
-        <rect x="110" y="78" width="380" height="62" rx="9"/>
-        <rect x="140" y="248" width="320" height="52" rx="9"/>
-        <rect x="200" y="398" width="200" height="44" rx="9"/>
+        <rect x="170" y="10" width="360" height="52" rx="9"/>
+        <rect x="10" y="226" width="200" height="94" rx="9"/>
+        <rect x="250" y="226" width="200" height="94" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
-        <path d="M300 164 L392 190 L300 216 L208 190 z"/>
-        <path d="M300 320 L392 348 L300 376 L208 348 z"/>
-        <rect x="470" y="322" width="215" height="52" rx="9"/>
+        <path d="M350 88 L470 122 L350 156 L230 122 z"/>
+        <rect x="490" y="226" width="200" height="94" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="530" y="96" width="160" height="52" rx="9"/>
       </g>
       <g fill="var(--nodebg)" stroke="var(--deemph)" stroke-width="2">
-        <rect x="492" y="168" width="180" height="44" rx="9"/>
+        <rect x="170" y="372" width="360" height="58" rx="9"/>
       </g>
+
       <g text-anchor="middle">
-        <text class="n-lab" x="300" y="43">The transcript is out</text>
-        <text class="n-lab" x="300" y="105">Attach a recap in the same message</text>
-        <text class="n-sub" x="300" y="125">said · decided · who does what · still open</text>
-        <text class="n-lab" x="300" y="195">Sending it out?</text>
-        <text class="n-sub" x="582" y="196" fill="var(--muted)">Stop here</text>
-        <text class="n-lab" x="300" y="272">Check names, numbers, dates</text>
-        <text class="n-sub" x="300" y="291">the least reliable — wrong ones look right</text>
-        <text class="n-lab" x="300" y="354">Anything wrong?</text>
-        <text class="n-lab" x="578" y="343" fill="var(--s2)">A correction table on top</text>
-        <text class="n-sub" x="578" y="362">the text itself stays untouched</text>
-        <text class="n-lab" x="300" y="426">Ready to send</text>
+        <text class="n-lab" x="350" y="34">Done: two files land together</text>
+        <text class="n-sub" x="350" y="52">the transcript and the audio, same name, same folder</text>
+        <text class="n-lab" x="350" y="120">Handed on?</text>
+        <text class="n-sub" x="350" y="137">staging expires</text>
+        <text class="n-lab" x="610" y="118" fill="var(--crit)">It expires unfiled</text>
+        <text class="n-sub" x="610" y="136">30 days, then gone</text>
+        <text class="n-lab" x="110" y="250">Filing and routing</text>
+        <text class="n-sub" x="110" y="268">which project it belongs to,</text>
+        <text class="n-sub" x="110" y="285">moving it, updating status</text>
+        <text class="n-lab" x="350" y="250">A recap of the batch</text>
+        <text class="n-sub" x="350" y="268">from the verbatim layer only,</text>
+        <text class="n-sub" x="350" y="285">naming what was unclear</text>
+        <text class="n-lab" x="590" y="248" fill="var(--s2)">Going to a third party</text>
+        <text class="n-sub" x="590" y="266">four checks first — entities,</text>
+        <text class="n-sub" x="590" y="283">sensitive material, coverage,</text>
+        <text class="n-sub" x="590" y="300">spoken commitments</text>
+        <text class="n-lab" x="350" y="396" fill="var(--muted)">All three are downstream</text>
+        <text class="n-sub" x="350" y="414">it stops at the two files — somebody has to pick it up</text>
       </g>
       <g class="e-lab" text-anchor="middle">
-        <text x="437" y="182">No</text><text x="278" y="238">Yes</text>
-        <text x="429" y="340">Yes</text><text x="278" y="392">No</text>
+        <text x="498" y="114">no</text><text x="328" y="180">yes</text>
       </g>
     </svg>
     <div class="legend">
       <span><i style="background:var(--s1)"></i>Do it</span>
       <span><i style="background:var(--s2)"></i>Decide / extra step</span>
-      <span><i style="background:var(--deemph)"></i>Stop here</span>
+      <span><i style="background:var(--crit)"></i>Stop here</span>
+      <span><i style="background:var(--deemph)"></i>Context</span>
     </div>
   </figure>
-  <div class="note"><b>Why it works this way</b><p>Editing the text destroys the only record there is of what the model actually heard. Keep it, and a better model can be run against it later. Khmer has no fixed reference version to check against — the only thing to go back to is the recording itself.</p></div>
+  <div class="note"><b>Why it works this way</b><p>The audio is kept beside the transcript because transcription is not reproducible — the recording is the only thing anyone can go back to. And that folder is a 30-day staging area: a transcript that is finished, correct and unfiled is still a transcript that was lost.</p></div>
 </section>
 
 <section lang="zh-TW">
   <h2>整台機器的兩條原則</h2>
   <div class="two">
-    <div class="box"><b>判斷點都在前面</b><ul>
-      <li>格式、人數、語言，三件事在動手前就要決定</li>
-      <li>它們出錯時都不會報錯，只會給你一份看起來很正常的東西</li>
+    <div class="box"><b>錯了不會報錯</b><ul>
+      <li>掉一段、標籤對調、名字聽錯，出來的檔都很正常</li>
+      <li>四道閘各擋一種，少跑一道等於沒驗</li>
     </ul></div>
-    <div class="box"><b>沒做的事就說沒做</b><ul>
-      <li>不做講者分離、不做翻譯</li>
-      <li>名字與數字的正確性，由你在交出去之前確認</li>
+    <div class="box"><b>兩個檔才算做完</b><ul>
+      <li>逐字稿與音檔同名同層，缺一個就還沒完</li>
+      <li>正文永遠不改，更正只放在上方那張表</li>
     </ul></div>
   </div>
+  <p style="margin-top:18px">踩過的坑 → <code>references/QA.md</code></p>
 </section>
 
 <section lang="en">
   <h2>Two rules for the whole machine</h2>
   <div class="two">
-    <div class="box"><b>The decisions all come first</b><ul>
-      <li>Format, number of speakers, language: all three are settled before you start</li>
-      <li>When they go wrong nothing errors out — you just get something that looks perfectly normal</li>
+    <div class="box"><b>Nothing errors out</b><ul>
+      <li>A dropped segment, swapped labels, an invented name — the file looks normal in all three cases</li>
+      <li>Each gate catches one silent failure; skipping one is not verifying</li>
     </ul></div>
-    <div class="box"><b>Say plainly what it does not do</b><ul>
-      <li>No speaker separation, no translation</li>
-      <li>Names and numbers are yours to check before you hand the file over</li>
+    <div class="box"><b>Done means two files</b><ul>
+      <li>The transcript and the audio it came from, same name, same folder — one without the other is not done</li>
+      <li>The body is never edited: corrections live in a table above it</li>
     </ul></div>
   </div>
+  <p style="margin-top:18px">Every trap here, in the words people used → <code>references/QA.md</code></p>
 </section>
 
 </div>

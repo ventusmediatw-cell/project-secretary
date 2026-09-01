@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>你的 AI 聽不見聲音 · Your AI Can't Hear</title>
+<title>你的 AI 聽不見 · Your AI Can't Hear</title>
 <style>
 :root{
  --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
@@ -164,10 +164,10 @@ p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:3
 </section>
 
 <section lang="zh-TW">
-  <h2>所以先把聲音<br>變成字。</h2>
-  <p>另一支程式負責聽，它把聲音寫成一份逐字稿。AI 讀那份逐字稿。</p>
+  <h2>所以，讓另一支<br>程式去聽。</h2>
+  <p>它叫 agy。它真的聽得到聲音，把聲音寫成字。你的 AI 讀那些字。</p>
   <div class="big">
-    <svg viewBox="0 0 640 190" role="img" aria-label="聲波經過一支程式，變成一頁文字">
+    <svg viewBox="0 0 640 200" role="img" aria-label="聲波經過一支叫 agy 的程式，變成一頁文字">
       <g fill="none" stroke="var(--s1)" stroke-width="6" stroke-linecap="round">
         <path d="M28 70 L28 116"/><path d="M50 46 L50 140"/><path d="M72 78 L72 108"/>
         <path d="M94 36 L94 150"/><path d="M116 66 L116 120"/><path d="M138 84 L138 102"/>
@@ -178,7 +178,9 @@ p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:3
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
         <rect x="286" y="58" width="130" height="70" rx="14"/>
       </g>
-      <text class="lab" x="351" y="99" text-anchor="middle">轉錄</text>
+      <text x="351" y="104" text-anchor="middle" font-size="30" font-weight="700"
+            fill="var(--ink)">agy</text>
+      <text class="lab-s" x="351" y="152" text-anchor="middle">另一支程式</text>
       <g stroke="var(--axis)" stroke-width="5" fill="none">
         <path d="M434 93 L500 93"/><path d="M484 80 L500 93 L484 106"/>
       </g>
@@ -194,10 +196,10 @@ p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:3
 </section>
 
 <section lang="en">
-  <h2>So turn the sound<br>into text first.</h2>
-  <p>Another program does the listening. It writes the sound down as a transcript. The AI reads that transcript.</p>
+  <h2>So let another<br>program listen.</h2>
+  <p>It is called agy. It really can hear, and it writes the sound down. Your AI reads what it wrote.</p>
   <div class="big">
-    <svg viewBox="0 0 640 190" role="img" aria-label="A waveform passes through a program and becomes a page of text">
+    <svg viewBox="0 0 640 200" role="img" aria-label="A waveform passes through a program called agy and becomes a page of text">
       <g fill="none" stroke="var(--s1)" stroke-width="6" stroke-linecap="round">
         <path d="M28 70 L28 116"/><path d="M50 46 L50 140"/><path d="M72 78 L72 108"/>
         <path d="M94 36 L94 150"/><path d="M116 66 L116 120"/><path d="M138 84 L138 102"/>
@@ -208,7 +210,9 @@ p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:3
       <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
         <rect x="286" y="58" width="130" height="70" rx="14"/>
       </g>
-      <text class="lab" x="351" y="99" text-anchor="middle">transcribe</text>
+      <text x="351" y="104" text-anchor="middle" font-size="30" font-weight="700"
+            fill="var(--ink)">agy</text>
+      <text class="lab-s" x="351" y="152" text-anchor="middle">another program</text>
       <g stroke="var(--axis)" stroke-width="5" fill="none">
         <path d="M434 93 L500 93"/><path d="M484 80 L500 93 L484 106"/>
       </g>
@@ -224,57 +228,173 @@ p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:3
 </section>
 
 <section lang="zh-TW">
-  <h2>一條命令。</h2>
-  <div class="cmd"><code>bash tools/transcribe.sh recording.m4a zh</code></div>
-  <p>最後那個是語言：英文 en、中文 zh、高棉語 km。進去什麼語言，出來就是什麼語言——它不翻譯。</p>
+  <h2>叫它裝一次就好。</h2>
+  <p>你的 AI 會自己把負責聽的那支程式裝好。等瀏覽器跳出來，你用 Google 帳號登入一次——這是唯一要你親手做的事。之後你只要把檔案交出去，再說一句誰在講話。</p>
 </section>
 
 <section lang="en">
-  <h2>One command.</h2>
-  <div class="cmd"><code>bash tools/transcribe.sh recording.m4a en</code></div>
-  <p>The last part is the language: en for English, zh for Chinese, km for Khmer. What goes in comes out in the same language — it does not translate.</p>
+  <h2>Tell it to install once.</h2>
+  <p>Your AI installs the program that does the listening by itself. When a browser window opens, you sign in with your Google account once — that is the only step that needs your hands. After that you just hand over the file and say who was in the room.</p>
+</section>
+
+<section lang="zh-TW">
+  <h2>你拿回兩樣東西。</h2>
+  <p>一句一句的逐字稿，還有聲音裡的線索——誰插了話、哪裡靜了下來、誰在笑。這些，字面上看不出來。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 256" role="img" aria-label="一頁逐字稿，右邊接出三個聲音線索：有人插話、停了四秒、笑聲">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="30" y="20" width="300" height="200" rx="12"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="7" stroke-linecap="round">
+        <path d="M58 58 L302 58"/><path d="M58 88 L302 88"/><path d="M58 118 L250 118"/>
+        <path d="M58 148 L302 148"/><path d="M58 178 L214 178"/>
+      </g>
+      <text class="lab-s" x="180" y="246" text-anchor="middle">說了什麼</text>
+      <g stroke="var(--s2)" stroke-width="4" fill="none">
+        <path d="M330 62 L378 62"/><path d="M330 120 L378 120"/><path d="M330 178 L378 178"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
+        <rect x="380" y="40" width="240" height="44" rx="10"/>
+        <rect x="380" y="98" width="240" height="44" rx="10"/>
+        <rect x="380" y="156" width="240" height="44" rx="10"/>
+      </g>
+      <g text-anchor="middle" fill="var(--ink)" font-size="22">
+        <text x="500" y="70">有人插話</text>
+        <text x="500" y="128">靜了四秒</text>
+        <text x="500" y="186">笑聲</text>
+      </g>
+      <text class="lab-s" x="500" y="232" text-anchor="middle">聲音裡的線索</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>You get back<br>two things.</h2>
+  <p>The words, sentence by sentence — and the clues in the sound: who cut in, where it went quiet, who laughed. None of that shows up in the text.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 256" role="img" aria-label="A page of transcript, with three sound clues branching off it: someone cut in, a four-second pause, laughter">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="30" y="20" width="300" height="200" rx="12"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="7" stroke-linecap="round">
+        <path d="M58 58 L302 58"/><path d="M58 88 L302 88"/><path d="M58 118 L250 118"/>
+        <path d="M58 148 L302 148"/><path d="M58 178 L214 178"/>
+      </g>
+      <text class="lab-s" x="180" y="246" text-anchor="middle">what was said</text>
+      <g stroke="var(--s2)" stroke-width="4" fill="none">
+        <path d="M330 62 L378 62"/><path d="M330 120 L378 120"/><path d="M330 178 L378 178"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
+        <rect x="380" y="40" width="240" height="44" rx="10"/>
+        <rect x="380" y="98" width="240" height="44" rx="10"/>
+        <rect x="380" y="156" width="240" height="44" rx="10"/>
+      </g>
+      <g text-anchor="middle" fill="var(--ink)" font-size="20">
+        <text x="500" y="70">someone cut in</text>
+        <text x="500" y="128">a four-second pause</text>
+        <text x="500" y="186">laughter</text>
+      </g>
+      <text class="lab-s" x="500" y="232" text-anchor="middle">clues in the sound</text>
+    </svg>
+  </div>
 </section>
 
 <section lang="zh-TW">
   <h2>名字、數字和日期<br>最容易錯。</h2>
-  <p>錯的那幾個字，看起來跟對的一模一樣。寄出去、貼進共用文件之前，自己核一次。</p>
+  <p>錯的那個字，長得跟對的一模一樣。先回你自己的資料查過，再拿去用。</p>
   <div class="big">
-    <svg viewBox="0 0 640 170" role="img" aria-label="三個標籤：人名、數字、日期，每個旁邊有一個要打勾的方框">
+    <svg viewBox="0 0 640 190" role="img" aria-label="三個標籤：人名、數字、日期，每個下面有一個放大鏡">
       <g fill="var(--nodebg)" stroke="var(--warn)" stroke-width="4">
-        <rect x="20" y="40" width="180" height="90" rx="14"/>
-        <rect x="230" y="40" width="180" height="90" rx="14"/>
-        <rect x="440" y="40" width="180" height="90" rx="14"/>
+        <rect x="20" y="30" width="180" height="110" rx="14"/>
+        <rect x="230" y="30" width="180" height="110" rx="14"/>
+        <rect x="440" y="30" width="180" height="110" rx="14"/>
       </g>
       <g text-anchor="middle" fill="var(--ink)" font-size="26" font-weight="700">
-        <text x="110" y="82">人名</text><text x="320" y="82">數字</text><text x="530" y="82">日期</text>
+        <text x="110" y="78">人名</text><text x="320" y="78">數字</text><text x="530" y="78">日期</text>
       </g>
       <g fill="none" stroke="var(--warn)" stroke-width="5" stroke-linecap="round">
-        <path d="M96 100 L106 112 L126 92"/>
-        <path d="M306 100 L316 112 L336 92"/>
-        <path d="M516 100 L526 112 L546 92"/>
+        <circle cx="106" cy="106" r="14"/><path d="M117 117 L130 130"/>
+        <circle cx="316" cy="106" r="14"/><path d="M327 117 L340 130"/>
+        <circle cx="526" cy="106" r="14"/><path d="M537 117 L550 130"/>
       </g>
+      <text class="lab-s" x="320" y="172" text-anchor="middle">先查過，再拿去用</text>
     </svg>
   </div>
 </section>
 
 <section lang="en">
   <h2>Names, numbers and dates<br>break first.</h2>
-  <p>A wrong word looks exactly like a right one. Check them yourself before you send it out or paste it into a shared document.</p>
+  <p>A wrong word looks exactly like a right one. Look each one up in your own records before you use it.</p>
   <div class="big">
-    <svg viewBox="0 0 640 170" role="img" aria-label="Three labels — names, numbers, dates — each with a box to tick">
+    <svg viewBox="0 0 640 190" role="img" aria-label="Three labels — names, numbers, dates — each with a magnifying glass under it">
       <g fill="var(--nodebg)" stroke="var(--warn)" stroke-width="4">
-        <rect x="20" y="40" width="180" height="90" rx="14"/>
-        <rect x="230" y="40" width="180" height="90" rx="14"/>
-        <rect x="440" y="40" width="180" height="90" rx="14"/>
+        <rect x="20" y="30" width="180" height="110" rx="14"/>
+        <rect x="230" y="30" width="180" height="110" rx="14"/>
+        <rect x="440" y="30" width="180" height="110" rx="14"/>
       </g>
       <g text-anchor="middle" fill="var(--ink)" font-size="26" font-weight="700">
-        <text x="110" y="82">Names</text><text x="320" y="82">Numbers</text><text x="530" y="82">Dates</text>
+        <text x="110" y="78">Names</text><text x="320" y="78">Numbers</text><text x="530" y="78">Dates</text>
       </g>
       <g fill="none" stroke="var(--warn)" stroke-width="5" stroke-linecap="round">
-        <path d="M96 100 L106 112 L126 92"/>
-        <path d="M306 100 L316 112 L336 92"/>
-        <path d="M516 100 L526 112 L546 92"/>
+        <circle cx="106" cy="106" r="14"/><path d="M117 117 L130 130"/>
+        <circle cx="316" cy="106" r="14"/><path d="M327 117 L340 130"/>
+        <circle cx="526" cy="106" r="14"/><path d="M537 117 L550 130"/>
       </g>
+      <text class="lab-s" x="320" y="172" text-anchor="middle">look it up, then use it</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>錄音跟逐字稿<br>放在一起。</h2>
+  <p>它每次聽出來的都不太一樣。哪句話有爭議的時候，只有原始錄音能回頭查。同一個名字、同一個資料夾。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="逐字稿與錄音兩個檔案並排，用同一個檔名放在同一個資料夾">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="90" y="24" width="180" height="150" rx="12"/>
+      </g>
+      <g stroke="var(--ink2)" stroke-width="5" stroke-linecap="round">
+        <path d="M114 58 L246 58"/><path d="M114 84 L246 84"/><path d="M114 110 L210 110"/>
+        <path d="M114 136 L246 136"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="370" y="24" width="180" height="150" rx="12"/>
+      </g>
+      <g fill="none" stroke="var(--s1)" stroke-width="6" stroke-linecap="round">
+        <path d="M396 84 L396 114"/><path d="M412 66 L412 132"/><path d="M428 90 L428 108"/>
+        <path d="M444 56 L444 142"/><path d="M460 78 L460 120"/><path d="M476 92 L476 106"/>
+        <path d="M492 68 L492 130"/><path d="M508 86 L508 112"/><path d="M524 94 L524 104"/>
+      </g>
+      <text class="lab-s" x="180" y="198" text-anchor="middle">2026-05-14-team.md</text>
+      <text class="lab-s" x="460" y="198" text-anchor="middle">2026-05-14-team.m4a</text>
+      <text class="lab" x="320" y="228" text-anchor="middle">同名、同一個資料夾</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>Keep the recording<br>next to the transcript.</h2>
+  <p>It never hears it quite the same way twice. When a line is disputed, the audio is the only thing to go back to. Same name, same folder.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="A transcript file and an audio file side by side, same name, same folder">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="90" y="24" width="180" height="150" rx="12"/>
+      </g>
+      <g stroke="var(--ink2)" stroke-width="5" stroke-linecap="round">
+        <path d="M114 58 L246 58"/><path d="M114 84 L246 84"/><path d="M114 110 L210 110"/>
+        <path d="M114 136 L246 136"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="370" y="24" width="180" height="150" rx="12"/>
+      </g>
+      <g fill="none" stroke="var(--s1)" stroke-width="6" stroke-linecap="round">
+        <path d="M396 84 L396 114"/><path d="M412 66 L412 132"/><path d="M428 90 L428 108"/>
+        <path d="M444 56 L444 142"/><path d="M460 78 L460 120"/><path d="M476 92 L476 106"/>
+        <path d="M492 68 L492 130"/><path d="M508 86 L508 112"/><path d="M524 94 L524 104"/>
+      </g>
+      <text class="lab-s" x="180" y="198" text-anchor="middle">2026-05-14-team.md</text>
+      <text class="lab-s" x="460" y="198" text-anchor="middle">2026-05-14-team.m4a</text>
+      <text class="lab" x="320" y="228" text-anchor="middle">same name, same folder</text>
     </svg>
   </div>
 </section>
