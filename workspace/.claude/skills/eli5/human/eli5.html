@@ -1,0 +1,369 @@
+<meta charset="utf-8">
+<title>不懂的東西，丟一句話過去 · Send One Line About the Thing You Don't Get</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#d5d4cd;
+ --warn:#fab219;--crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:0 22px 110px}
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+section:last-child,section:nth-last-child(2){border:0}
+h1{font-size:clamp(40px,9vw,78px);line-height:1.02;margin:0;letter-spacing:-.03em}
+h2{font-size:clamp(28px,5.6vw,46px);line-height:1.1;margin:0 0 10px;letter-spacing:-.02em}
+p{font-size:clamp(17px,2.4vw,21px);color:var(--ink2);margin:12px 0 0;max-width:34em}
+.big{margin:34px 0 0;background:var(--surface);border:1px solid var(--line);
+ border-radius:18px;padding:24px 18px;overflow-x:auto}
+.big svg{width:100%;height:auto;display:block;min-width:540px}
+.lab{font-size:17px;fill:var(--ink)}
+.lab-s{font-size:14px;fill:var(--muted)}
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang|="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
+</style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
+
+<div class="wrap">
+
+<section lang="zh-TW">
+  <h1>不懂的東西，<br>丟一句話過去。</h1>
+  <p>打上 eli5，加上那個你看不懂的東西。你要做的就這樣。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 230" role="img" aria-label="一個對話泡泡寫著 eli5 加上一個問題，箭頭指向一頁回來的東西：一個大圖形和幾行字">
+      <path d="M44 44 H324 A20 20 0 0 1 344 64 V120 A20 20 0 0 1 324 140 H114 L74 180 V140 H44 A20 20 0 0 1 24 120 V64 A20 20 0 0 1 44 44 Z"
+            fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5" stroke-linejoin="round"/>
+      <text x="184" y="103" text-anchor="middle" font-size="26" fill="var(--ink)">eli5 什麼是利率</text>
+      <text class="lab-s" x="184" y="212" text-anchor="middle">你打的字</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M358 92 L414 92"/><path d="M398 79 L414 92 L398 105"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="430" y="30" width="186" height="150" rx="12"/>
+      </g>
+      <circle cx="523" cy="88" r="32" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M456 142 L590 142"/><path d="M456 162 L560 162"/>
+      </g>
+      <text class="lab-s" x="523" y="212" text-anchor="middle">回來的一頁</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h1>Don't get it?<br>Send one line.</h1>
+  <p>Type eli5, then the thing you don't get. That is the whole of your job.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 230" role="img" aria-label="A speech bubble saying eli5 and a question, an arrow pointing to a page that comes back: one big shape and a few lines of text">
+      <path d="M44 44 H324 A20 20 0 0 1 344 64 V120 A20 20 0 0 1 324 140 H114 L74 180 V140 H44 A20 20 0 0 1 24 120 V64 A20 20 0 0 1 44 44 Z"
+            fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5" stroke-linejoin="round"/>
+      <text x="184" y="101" text-anchor="middle" font-size="20" fill="var(--ink)">eli5 what an interest rate is</text>
+      <text class="lab-s" x="184" y="212" text-anchor="middle">what you type</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M358 92 L414 92"/><path d="M398 79 L414 92 L398 105"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="430" y="30" width="186" height="150" rx="12"/>
+      </g>
+      <circle cx="523" cy="88" r="32" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M456 142 L590 142"/><path d="M456 162 L560 162"/>
+      </g>
+      <text class="lab-s" x="523" y="212" text-anchor="middle">the page you get</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>它假設你<br>什麼都不懂。</h2>
+  <p>同一件事，別人是寫給已經懂的人看的。這裡是重講一次，講給第一次聽到的人。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="左邊一頁密密麻麻的字，箭頭指向右邊一頁：一個大圖形加兩行字">
+      <g fill="var(--nodebg)" stroke="var(--axis)" stroke-width="3">
+        <rect x="20" y="24" width="250" height="170" rx="12"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M44 52 L246 52"/><path d="M44 74 L246 74"/><path d="M44 96 L246 96"/>
+        <path d="M44 118 L246 118"/><path d="M44 140 L246 140"/><path d="M44 162 L190 162"/>
+      </g>
+      <text class="lab-s" x="145" y="222" text-anchor="middle">寫給已經懂的人</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M292 109 L352 109"/><path d="M336 96 L352 109 L336 122"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="372" y="24" width="248" height="170" rx="12"/>
+      </g>
+      <circle cx="496" cy="86" r="40" fill="none" stroke="var(--s1)" stroke-width="6"/>
+      <g stroke="var(--ink2)" stroke-width="6" stroke-linecap="round">
+        <path d="M412 148 L580 148"/><path d="M412 170 L520 170"/>
+      </g>
+      <text class="lab-s" x="496" y="222" text-anchor="middle">寫給第一次聽的人</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>It assumes you<br>know nothing.</h2>
+  <p>Everywhere else, the same thing is written for people who already understand it. Here it gets told again, to someone hearing it for the first time.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="A dense page of text on the left, an arrow pointing to a page on the right holding one big shape and two lines of text">
+      <g fill="var(--nodebg)" stroke="var(--axis)" stroke-width="3">
+        <rect x="20" y="24" width="250" height="170" rx="12"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M44 52 L246 52"/><path d="M44 74 L246 74"/><path d="M44 96 L246 96"/>
+        <path d="M44 118 L246 118"/><path d="M44 140 L246 140"/><path d="M44 162 L190 162"/>
+      </g>
+      <text class="lab-s" x="145" y="222" text-anchor="middle">for people who already know</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M292 109 L352 109"/><path d="M336 96 L352 109 L336 122"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="372" y="24" width="248" height="170" rx="12"/>
+      </g>
+      <circle cx="496" cy="86" r="40" fill="none" stroke="var(--s1)" stroke-width="6"/>
+      <g stroke="var(--ink2)" stroke-width="6" stroke-linecap="round">
+        <path d="M412 148 L580 148"/><path d="M412 170 L520 170"/>
+      </g>
+      <text class="lab-s" x="496" y="222" text-anchor="middle">for a first-time listener</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>一頁。圖很大，<br>字很少。</h2>
+  <p>圖是主角，字是配角。少掉的那些字是拿掉的，不是漏掉的。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 280" role="img" aria-label="一頁的內部：上面一大塊是圖，圖裡是圓形接方形再接圓形，下面只剩兩行字">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="70" y="16" width="500" height="210" rx="16"/>
+      </g>
+      <rect x="96" y="40" width="448" height="132" rx="10" fill="none"
+            stroke="var(--s1)" stroke-width="4"/>
+      <circle cx="170" cy="106" r="30" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--s1)" stroke-width="5" fill="none">
+        <path d="M212 106 L268 106"/><path d="M254 94 L268 106 L254 118"/>
+      </g>
+      <rect x="286" y="76" width="120" height="60" rx="10" fill="none"
+            stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--s1)" stroke-width="5" fill="none">
+        <path d="M420 106 L476 106"/><path d="M462 94 L476 106 L462 118"/>
+      </g>
+      <circle cx="506" cy="106" r="28" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M100 194 L420 194"/><path d="M100 212 L300 212"/>
+      </g>
+      <text class="lab-s" x="320" y="258" text-anchor="middle">圖佔掉一整頁，字只剩幾行</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>One page. Big pictures,<br>few words.</h2>
+  <p>The pictures do the work and the words help out. What isn't there was taken out, not left out.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 280" role="img" aria-label="Inside one page: a large picture area holding a circle, a box and a circle, with only two lines of text underneath">
+      <g fill="var(--nodebg)" stroke="var(--ink)" stroke-width="4">
+        <rect x="70" y="16" width="500" height="210" rx="16"/>
+      </g>
+      <rect x="96" y="40" width="448" height="132" rx="10" fill="none"
+            stroke="var(--s1)" stroke-width="4"/>
+      <circle cx="170" cy="106" r="30" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--s1)" stroke-width="5" fill="none">
+        <path d="M212 106 L268 106"/><path d="M254 94 L268 106 L254 118"/>
+      </g>
+      <rect x="286" y="76" width="120" height="60" rx="10" fill="none"
+            stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--s1)" stroke-width="5" fill="none">
+        <path d="M420 106 L476 106"/><path d="M462 94 L476 106 L462 118"/>
+      </g>
+      <circle cx="506" cy="106" r="28" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M100 194 L420 194"/><path d="M100 212 L300 212"/>
+      </g>
+      <text class="lab-s" x="320" y="258" text-anchor="middle">the picture takes the page, the words are a few lines</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>它給的是第一眼看懂，<br>不是全部。</h2>
+  <p>看完還想知道實際怎麼跑、什麼情況會走哪一條——那是另一種圖，再說一次就好。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 250" role="img" aria-label="從你拿到的那一頁分出兩條路：一條是看懂了就結束，另一條是想知道怎麼跑就再要一張流程圖">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="16" y="76" width="160" height="104" rx="12"/>
+      </g>
+      <circle cx="96" cy="116" r="20" fill="none" stroke="var(--s1)" stroke-width="4"/>
+      <path d="M44 152 L148 152" stroke="var(--deemph)" stroke-width="5" stroke-linecap="round"/>
+      <text class="lab-s" x="96" y="206" text-anchor="middle">你拿到的那一頁</text>
+      <g fill="none" stroke="var(--s1)" stroke-width="5">
+        <path d="M176 100 L230 100 L230 62 L296 62"/><path d="M282 49 L296 62 L282 75"/>
+      </g>
+      <g fill="none" stroke="var(--s2)" stroke-width="5">
+        <path d="M176 160 L230 160 L230 190 L296 190"/><path d="M282 177 L296 190 L282 203"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="312" y="28" width="308" height="68" rx="12"/>
+      </g>
+      <text x="466" y="70" text-anchor="middle" font-size="22" fill="var(--ink)">看懂了，就結束</text>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
+        <rect x="312" y="150" width="308" height="82" rx="12"/>
+      </g>
+      <text x="466" y="184" text-anchor="middle" font-size="20" fill="var(--ink)">還想知道實際怎麼跑</text>
+      <text x="466" y="214" text-anchor="middle" font-size="20" fill="var(--ink)">再問一次，要一張流程圖</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>It gets you to "oh, I see" —<br>not to the whole truth.</h2>
+  <p>If you then want to know how it actually runs, and which way it goes when — that is a different kind of picture. Just ask again.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 250" role="img" aria-label="Two paths lead out of the page you got: one ends because you understand, the other asks again for a flow chart">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="16" y="76" width="160" height="104" rx="12"/>
+      </g>
+      <circle cx="96" cy="116" r="20" fill="none" stroke="var(--s1)" stroke-width="4"/>
+      <path d="M44 152 L148 152" stroke="var(--deemph)" stroke-width="5" stroke-linecap="round"/>
+      <text class="lab-s" x="96" y="206" text-anchor="middle">the page you got</text>
+      <g fill="none" stroke="var(--s1)" stroke-width="5">
+        <path d="M176 100 L230 100 L230 62 L296 62"/><path d="M282 49 L296 62 L282 75"/>
+      </g>
+      <g fill="none" stroke="var(--s2)" stroke-width="5">
+        <path d="M176 160 L230 160 L230 190 L296 190"/><path d="M282 177 L296 190 L282 203"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="312" y="28" width="308" height="68" rx="12"/>
+      </g>
+      <text x="466" y="70" text-anchor="middle" font-size="21" fill="var(--ink)">you get it — done</text>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="4">
+        <rect x="312" y="150" width="308" height="82" rx="12"/>
+      </g>
+      <text x="466" y="184" text-anchor="middle" font-size="19" fill="var(--ink)">still want to know how it runs</text>
+      <text x="466" y="214" text-anchor="middle" font-size="19" fill="var(--ink)">ask again, for a flow chart</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>這個東西本身<br>只有一句話。</h2>
+  <p>沒有步驟，沒有檢查表。多寫的每一條，都在把它變回那份你看不懂的說明書。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="左邊一張卡片上只有一句話，右邊一疊步驟與檢查表被一條紅線劃掉">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5">
+        <rect x="16" y="40" width="290" height="130" rx="16"/>
+      </g>
+      <text x="161" y="96" text-anchor="middle" font-size="20" fill="var(--ink)">講給什麼都不懂的人聽，</text>
+      <text x="161" y="128" text-anchor="middle" font-size="20" fill="var(--ink)">用大圖、少字。</text>
+      <text class="lab-s" x="161" y="200" text-anchor="middle">整份就這一句</text>
+      <g fill="var(--nodebg)" stroke="var(--axis)" stroke-width="3">
+        <rect x="356" y="40" width="264" height="130" rx="14"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="7" stroke-linecap="round">
+        <path d="M380 68 L596 68"/><path d="M380 94 L596 94"/>
+        <path d="M380 120 L540 120"/><path d="M380 146 L596 146"/>
+      </g>
+      <path d="M380 60 L596 152" stroke="var(--crit)" stroke-width="8" stroke-linecap="round"/>
+      <text class="lab-s" x="488" y="200" text-anchor="middle">步驟、角色、檢查表：故意都沒有</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>The thing itself<br>is one sentence.</h2>
+  <p>No steps, no checklist. Every line anyone adds pulls it back towards the manual you couldn't read.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 240" role="img" aria-label="A card on the left carrying a single sentence; on the right a stack of steps and checklists struck through with a red line">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="5">
+        <rect x="16" y="40" width="290" height="130" rx="16"/>
+      </g>
+      <text x="161" y="86" text-anchor="middle" font-size="18" fill="var(--ink)">explain it to someone</text>
+      <text x="161" y="112" text-anchor="middle" font-size="18" fill="var(--ink)">who knows nothing —</text>
+      <text x="161" y="138" text-anchor="middle" font-size="18" fill="var(--ink)">big pictures, few words</text>
+      <text class="lab-s" x="161" y="200" text-anchor="middle">that is the entire thing</text>
+      <g fill="var(--nodebg)" stroke="var(--axis)" stroke-width="3">
+        <rect x="356" y="40" width="264" height="130" rx="14"/>
+      </g>
+      <g stroke="var(--deemph)" stroke-width="7" stroke-linecap="round">
+        <path d="M380 68 L596 68"/><path d="M380 94 L596 94"/>
+        <path d="M380 120 L540 120"/><path d="M380 146 L596 146"/>
+      </g>
+      <path d="M380 60 L596 152" stroke="var(--crit)" stroke-width="8" stroke-linecap="round"/>
+      <text class="lab-s" x="488" y="200" text-anchor="middle">steps, roles, checklists: left out on purpose</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="zh-TW">
+  <h2>沒懂，就直接說。</h2>
+  <p>「再簡單一點」「這張圖我看不懂」——它會重畫一次。看不懂不是你的問題。</p>
+  <div class="big">
+    <svg viewBox="0 0 640 220" role="img" aria-label="兩句話：再簡單一點、這張圖我看不懂，箭頭指向重畫過的一頁">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="20" y="26" width="250" height="62" rx="16"/>
+        <rect x="20" y="110" width="250" height="62" rx="16"/>
+      </g>
+      <text x="145" y="66" text-anchor="middle" font-size="22" fill="var(--ink)">再簡單一點</text>
+      <text x="145" y="150" text-anchor="middle" font-size="22" fill="var(--ink)">這張圖我看不懂</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M290 99 L352 99"/><path d="M336 86 L352 99 L336 112"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="372" y="20" width="200" height="156" rx="12"/>
+      </g>
+      <circle cx="472" cy="76" r="30" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M398 130 L546 130"/><path d="M398 152 L490 152"/>
+      </g>
+      <text class="lab-s" x="472" y="204" text-anchor="middle">它重畫一次</text>
+    </svg>
+  </div>
+</section>
+
+<section lang="en">
+  <h2>If it didn't land, say so.</h2>
+  <p>"Simpler." "I don't get this picture." It draws the whole thing again. Not understanding is not your fault.</p>
+  <div class="big">
+    <svg viewBox="0 0 640 220" role="img" aria-label="Two short replies — simpler, and I don't get this picture — with an arrow to a redrawn page">
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="20" y="26" width="250" height="62" rx="16"/>
+        <rect x="20" y="110" width="250" height="62" rx="16"/>
+      </g>
+      <text x="145" y="65" text-anchor="middle" font-size="21" fill="var(--ink)">simpler</text>
+      <text x="145" y="149" text-anchor="middle" font-size="19" fill="var(--ink)">I don't get this picture</text>
+      <g stroke="var(--axis)" stroke-width="5" fill="none">
+        <path d="M290 99 L352 99"/><path d="M336 86 L352 99 L336 112"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="4">
+        <rect x="372" y="20" width="200" height="156" rx="12"/>
+      </g>
+      <circle cx="472" cy="76" r="30" fill="none" stroke="var(--s1)" stroke-width="5"/>
+      <g stroke="var(--deemph)" stroke-width="6" stroke-linecap="round">
+        <path d="M398 130 L546 130"/><path d="M398 152 L490 152"/>
+      </g>
+      <text class="lab-s" x="472" y="204" text-anchor="middle">it draws it again</text>
+    </svg>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>

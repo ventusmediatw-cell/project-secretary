@@ -1,0 +1,605 @@
+<meta charset="utf-8">
+<title>一分鐘解釋圖自己是怎麼運作的 · How the One-Minute Explainer Works</title>
+<style>
+:root{
+ --plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+ --axis:#c3c2b7;--s1:#2a78d6;--s2:#eb6834;--deemph:#d5d4cd;
+ --warn:#fab219;--crit:#d03b3b;--line:#e3e2dc;--nodebg:#fff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
+ --line:#2c2c2a;--nodebg:#22221f;
+}}
+:root[data-theme="dark"]{
+ --plane:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+ --axis:#383835;--s1:#3987e5;--s2:#d95926;--deemph:#3a3a37;--crit:#e35d5d;
+ --line:#2c2c2a;--nodebg:#22221f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+ font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+section{padding:50px 0;border-bottom:1px solid var(--line)}section:last-child,section:nth-last-child(2){border:0}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.07;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3.4vw,30px);margin:0 0 6px;letter-spacing:-.01em}
+.sub{font-size:16px;color:var(--muted);margin:0 0 20px}
+p{font-size:17px;color:var(--ink2);margin:0 0 10px}
+.lede{font-size:clamp(18px,2.7vw,22px);color:var(--ink2)}
+.tag{font-size:13px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:18px;display:block}
+figure{margin:20px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 16px 16px;overflow-x:auto}
+figure svg{min-width:620px}
+figcaption{font-size:15px;color:var(--ink2);margin-bottom:14px;font-weight:600}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.n-lab{font-size:14px;fill:var(--ink)}
+.n-sub{font-size:12px;fill:var(--muted)}
+.e-lab{font-size:12px;fill:var(--muted)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.note{border-left:3px solid var(--warn);padding-left:16px;margin-top:20px}
+.note b{font-size:14px;letter-spacing:.06em;color:var(--warn)}
+.note p{color:var(--ink);font-size:17px;margin:5px 0 0}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
+.box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
+ background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang|="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
+</style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
+
+<div class="wrap">
+
+<section lang="zh-TW">
+  <span class="tag">a question → one page</span>
+  <h1>一分鐘解釋圖<br>自己是怎麼運作的</h1>
+  <p class="lede">一句話：<b style="color:var(--ink)">它動筆之前先把岔路找出來。一條線講到底沒地方放，閘門就安靜地不見了。</b><br>三張圖就是全部。</p>
+</section>
+
+<section lang="en">
+  <span class="tag">a question → one page</span>
+  <h1>How the one-minute<br>explainer works</h1>
+  <p class="lede">In one line: <b style="color:var(--ink)">It finds the forks before it draws. A story told in a straight line has nowhere to put a fork, so the gates quietly disappear.</b><br>The three diagrams below are the whole thing.</p>
+</section>
+
+<section lang="zh-TW">
+  <h2>圖一 · 從你問一句，到你拿到一頁</h2>
+  <p class="sub">一道閘在最前面，一道在最後面，都不能跳過。</p>
+  <figure>
+    <figcaption>一個問題 → 收窄 → 找岔路 → 三張圖 → 它自己先看 → 交給你</figcaption>
+    <svg viewBox="0 0 720 590" role="img" aria-label="流程圖：你問一句「這東西怎麼運作」，它先看這是不是有好幾步、會分岔的東西；只是一件事，它就用講的回你、不做這一頁。是的話它先把岔路找出來，再畫成最多三張圖、不超過一千字的單一 HTML 檔；淺色深色它都看過，哪裡不對就修好再看一次，都對了才在瀏覽器裡開給你、把檔案交給你。">
+      <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="a1o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="a1r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a1)">
+        <path d="M360 64 L360 84"/>
+        <path d="M360 168 L360 190"/>
+        <path d="M360 264 L360 292"/>
+        <path d="M360 366 L360 396"/>
+        <path d="M360 476 L360 500"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#a1r)">
+        <path d="M230 126 L178 126"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#a1o)">
+        <path d="M480 436 L512 436"/>
+        <path d="M616 396 L616 384 L368 384"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="195" y="12" width="330" height="52" rx="9"/>
+        <rect x="195" y="190" width="330" height="74" rx="9"/>
+        <rect x="195" y="292" width="330" height="74" rx="9"/>
+        <rect x="195" y="500" width="330" height="68" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M360 84 L490 126 L360 168 L230 126 z"/>
+        <path d="M360 396 L480 436 L360 476 L240 436 z"/>
+        <rect x="516" y="396" width="200" height="88" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="5" y="96" width="165" height="66" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="360" y="38">你問：這東西是怎麼運作的？</text>
+        <text class="n-sub" x="360" y="56">你想被畫給你看</text>
+        <text class="n-lab" x="360" y="122">有好幾步、會分岔嗎？</text>
+        <text class="n-sub" x="360" y="139">它拿不準會先問你</text>
+        <text class="n-lab" x="88" y="118" fill="var(--crit)">它就用講的回你</text>
+        <text class="n-sub" x="88" y="136">一個詞、一個決定，</text>
+        <text class="n-sub" x="88" y="152">不值得做一頁</text>
+        <text class="n-lab" x="360" y="214">它先把岔路找出來</text>
+        <text class="n-sub" x="360" y="232">「如果…就…，否則…」</text>
+        <text class="n-sub" x="360" y="249">「這裡會擋掉什麼」</text>
+        <text class="n-lab" x="360" y="316">最多三張圖，不超過一千字</text>
+        <text class="n-sub" x="360" y="334">一個岔路一個菱形</text>
+        <text class="n-sub" x="360" y="351">單一 HTML 檔，不連外部資源</text>
+        <text class="n-lab" x="360" y="432">看起來都對嗎？</text>
+        <text class="n-sub" x="360" y="449">淺色深色它都看過</text>
+        <text class="n-lab" x="616" y="424" fill="var(--s2)">它修好再截一次</text>
+        <text class="n-sub" x="616" y="442">線壓到框、字撞字、</text>
+        <text class="n-sub" x="616" y="458">有東西滑出畫面</text>
+        <text class="n-lab" x="360" y="526">在瀏覽器裡開給你</text>
+        <text class="n-sub" x="360" y="544">檔案是你的，離線也打得開</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="212" y="118">一件事</text><text x="394" y="182">會分岔</text>
+        <text x="496" y="428">不對</text><text x="378" y="492">都對</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事</span>
+      <span><i style="background:var(--s2)"></i>判斷／多一步</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+    </div>
+  </figure>
+  <div class="note"><b>為什麼要這樣設計</b><p>兩道閘刻意擺在頭尾：小問題用講的比畫的快，排版壞掉只有圖上看得見。</p></div>
+</section>
+
+<section lang="en">
+  <h2>Diagram 1 · From your question to your page</h2>
+  <p class="sub">One gate at the front, one at the end. Neither of them is optional.</p>
+  <figure>
+    <figcaption>A question → narrowing → forks first → three pictures → it looks → yours</figcaption>
+    <svg viewBox="0 0 720 590" role="img" aria-label="Flowchart: you ask how something works; if it is one thing rather than something with several steps or forks, it answers in words and no page is made; if it is, it finds the forks first, then draws at most three pictures in a single HTML file under a thousand words; it looks at the page in light and in dark, fixes anything wrong and looks again, and only then opens it in your browser and hands you the file.">
+      <defs><marker id="b1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="b1o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="b1r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b1)">
+        <path d="M360 64 L360 84"/>
+        <path d="M360 168 L360 190"/>
+        <path d="M360 264 L360 292"/>
+        <path d="M360 366 L360 396"/>
+        <path d="M360 476 L360 500"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#b1r)">
+        <path d="M230 126 L178 126"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#b1o)">
+        <path d="M480 436 L512 436"/>
+        <path d="M616 396 L616 384 L368 384"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="195" y="12" width="330" height="52" rx="9"/>
+        <rect x="195" y="190" width="330" height="74" rx="9"/>
+        <rect x="195" y="292" width="330" height="74" rx="9"/>
+        <rect x="195" y="500" width="330" height="68" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M360 84 L490 126 L360 168 L230 126 z"/>
+        <path d="M360 396 L480 436 L360 476 L240 436 z"/>
+        <rect x="516" y="396" width="200" height="88" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="5" y="96" width="165" height="66" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="360" y="38">You ask: how does this work?</text>
+        <text class="n-sub" x="360" y="56">you want to be shown it, not sent a document</text>
+        <text class="n-lab" x="360" y="122">Several steps, a fork?</text>
+        <text class="n-sub" x="360" y="139">not sure — it asks you</text>
+        <text class="n-lab" x="88" y="118" fill="var(--crit)">It answers in words</text>
+        <text class="n-sub" x="88" y="136">one term, one decision:</text>
+        <text class="n-sub" x="88" y="152">not worth a page</text>
+        <text class="n-lab" x="360" y="214">It finds the forks first</text>
+        <text class="n-sub" x="360" y="232">"if X then… otherwise…"</text>
+        <text class="n-sub" x="360" y="249">"what gets turned away here"</text>
+        <text class="n-lab" x="360" y="316">At most 3 pictures, under 1000 words</text>
+        <text class="n-sub" x="360" y="334">a diamond at every fork</text>
+        <text class="n-sub" x="360" y="351">one HTML file, nothing loaded from outside</text>
+        <text class="n-lab" x="360" y="432">Does it look right?</text>
+        <text class="n-sub" x="360" y="449">seen light and dark</text>
+        <text class="n-lab" x="616" y="424" fill="var(--s2)">It fixes it, looks again</text>
+        <text class="n-sub" x="616" y="442">a line over a box, two</text>
+        <text class="n-sub" x="616" y="458">labels touching, something</text>
+        <text class="n-sub" x="616" y="474">sliding off sideways</text>
+        <text class="n-lab" x="360" y="526">Opened in your browser</text>
+        <text class="n-sub" x="360" y="544">the file is yours, and it works offline</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="214" y="118">one thing</text><text x="394" y="182">several</text>
+        <text x="496" y="428">no</text><text x="378" y="492">yes</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--crit)"></i>Stop here</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>The two gates sit at opposite ends on purpose: a small question is answered faster in words, and a layout fault only ever shows up in the picture.</p></div>
+</section>
+
+<section lang="zh-TW">
+  <h2>圖二 · 真正改變結果的那個決定</h2>
+  <p class="sub">不是畫得漂不漂亮，是岔路有沒有先找出來。</p>
+  <figure>
+    <figcaption>一個動作，兩種不能互換的顏色</figcaption>
+    <svg viewBox="0 0 720 510" role="img" aria-label="流程圖：畫之前先看岔路找出來了沒；沒找，閘門就整個消失、而且不會有任何提示；找了就改成流程圖重畫，同一個主題跑出六個菱形。接著一個岔路一個岔路看：這條路到這裡就停了嗎，停了才用紅色，還會回到主線的只是多一步、要用橘色。所以你看圖的時候，紅色代表這條路沒了，橘色代表繞一下還會回來。">
+      <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="a2o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="a2r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a2)">
+        <path d="M350 62 L350 82"/>
+        <path d="M350 162 L350 186"/>
+        <path d="M350 254 L350 278"/>
+        <path d="M350 386 L350 412"/>
+      </g>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none">
+        <path d="M82 350 L82 386 L627 386 L627 350"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#a2r)">
+        <path d="M478 122 L536 122"/>
+        <path d="M478 318 L536 318"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#a2o)">
+        <path d="M222 318 L164 318"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="180" y="10" width="340" height="52" rx="9"/>
+        <rect x="180" y="186" width="340" height="68" rx="9"/>
+        <rect x="150" y="412" width="400" height="76" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M350 82 L478 122 L350 162 L222 122 z"/>
+        <path d="M350 278 L478 318 L350 358 L222 318 z"/>
+        <rect x="5" y="286" width="155" height="64" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="540" y="86" width="175" height="76" rx="9"/>
+        <rect x="540" y="286" width="175" height="64" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="350" y="34">它動筆之前</text>
+        <text class="n-sub" x="350" y="52">整頁好壞押在這一步</text>
+        <text class="n-lab" x="350" y="118">岔路先找出來了嗎？</text>
+        <text class="n-sub" x="350" y="135">在畫之前</text>
+        <text class="n-lab" x="627" y="110" fill="var(--crit)">閘門會消失</text>
+        <text class="n-sub" x="627" y="128">一條線講到底沒地方放，</text>
+        <text class="n-sub" x="627" y="145">不會有任何提示</text>
+        <text class="n-lab" x="350" y="210">改成流程圖重畫</text>
+        <text class="n-sub" x="350" y="228">同一個主題、同樣內容</text>
+        <text class="n-sub" x="350" y="245">跑出了六個菱形</text>
+        <text class="n-lab" x="350" y="314">到這裡就停了嗎？</text>
+        <text class="n-sub" x="350" y="331">就這一個岔路</text>
+        <text class="n-lab" x="627" y="310" fill="var(--crit)">紅色</text>
+        <text class="n-sub" x="627" y="328">被擋下來，後面</text>
+        <text class="n-sub" x="627" y="344">什麼都不會發生</text>
+        <text class="n-lab" x="82" y="310" fill="var(--s2)">橘色</text>
+        <text class="n-sub" x="82" y="328">只是多一步，</text>
+        <text class="n-sub" x="82" y="344">不是被擋下來</text>
+        <text class="n-lab" x="350" y="436">你看圖的時候</text>
+        <text class="n-sub" x="350" y="454">紅色代表這條路沒了</text>
+        <text class="n-sub" x="350" y="471">橘色代表繞一下會回來</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="507" y="114">沒找</text><text x="368" y="178">找了</text>
+        <text x="507" y="310">停了</text><text x="193" y="310">會回來</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事</span>
+      <span><i style="background:var(--s2)"></i>判斷／多一步</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+    </div>
+  </figure>
+  <div class="note"><b>為什麼要這樣設計</b><p>一條線講到底沒地方放岔路，閘門不是看起來被漏掉、是看起來根本不存在；紅色用在只繞一下的路上，你會在流程其實沒停的地方停下來。</p></div>
+</section>
+
+<section lang="en">
+  <h2>Diagram 2 · The decision that changes the result</h2>
+  <p class="sub">Not how it looks. Whether the forks were found before anything was drawn.</p>
+  <figure>
+    <figcaption>One move, and two colours that are not interchangeable</figcaption>
+    <svg viewBox="0 0 720 510" role="img" aria-label="Flowchart: before drawing, ask whether the forks have been found; if not, the gates vanish with nothing to signal it; if they have, the subject is redrawn as a flow chart and six diamonds appear. Then, fork by fork, ask whether the flow stops here: only a real stop is red, while a detour that rejoins the main line is an extra step and must be orange. So when you read the page, red means the path is over and orange means it comes back.">
+      <defs><marker id="b2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="b2o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="b2r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b2)">
+        <path d="M350 62 L350 82"/>
+        <path d="M350 162 L350 186"/>
+        <path d="M350 254 L350 278"/>
+        <path d="M350 386 L350 412"/>
+      </g>
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none">
+        <path d="M82 350 L82 386 L627 386 L627 350"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#b2r)">
+        <path d="M478 122 L536 122"/>
+        <path d="M478 318 L536 318"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#b2o)">
+        <path d="M222 318 L164 318"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="180" y="10" width="340" height="52" rx="9"/>
+        <rect x="180" y="186" width="340" height="68" rx="9"/>
+        <rect x="150" y="412" width="400" height="76" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M350 82 L478 122 L350 162 L222 122 z"/>
+        <path d="M350 278 L478 318 L350 358 L222 318 z"/>
+        <rect x="5" y="286" width="155" height="64" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="540" y="86" width="175" height="76" rx="9"/>
+        <rect x="540" y="286" width="175" height="64" rx="9"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text class="n-lab" x="350" y="34">Before it draws anything</text>
+        <text class="n-sub" x="350" y="52">the whole page turns on this one step</text>
+        <text class="n-lab" x="350" y="118">Forks found first?</text>
+        <text class="n-sub" x="350" y="135">before it draws</text>
+        <text class="n-lab" x="627" y="110" fill="var(--crit)">The gates vanish</text>
+        <text class="n-sub" x="627" y="128">a straight line has nowhere</text>
+        <text class="n-sub" x="627" y="145">to put one, and says nothing</text>
+        <text class="n-lab" x="350" y="210">Redrawn as a flow chart</text>
+        <text class="n-sub" x="350" y="228">the same subject, the same content</text>
+        <text class="n-sub" x="350" y="245">six diamonds appeared</text>
+        <text class="n-lab" x="350" y="314">Does it stop here?</text>
+        <text class="n-sub" x="350" y="331">for this one fork</text>
+        <text class="n-lab" x="627" y="310" fill="var(--crit)">Red</text>
+        <text class="n-sub" x="627" y="328">turned away — nothing</text>
+        <text class="n-sub" x="627" y="344">happens after this</text>
+        <text class="n-lab" x="82" y="310" fill="var(--s2)">Orange</text>
+        <text class="n-sub" x="82" y="328">an extra step,</text>
+        <text class="n-sub" x="82" y="344">not a rejection</text>
+        <text class="n-lab" x="350" y="436">So when you read it</text>
+        <text class="n-sub" x="350" y="454">red means the path is over</text>
+        <text class="n-sub" x="350" y="471">orange means it comes back</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="507" y="114">no</text><text x="380" y="178">found</text>
+        <text x="507" y="310">it stops</text><text x="193" y="310">returns</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--crit)"></i>Stop here</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>A straight line has nowhere to put a fork, so the gates do not look missing — they look as though they were never there; and red on a detour is the same mistake in miniature, because you stop where the flow does not.</p></div>
+</section>
+
+<section lang="zh-TW">
+  <h2>圖三 · 這一頁要怎麼用</h2>
+  <p class="sub">兩條路方向相反：你問過去，它做完再交回來。</p>
+  <figure>
+    <figcaption>你這邊：問 → 讀 → 再問　　它那邊：判斷 → 找岔路 → 畫 → 自己先看 → 交</figcaption>
+    <svg viewBox="0 0 720 690" role="img" aria-label="流程圖：分成你這邊和它那邊，兩條方向相反的路。你問一句這東西怎麼運作，問題交到它那邊；它先判斷要不要畫圖，不用畫就直接用講的回你、這條到此為止；要畫就先找出岔路在哪、畫成最多三張圖、自己先看一次，然後把一頁交回你這邊。你從圖一讀到圖三，懂了就到這裡；沒懂就指著那一張再問，它就重畫那一張。">
+      <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="a3o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="a3r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <path d="M352 34 L352 520" stroke="var(--deemph)" stroke-width="1.5" stroke-dasharray="5 6" fill="none"/>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#a3)">
+        <path d="M318 76 L546 76 L546 104"/>
+        <path d="M546 188 L546 218"/>
+        <path d="M546 276 L546 306"/>
+        <path d="M546 364 L546 394"/>
+        <path d="M546 452 L546 485 L322 485"/>
+        <path d="M168 517 L168 530"/>
+        <path d="M168 606 L168 624"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#a3r)">
+        <path d="M416 148 L322 148"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#a3o)">
+        <path d="M288 570 L326 570"/>
+        <path d="M580 570 L700 570 L700 335 L694 335"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="18" y="44" width="300" height="64" rx="9"/>
+        <rect x="402" y="218" width="288" height="58" rx="9"/>
+        <rect x="402" y="306" width="288" height="58" rx="9"/>
+        <rect x="402" y="394" width="288" height="58" rx="9"/>
+        <rect x="18" y="453" width="300" height="64" rx="9"/>
+        <rect x="18" y="624" width="300" height="52" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M546 108 L676 148 L546 188 L416 148 z"/>
+        <path d="M168 534 L288 570 L168 606 L48 570 z"/>
+        <rect x="330" y="542" width="250" height="56" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="18" y="116" width="300" height="64" rx="9"/>
+      </g>
+
+      <g class="e-lab" text-anchor="middle" fill="var(--muted)">
+        <text x="168" y="24">你這邊</text><text x="546" y="24">它那邊</text>
+      </g>
+      <g text-anchor="middle">
+        <text class="n-lab" x="168" y="72">你問：這東西怎麼運作？</text>
+        <text class="n-sub" x="168" y="90">一句話，不用交代格式</text>
+        <text class="n-lab" x="546" y="144">要畫圖嗎？</text>
+        <text class="n-sub" x="546" y="161">它拿不準會先問你</text>
+        <text class="n-lab" x="168" y="144" fill="var(--crit)">它就用講的回你</text>
+        <text class="n-sub" x="168" y="162">一個詞、一個決定，不必做一頁</text>
+        <text class="n-lab" x="546" y="244">它先找出岔路在哪</text>
+        <text class="n-sub" x="546" y="262">哪裡不一樣、哪裡被擋</text>
+        <text class="n-lab" x="546" y="332">它畫成最多三張圖</text>
+        <text class="n-sub" x="546" y="350">一個岔路一個菱形</text>
+        <text class="n-lab" x="546" y="420">它自己先看一次</text>
+        <text class="n-sub" x="546" y="438">淺色深色各一次</text>
+        <text class="n-lab" x="168" y="481">你拿到一頁，圖一讀到圖三</text>
+        <text class="n-sub" x="168" y="499">一個檔，離線也打得開</text>
+        <text class="n-lab" x="168" y="566">懂了嗎？</text>
+        <text class="n-sub" x="168" y="583">沒懂就指那一張</text>
+        <text class="n-lab" x="455" y="566" fill="var(--s2)">你指著那一張再問</text>
+        <text class="n-sub" x="455" y="584">它就重畫那一張</text>
+        <text class="n-lab" x="168" y="648">懂了，就到這裡</text>
+        <text class="n-sub" x="168" y="666">這一頁是你的</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="432" y="66">問題過去</text><text x="386" y="140">不用</text>
+        <text x="562" y="210">要</text><text x="438" y="476">一頁交回來</text>
+        <text x="307" y="562">沒懂</text><text x="188" y="618">懂了</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>做事</span>
+      <span><i style="background:var(--s2)"></i>判斷／多一步</span>
+      <span><i style="background:var(--crit)"></i>到此為止</span>
+    </div>
+  </figure>
+  <div class="note"><b>為什麼要這樣設計</b><p>你只出一句話，跟後來那句「這張沒懂」；收窄、找岔路、自己先看都在它那邊。</p></div>
+</section>
+
+<section lang="en">
+  <h2>Diagram 3 · How the page gets used</h2>
+  <p class="sub">Two paths running opposite ways: yours goes over, its work comes back.</p>
+  <figure>
+    <figcaption>Your side: ask → receive → read → ask again　　Its side: decide → find forks → draw → look → hand back</figcaption>
+    <svg viewBox="0 0 720 690" role="img" aria-label="Flowchart with two lanes running in opposite directions, your side and its side. You ask how something works and the question crosses over; it decides whether a picture is wanted — if not, it answers in words and that path ends there; if so, it finds the forks, draws at most three pictures, looks at the result itself, and hands one page back to your side. You read picture one through picture three; if it landed you are done, and if not you point at that picture and it redraws that one.">
+      <defs><marker id="b3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--axis)"/></marker>
+        <marker id="b3o" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--s2)"/></marker>
+        <marker id="b3r" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="var(--crit)"/></marker></defs>
+
+      <path d="M352 34 L352 520" stroke="var(--deemph)" stroke-width="1.5" stroke-dasharray="5 6" fill="none"/>
+
+      <g stroke="var(--axis)" stroke-width="1.8" fill="none" marker-end="url(#b3)">
+        <path d="M318 76 L546 76 L546 104"/>
+        <path d="M546 188 L546 218"/>
+        <path d="M546 276 L546 306"/>
+        <path d="M546 364 L546 394"/>
+        <path d="M546 452 L546 485 L322 485"/>
+        <path d="M168 517 L168 530"/>
+        <path d="M168 606 L168 624"/>
+      </g>
+      <g stroke="var(--crit)" stroke-width="1.8" fill="none" marker-end="url(#b3r)">
+        <path d="M416 148 L322 148"/>
+      </g>
+      <g stroke="var(--s2)" stroke-width="1.8" fill="none" marker-end="url(#b3o)">
+        <path d="M288 570 L326 570"/>
+        <path d="M580 570 L700 570 L700 335 L694 335"/>
+      </g>
+
+      <g fill="var(--nodebg)" stroke="var(--s1)" stroke-width="2">
+        <rect x="18" y="44" width="300" height="64" rx="9"/>
+        <rect x="402" y="218" width="288" height="58" rx="9"/>
+        <rect x="402" y="306" width="288" height="58" rx="9"/>
+        <rect x="402" y="394" width="288" height="58" rx="9"/>
+        <rect x="18" y="453" width="300" height="64" rx="9"/>
+        <rect x="18" y="624" width="300" height="52" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--s2)" stroke-width="2">
+        <path d="M546 108 L676 148 L546 188 L416 148 z"/>
+        <path d="M168 534 L288 570 L168 606 L48 570 z"/>
+        <rect x="330" y="542" width="250" height="56" rx="9"/>
+      </g>
+      <g fill="var(--nodebg)" stroke="var(--crit)" stroke-width="2">
+        <rect x="18" y="116" width="300" height="64" rx="9"/>
+      </g>
+
+      <g class="e-lab" text-anchor="middle" fill="var(--muted)">
+        <text x="168" y="24">your side</text><text x="546" y="24">its side</text>
+      </g>
+      <g text-anchor="middle">
+        <text class="n-lab" x="168" y="72">You ask how something works</text>
+        <text class="n-sub" x="168" y="90">one line, no format to specify</text>
+        <text class="n-lab" x="546" y="144">A picture, or words?</text>
+        <text class="n-sub" x="546" y="161">it asks when unsure</text>
+        <text class="n-lab" x="168" y="144" fill="var(--crit)">It answers in words</text>
+        <text class="n-sub" x="168" y="162">one term, one decision: not worth a page</text>
+        <text class="n-lab" x="546" y="244">It finds the forks</text>
+        <text class="n-sub" x="546" y="262">where it differs, where it is turned away</text>
+        <text class="n-lab" x="546" y="332">It draws, at most three</text>
+        <text class="n-sub" x="546" y="350">one diamond at every fork</text>
+        <text class="n-lab" x="546" y="420">It looks at it first</text>
+        <text class="n-sub" x="546" y="438">light and dark, both</text>
+        <text class="n-lab" x="168" y="481">You read it, picture 1 to 3</text>
+        <text class="n-sub" x="168" y="499">one file, it opens with no connection</text>
+        <text class="n-lab" x="168" y="566">Did it land?</text>
+        <text class="n-sub" x="168" y="583">point at the picture</text>
+        <text class="n-lab" x="455" y="566" fill="var(--s2)">You point at that one</text>
+        <text class="n-sub" x="455" y="584">and it redraws that picture</text>
+        <text class="n-lab" x="168" y="648">You got it — done</text>
+        <text class="n-sub" x="168" y="666">the page is yours</text>
+      </g>
+      <g class="e-lab" text-anchor="middle">
+        <text x="432" y="66">question goes over</text><text x="386" y="140">no</text>
+        <text x="566" y="210">yes</text><text x="438" y="476">the page comes back</text>
+        <text x="307" y="562">no</text><text x="188" y="618">yes</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Do it</span>
+      <span><i style="background:var(--s2)"></i>Decide / extra step</span>
+      <span><i style="background:var(--crit)"></i>Stop here</span>
+    </div>
+  </figure>
+  <div class="note"><b>Why it works this way</b><p>You supply one line, and later one "this picture didn't land". The narrowing, the forks and the looking all sit on its side, so you never have to know how.</p></div>
+</section>
+
+<section lang="zh-TW">
+  <h2>你可以指望的兩件事</h2>
+  <div class="two">
+    <div class="box"><b>錯了會被看見</b><ul>
+      <li>它交出來之前自己先看過：淺色深色各一次，中英文各一次</li>
+      <li>線壓到框、兩個字疊在一起，只有看圖看得出來</li>
+    </ul></div>
+    <div class="box"><b>三張圖是上限</b><ul>
+      <li>塞不下就是題目該切開，不是圖該擠更小</li>
+      <li>兩頁窄的，好過一頁塞五張</li>
+    </ul></div>
+  </div>
+  <p style="margin-top:18px">哪一張沒講清楚，直接指那一張——那是重畫一張，不是重寫一頁。</p>
+</section>
+
+<section lang="en">
+  <h2>Two things you can count on</h2>
+  <div class="two">
+    <div class="box"><b>A mistake gets seen</b><ul>
+      <li>Before it reaches you, it has looked at the page itself — light and dark, and in both languages</li>
+      <li>A line over a box, two words sitting on top of each other: only the picture shows those</li>
+    </ul></div>
+    <div class="box"><b>Three pictures is the ceiling</b><ul>
+      <li>If it does not fit, the subject gets split — the pictures do not get squeezed smaller</li>
+      <li>Two narrower pages beat one page with five</li>
+    </ul></div>
+  </div>
+  <p style="margin-top:18px">If a picture does not land, point at that picture — that is one diagram redrawn, not a new page.</p>
+</section>
+</div>
+
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>

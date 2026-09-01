@@ -54,7 +54,17 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
 .box b{display:block;font-size:16px;margin-bottom:7px;color:var(--ink)}
 .box ul{margin:0;padding-left:17px}.box li{font-size:15px;color:var(--ink2);margin-bottom:5px}
+/* ── OPTIONAL: bilingual toggle. Keep only if the page carries two languages; then every
+   <section> needs lang="zh-TW" or lang="en" (region code included — bare "zh" picks the wrong glyphs).
+   Single-language page: delete this block, the .lang-toggle div below, and the <script> at the end. ── */
+[data-lang="en"] [lang|="zh"]{display:none!important}
+[data-lang="zh"] [lang|="en"]{display:none!important}
+.lang-toggle{position:fixed;top:14px;right:14px;z-index:9;display:flex;gap:4px}
+.lang-toggle button{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--line,#ccc);background:var(--surface,#fff);color:inherit;border-radius:6px;cursor:pointer}
+.lang-toggle button[aria-pressed="true"]{border-color:var(--s1,#2563eb);color:var(--s1,#2563eb);font-weight:600}
 </style>
+
+<div class="lang-toggle"><button type="button" data-set="zh">中</button><button type="button" data-set="en">EN</button></div>
 
 <div class="wrap">
 
@@ -134,3 +144,9 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 </section>
 
 </div>
+
+<!-- OPTIONAL, goes with the bilingual block above: picks the language from navigator.language / localStorage.
+     The verification recipe in SKILL.md forces a language by editing the set(s||…) default on this line. -->
+<script>
+(function(){var d=document.documentElement;function set(l){d.setAttribute('data-lang',l);document.querySelectorAll('.lang-toggle button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===l))});try{localStorage.setItem('pslang',l)}catch(e){}}var s=null;try{s=localStorage.getItem('pslang')}catch(e){}set(s||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en'));document.querySelectorAll('.lang-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set)})});})();
+</script>
