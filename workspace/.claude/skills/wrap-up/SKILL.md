@@ -1,7 +1,6 @@
 ---
 name: wrap-up
 description: "Wrap-Up: two-stage flow (project manager wrap-up → secretary review) with 13-item checklist (A: experience extraction, B: system updates, C: memory sync). Triggered when user says 'wrap up'."
-disable-model-invocation: true
 ---
 
 # Wrap-Up Review Flow
